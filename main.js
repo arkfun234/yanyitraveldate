@@ -8,10 +8,12 @@ let CLUSTERS      = {};
 let TOPPLACES     = null;
 let SPOT_WEIGHTS  = {};   // 同行者×季节 → 景点权重
 let HOTELS        = [];   // 住宿数据
+let DATA_SUMMARY  = null; // 2025年度AI推薦データの要約
 
 let answers = {};
 let behaviorVector = [];
 let lastSummaryPayload = null;  // 用于重试
+let lastTagCounts = {};          // 旅行者画像分析用
 
 // ===== 1. 加载所有数据 =====
 Promise.all([
@@ -22,7 +24,8 @@ Promise.all([
   fetch("20_top_places.json").then(r => r.json()),
   fetch("spot_weights_by_companion_season.json").then(r => r.json()),
   fetch("hotels.json").then(r => r.json()),
-]).then(([qData, mapData, weightsData, clusters, topPlacesData, spotWeights, hotels]) => {
+  fetch("data_summary_2025.json").then(r => r.ok ? r.json() : null).catch(() => null),
+]).then(([qData, mapData, weightsData, clusters, topPlacesData, spotWeights, hotels, dataSummary]) => {
   QUESTIONS    = qData;
   Q2PSYCH      = mapData;
   TAG_WEIGHTS  = weightsData;
@@ -30,6 +33,8 @@ Promise.all([
   TOPPLACES    = topPlacesData;
   SPOT_WEIGHTS = spotWeights;
   HOTELS       = hotels;
+  DATA_SUMMARY = dataSummary;
+  installResearchStyles();
   renderQuestions();
   setTimeout(updateProgress, 100);
 }).catch(e => {
@@ -95,6 +100,7 @@ document.getElementById("submitBtn").addEventListener("click", () => {
 
   // 计算
   const tagCounts = calcTagCounts();
+  lastTagCounts = tagCounts;
   behaviorVector = calcBehaviorVectorFromWeights(tagCounts);
   const bestCluster = findBestCluster(behaviorVector);
 
@@ -154,6 +160,8 @@ function showResult(clusterInfo, clusterIndex, recommendedSpots, recommendedHote
   document.getElementById("clusterDesc").textContent =
     clusterInfo ? clusterInfo.description.split("旅行中に訪れた")[0].trim() : "";
 
+  renderProfileAnalysis(lastTagCounts, clusterInfo, clusterIndex);
+
   // Top Spots
   const spotsList = document.getElementById("spotsList");
   spotsList.innerHTML = "";
@@ -163,7 +171,10 @@ function showResult(clusterInfo, clusterIndex, recommendedSpots, recommendedHote
     spotsList.innerHTML += `
       <div class="spot-item">
         <div class="spot-rank ${rankClass[i]}">${i+1}</div>
-        <div class="spot-name">${spot.place}</div>
+        <div class="spot-main">
+          <div class="spot-name">${spot.place}</div>
+          <div class="spot-reason">${getSpotReason(spot, i)}</div>
+        </div>
         <div class="spot-users">${spot.source === 'data' ? `📊 ${spot.score}pt` : '📌 クラスター'}</div>
       </div>`;
   });
@@ -182,9 +193,12 @@ function showResult(clusterInfo, clusterIndex, recommendedSpots, recommendedHote
           <div class="hotel-type-badge">${h.type}</div>
           <div class="hotel-name">${h.name}</div>
           <div class="hotel-area">📍 ${h.area}</div>
+          <div class="hotel-reason">${getHotelReason(h, recommendedSpots)}</div>
         </div>`;
     });
   }
+
+  renderDataBasis(recommendedSpots);
 
   // AI部分：显示loading
   const aiResult = document.getElementById("aiResult");
@@ -227,6 +241,160 @@ function retryAI() {
     });
 }
 window.retryAI = retryAI;
+
+// ===== 5.5 研究展示：旅行者画像・推薦理由・データ根拠 =====
+function installResearchStyles() {
+  if (document.getElementById('researchStyles')) return;
+  const style = document.createElement('style');
+  style.id = 'researchStyles';
+  style.textContent = `
+    .spot-main { flex: 1; min-width: 0; }
+    .spot-reason, .hotel-reason { font-size: 11.5px; color: var(--text-sub); margin-top: 4px; line-height: 1.5; }
+    .profile-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .trait-card { background: #f8fafc; border: 1px solid #e8edf5; border-radius: 12px; padding: 12px 14px; }
+    .trait-head { display: flex; justify-content: space-between; gap: 8px; font-size: 12.5px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+    .trait-score { color: var(--primary); }
+    .trait-bar-bg { height: 7px; background: #e2e8f0; border-radius: 99px; overflow: hidden; }
+    .trait-bar { height: 100%; background: linear-gradient(90deg, #2563eb, #0ea5e9); border-radius: 99px; }
+    .profile-note, .data-note { margin-top: 14px; padding: 12px 14px; background: #eff6ff; border: 1px solid #bfdbfe; color: #1e3a8a; border-radius: 12px; font-size: 12.5px; line-height: 1.7; }
+    .data-kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px; }
+    .data-kpi { background: #f8fafc; border: 1px solid #e8edf5; border-radius: 12px; padding: 12px; text-align: center; }
+    .data-kpi-value { font-size: 20px; font-weight: 800; color: var(--primary); }
+    .data-kpi-label { font-size: 11.5px; color: var(--text-sub); margin-top: 3px; }
+    .data-top-list { display: flex; flex-wrap: wrap; gap: 8px; }
+    .data-chip { background: #f8fafc; border: 1px solid #e8edf5; border-radius: 999px; padding: 6px 10px; font-size: 12px; color: var(--text); }
+    @media (max-width: 600px) { .profile-grid, .data-kpis { grid-template-columns: 1fr; } }
+  `;
+  document.head.appendChild(style);
+}
+
+function langText(ja, zh) {
+  return window.currentLang === 'zh' ? zh : ja;
+}
+
+function getSpotReason(spot, index) {
+  if (spot.source === 'data') {
+    return langText(
+      '推薦理由：同行者・旅行時期に近い過去データで出現頻度が高く、今回の旅行条件と合いやすいエリアです。',
+      '推荐理由：在同行者和旅行季节相近的历史数据中出现频率较高，和本次旅行条件匹配度较高。'
+    );
+  }
+  return langText(
+    '推薦理由：あなたに近い旅行者クラスターの代表的な訪問エリアとして抽出されました。',
+    '推荐理由：该地点来自与你相近的旅行者类型 cluster 的代表性访问区域。'
+  );
+}
+
+function getHotelReason(hotel, recommendedSpots) {
+  const relatedSpot = recommendedSpots.find(s => {
+    const kw = s.place.replace(/ エリア$/, '').replace(/エリア$/, '').replace(/道の駅「.*?」/, '道の駅').trim();
+    const area = hotel.area.replace(/（.*?）/, '').replace(/エリア$/, '').trim();
+    return area.includes(kw) || kw.includes(area) || hotel.area.includes('あわら');
+  });
+  if (relatedSpot) {
+    return langText(
+      `宿泊理由：推薦エリア「${relatedSpot.place}」への移動を考慮して抽出しました。`,
+      `住宿理由：根据推荐区域「${relatedSpot.place}」周边移动便利性筛选。`
+    );
+  }
+  return langText('宿泊理由：推薦エリア周辺の登録宿泊施設から抽出しました。', '住宿理由：从推荐景点周边已登录住宿设施中筛选。');
+}
+
+function insertSectionAfter(newEl, afterEl) {
+  if (!afterEl || !afterEl.parentNode) return;
+  const old = document.getElementById(newEl.id);
+  if (old) old.remove();
+  afterEl.parentNode.insertBefore(newEl, afterEl.nextSibling);
+}
+
+function calcTraitScores(tagCounts) {
+  const groups = {
+    plan: ['advance_planning', 'plan_adherence', 'control_orientation', 'information_preparedness', 'structure_preference', 'risk_minimization'],
+    relax: ['schedule_density_low', 'stay_based_travel', 'pace_slow', 'relaxation_focus', 'stress_reduction_goal', 'tranquility_seeking', 'quality_priority'],
+    explore: ['spontaneity_level', 'intuitive_exploration', 'exploratory_behavior', 'novelty_seeking', 'experience_embrace', 'experience_driven_choice', 'local_culture_interest'],
+    food: ['consumption_experience', 'cost_benefit_analysis', 'value_seeking'],
+    nature: ['nature_preference', 'nature_dominant_preference', 'tranquility_seeking'],
+    efficiency: ['schedule_density_high', 'multi_spot_hopping', 'pace_fast', 'efficiency_focus', 'time_optimization', 'coverage_maximization']
+  };
+  const labels = {
+    plan: langText('計画性', '计划性'),
+    relax: langText('リラックス志向', '放松倾向'),
+    explore: langText('探索・体験志向', '探索/体验倾向'),
+    food: langText('美食・価値志向', '美食/价值倾向'),
+    nature: langText('自然志向', '自然倾向'),
+    efficiency: langText('効率・周遊志向', '效率/多点游览倾向')
+  };
+  return Object.entries(groups).map(([key, tags]) => {
+    const raw = tags.reduce((sum, tag) => sum + (tagCounts[tag] || 0), 0);
+    return { key, label: labels[key], score: Math.min(100, Math.round(raw * 34)) };
+  }).sort((a, b) => b.score - a.score);
+}
+
+function renderProfileAnalysis(tagCounts, clusterInfo, clusterIndex) {
+  const section = document.createElement('div');
+  section.id = 'profileAnalysisSection';
+  section.className = 'section-card';
+  const traits = calcTraitScores(tagCounts || {});
+  const traitHtml = traits.map(t => `
+    <div class="trait-card">
+      <div class="trait-head"><span>${t.label}</span><span class="trait-score">${t.score}%</span></div>
+      <div class="trait-bar-bg"><div class="trait-bar" style="width:${t.score}%"></div></div>
+    </div>`).join('');
+
+  section.innerHTML = `
+    <div class="section-header">
+      <div class="section-icon blue">🧭</div>
+      <div>
+        <h2>${langText('旅行者画像分析', '旅行者画像分析')}</h2>
+        <p>${langText('回答内容から旅行傾向を可視化します', '根据回答内容可视化你的旅行倾向')}</p>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="profile-grid">${traitHtml}</div>
+      <div class="profile-note">
+        ${langText(
+          `この画像は、12問の回答を心理・行動タグに変換し、福井観光データの旅行者クラスター（${clusterIndex ?? '-'}）と照合して作成しています。`,
+          `该画像由12道问卷回答转换为心理/行为标签，并与福井观光数据中的旅行者 cluster（${clusterIndex ?? '-'}）进行匹配后生成。`
+        )}
+      </div>
+    </div>`;
+
+  insertSectionAfter(section, document.getElementById('clusterBadge'));
+}
+
+function renderDataBasis(recommendedSpots) {
+  if (!DATA_SUMMARY) return;
+  const section = document.createElement('div');
+  section.id = 'dataBasisSection';
+  section.className = 'section-card';
+  const topSpots = (DATA_SUMMARY.top_spots || []).slice(0, 6)
+    .map(s => `<span class="data-chip">${s.place}：${s.count}</span>`).join('');
+
+  section.innerHTML = `
+    <div class="section-header">
+      <div class="section-icon orange">📊</div>
+      <div>
+        <h2>${langText('推薦に用いたデータ根拠', '推荐所使用的数据依据')}</h2>
+        <p>${langText('2025年度の福井県観光AI推薦データを参照', '参考2025年度福井县观光AI推荐数据')}</p>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="data-kpis">
+        <div class="data-kpi"><div class="data-kpi-value">${DATA_SUMMARY.record_count || '-'}</div><div class="data-kpi-label">${langText('推薦ログ件数', '推荐记录数')}</div></div>
+        <div class="data-kpi"><div class="data-kpi-value">${DATA_SUMMARY.unique_user_count || '-'}</div><div class="data-kpi-label">${langText('ユニークユーザー', '唯一用户数')}</div></div>
+        <div class="data-kpi"><div class="data-kpi-value">${(DATA_SUMMARY.top_spots || []).length}</div><div class="data-kpi-label">${langText('主要推薦エリア', '主要推荐区域')}</div></div>
+      </div>
+      <div class="data-top-list">${topSpots}</div>
+      <div class="data-note">
+        ${langText(
+          '本システムは、旅行者タイプ・同行者・旅行時期・過去の推薦傾向を組み合わせて、観光エリアと宿泊候補を提示します。',
+          '本系统综合旅行者类型、同行者、旅行季节和过去推荐趋势，生成观光区域与住宿候选。'
+        )}
+      </div>
+    </div>`;
+
+  insertSectionAfter(section, document.getElementById('hotelSection'));
+}
 
 // ===== 6. 景点筛选逻辑（核心） =====
 // 优先级：同行者×季节 > 同行者 > 季节 > Cluster Top3（兜底）
