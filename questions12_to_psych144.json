@@ -6,69 +6,69 @@
     "option_4": ["spontaneity_level", "uncertainty_acceptance", "intuitive_exploration"]
   },
   "Q2": {
-    "option_1": ["advance_planning", "structure_preference"],
-    "option_2": ["balanced_planning", "controlled_flexibility"],
-    "option_3": ["minimal_planning", "situational_decision"],
-    "option_4": ["no_preplanning", "impulsive_decision"]
+    "option_1": ["advance_planning", "information_preparedness", "efficiency_focus"],
+    "option_2": ["balanced_planning", "controlled_flexibility", "opportunistic_activity"],
+    "option_3": ["situational_decision", "adaptive_pacing", "experience_embrace"],
+    "option_4": ["flexible_structure", "low_control_need", "situational_flexibility"]
   },
   "Q3": {
-    "option_1": ["peer_group_travel", "social_coordination"],
-    "option_2": ["flexible_companion", "adaptive_social_style"],
-    "option_3": ["solo_travel", "autonomy_preference"],
-    "option_4": ["shared_decision_making", "consensus_orientation"]
+    "option_1": ["fixed_companion", "relationship_stability", "consensus_orientation"],
+    "option_2": ["peer_group_travel", "social_coordination", "shared_decision_making"],
+    "option_3": ["flexible_companion", "context_dependent_choice", "adaptive_social_style"],
+    "option_4": ["solo_travel", "autonomy_preference", "independent_decision"]
   },
   "Q4": {
-    "option_1": ["sightseeing_priority", "landmark_orientation"],
-    "option_2": ["consumption_experience", "local_culture_interest"],
-    "option_3": ["relaxation_focus", "nature_preference"],
-    "option_4": ["exploratory_behavior", "novelty_seeking"]
+    "option_1": ["sightseeing_priority", "landmark_orientation", "coverage_maximization"],
+    "option_2": ["local_culture_interest", "experience_driven_choice", "balanced_information_use"],
+    "option_3": ["relaxation_focus", "stress_reduction_goal", "quality_priority"],
+    "option_4": ["exploratory_behavior", "low_goal_constraint", "opportunistic_activity"]
   },
   "Q5": {
-    "option_1": ["official_info_reliance", "authority_trust"],
-    "option_2": ["peer_review_reliance", "trend_sensitivity"],
-    "option_3": ["multi_source_validation", "balanced_information_use"],
-    "option_4": ["low_information_need", "intuition_based_choice"]
+    "option_1": ["plan_adherence", "change_resistance", "control_orientation"],
+    "option_2": ["managed_flexibility", "conditional_adjustment", "risk_awareness"],
+    "option_3": ["adaptive_response", "situational_flexibility", "balanced_planning"],
+    "option_4": ["uncertainty_tolerance", "risk_acceptance", "spontaneity_level"]
   },
   "Q6": {
-    "option_1": ["plan_adherence", "control_orientation"],
-    "option_2": ["managed_flexibility", "conditional_adjustment"],
-    "option_3": ["adaptive_response", "situational_flexibility"],
-    "option_4": ["uncertainty_tolerance", "risk_acceptance"]
+    "option_1": ["advance_planning", "information_preparedness", "risk_minimization"],
+    "option_2": ["structure_preference", "multi_source_validation", "managed_flexibility"],
+    "option_3": ["minimal_planning", "situational_decision", "flexible_structure"],
+    "option_4": ["no_preplanning", "intuition_based_choice", "uncertainty_acceptance"]
   },
   "Q7": {
-    "option_1": ["efficiency_focus", "time_optimization"],
-    "option_2": ["cost_performance_focus", "budget_optimization"],
-    "option_3": ["value_seeking", "balanced_spending"],
-    "option_4": ["cost_minimization", "price_sensitivity"]
+    "option_1": ["sightseeing_priority", "landmark_orientation", "time_optimization"],
+    "option_2": ["nature_preference", "nature_dominant_preference", "tranquility_seeking"],
+    "option_3": ["consumption_experience", "cost_benefit_analysis", "value_seeking"],
+    "option_4": ["local_culture_interest", "experience_driven_choice", "novelty_seeking"]
   },
   "Q8": {
-    "option_1": ["emotion_driven_decision", "affective_priority"],
-    "option_2": ["intuition_reliance", "impulse_following"],
-    "option_3": ["logical_evaluation", "cost_benefit_analysis"],
-    "option_4": ["non_analytical_choice", "subjective_satisfaction"]
+    "option_1": ["budget_constraint_strict", "cost_minimization", "price_sensitivity"],
+    "option_2": ["cost_performance_focus", "budget_optimization", "value_comparison"],
+    "option_3": ["experience_investment", "quality_priority", "willingness_to_pay"],
+    "option_4": ["impulse_spending", "spending_flexibility", "non_analytical_choice"]
   },
   "Q9": {
-    "option_1": ["experience_investment", "quality_priority"],
-    "option_2": ["spending_flexibility", "impulse_spending"],
-    "option_3": ["budget_constraint_strict", "cost_minimization"],
-    "option_4": ["willingness_to_pay", "low_budget_concern"]
+    "option_1": ["official_info_reliance", "authority_trust", "risk_minimization"],
+    "option_2": ["multi_source_validation", "comparison_orientation", "plan_flexibility"],
+    "option_3": ["peer_review_reliance", "social_validation_need", "adaptive_social_style"],
+    "option_4": ["low_information_need", "intuition_based_choice", "on_site_adjustment"]
   },
   "Q10": {
-    "option_1": ["urban_preference", "accessibility_priority"],
-    "option_2": ["mixed_environment_preference", "balance_orientation"],
-    "option_3": ["nature_dominant_preference", "tranquility_seeking"],
-    "option_4": ["environment_neutrality", "context_acceptance"]
+    "option_1": ["urban_preference", "social_engagement_high", "interaction_seeking"],
+    "option_2": ["mixed_environment_preference", "balance_orientation", "situational_sociality"],
+    "option_3": ["nature_dominant_preference", "tranquility_seeking", "privacy_need"],
+    "option_4": ["environment_neutrality", "context_acceptance", "adaptive_response"]
   },
   "Q11": {
-    "option_1": ["social_engagement_high", "interaction_seeking"],
-    "option_2": ["situational_sociality", "moderate_interaction"],
-    "option_3": ["social_boundary_preference", "privacy_need"],
-    "option_4": ["solitude_preference", "interaction_avoidance"]
+    "option_1": ["plan_adherence", "logical_evaluation", "control_orientation"],
+    "option_2": ["relaxation_focus", "stress_reduction_goal", "subjective_satisfaction"],
+    "option_3": ["novelty_seeking", "experience_embrace", "experience_driven_choice"],
+    "option_4": ["experience_over_planning", "presence_focus", "affective_priority"]
   },
   "Q12": {
-    "option_1": ["memory_preservation_high", "share_orientation"],
-    "option_2": ["selective_memory", "curation_behavior"],
-    "option_3": ["casual_recording", "experience_first"],
-    "option_4": ["memory_internalization", "presence_focus"]
+    "option_1": ["advance_planning", "plan_adherence", "control_orientation"],
+    "option_2": ["efficiency_focus", "time_optimization", "logical_evaluation"],
+    "option_3": ["emotion_driven_decision", "intuition_reliance", "subjective_satisfaction"],
+    "option_4": ["spontaneity_level", "no_preplanning", "low_control_need"]
   }
 }
