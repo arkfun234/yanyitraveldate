@@ -1,0 +1,97 @@
+{
+  "source_file": "fukui_tourism_ai_recommendations_845users_20251121.csv (1).xlsx",
+  "sheet": "results-20251121-150851",
+  "record_count": 894,
+  "unique_user_count": 795,
+  "duplicate_user_id_count": 91,
+  "columns": [
+    "user_id",
+    "age_group",
+    "gender",
+    "companions",
+    "prefecture",
+    "region",
+    "travel_month",
+    "travel_request",
+    "recommendation_text",
+    "text_length",
+    "top_5_spots",
+    "spot_count",
+    "session_count",
+    "created_at"
+  ],
+  "distribution": {
+    "age_group": {
+      "50代": 312,
+      "60代": 271,
+      "40代": 140,
+      "70代": 81,
+      "30代": 59,
+      "20代": 25,
+      "10代": 4,
+      "80歳以上": 2
+    },
+    "gender": {
+      "女": 469,
+      "男": 418,
+      "無回答": 6,
+      "その他": 1
+    },
+    "companions": {
+      "夫婦2人": 386,
+      "自分ひとり": 158,
+      "小学生以下連れの家族": 92,
+      "友人": 80,
+      "中学生以上連れの家族": 49,
+      "親": 41,
+      "恋人": 38,
+      "その他家族": 34,
+      "職場の同僚": 15,
+      "学校関係（修学旅行・社会科見学等）": 1
+    },
+    "region": {
+      "関西": 281,
+      "中部": 267,
+      "県内": 157,
+      "関東": 155,
+      "その他": 34
+    },
+    "travel_month": {
+      "未定": 247,
+      "11月": 227,
+      "12月": 135,
+      "1月": 72,
+      "3月": 51,
+      "4月": 44,
+      "2月": 30,
+      "5月": 27,
+      "8月": 23,
+      "9月": 15,
+      "6月": 13,
+      "10月": 7,
+      "7月": 3
+    }
+  },
+  "top_spots": [
+    {"place": "越前そばの里 エリア", "count": 743},
+    {"place": "あわら湯のまち エリア", "count": 703},
+    {"place": "大本山 永平寺 エリア", "count": 641},
+    {"place": "福井駅前 エリア", "count": 436},
+    {"place": "越前大野城・城下町 エリア", "count": 339},
+    {"place": "かつやま恐竜の森 エリア", "count": 253},
+    {"place": "かずら橋 エリア", "count": 160},
+    {"place": "道の駅「南えちぜん山海里」 エリア", "count": 127},
+    {"place": "JR敦賀駅前 エリア", "count": 117},
+    {"place": "三国湊 エリア", "count": 84},
+    {"place": "一乗谷朝倉氏遺跡 エリア", "count": 77},
+    {"place": "道の駅「越前」 エリア", "count": 67},
+    {"place": "明通寺 エリア", "count": 64},
+    {"place": "福井駅前 エリア（宿泊施設）", "count": 64},
+    {"place": "金ヶ崎 エリア", "count": 46}
+  ],
+  "notes": [
+    "このデータは2025年度の福井県観光AI推薦ログとして利用する。",
+    "今年度データが未整備のため、旅行者傾向・推薦文生成・推薦評価の基礎データとして扱う。",
+    "user_idには重複があるため、必要に応じてcreated_atまたはsession_countを用いてセッション単位で扱う。"
+  ]
+}
