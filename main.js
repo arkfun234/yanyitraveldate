@@ -165,6 +165,7 @@ function showResult(clusterInfo, clusterIndex, recommendedSpots, recommendedHote
     clusterInfo ? clusterInfo.description.split("旅行中に訪れた")[0].trim() : "";
 
   renderProfileAnalysis(lastTagCounts, clusterInfo, clusterIndex);
+  renderProcessVisualization();
 
   const spotsList = document.getElementById("spotsList");
   spotsList.innerHTML = "";
@@ -333,6 +334,45 @@ function installResearchStyles() {
       flex-wrap: wrap;
       gap: 8px;
     }
+        .process-flow {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .process-step {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      background: #f8fafc;
+      border: 1px solid #e8edf5;
+      border-radius: 12px;
+      padding: 12px;
+    }
+    .process-no {
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      background: #eff6ff;
+      color: #2563eb;
+      font-size: 12px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .process-title {
+      font-size: 12.8px;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .process-desc {
+      font-size: 11.5px;
+      color: var(--text-sub);
+      line-height: 1.55;
+    }
+        
     .data-chip {
       background: #f8fafc;
       border: 1px solid #e8edf5;
@@ -342,7 +382,7 @@ function installResearchStyles() {
       color: var(--text);
     }
     @media (max-width: 600px) {
-      .profile-grid, .data-kpis { grid-template-columns: 1fr; }
+      .profile-grid, .data-kpis, .process-flow { grid-template-columns: 1fr; }
     }
   `;
   document.head.appendChild(style);
@@ -508,6 +548,95 @@ function renderProfileAnalysis(tagCounts, clusterInfo, clusterIndex) {
   `;
 
   insertSectionAfter(section, document.getElementById('clusterBadge'));
+}
+function renderProcessVisualization() {
+  const section = document.createElement('div');
+  section.id = 'processVisualizationSection';
+  section.className = 'section-card';
+
+  const steps = [
+    {
+      no: '01',
+      titleJa: '12問の回答取得',
+      titleZh: '获取12道问卷回答',
+      descJa: 'ユーザーの旅行スタイルに関する回答を取得します。',
+      descZh: '获取用户关于旅行风格的回答。'
+    },
+    {
+      no: '02',
+      titleJa: '心理・行動タグへの変換',
+      titleZh: '转换为心理/行为标签',
+      descJa: '各回答を旅行傾向を表す心理・行動タグに変換します。',
+      descZh: '将每个回答转换为表示旅行倾向的心理/行为标签。'
+    },
+    {
+      no: '03',
+      titleJa: '53次元特徴量への変換',
+      titleZh: '转换为53维特征量',
+      descJa: 'タグ重みを用いて、観光行動を表す特徴量に変換します。',
+      descZh: '利用标签权重，将其转换为表示观光行为的特征量。'
+    },
+    {
+      no: '04',
+      titleJa: '旅行者クラスターとの照合',
+      titleZh: '与旅行者Cluster进行匹配',
+      descJa: '特徴量ベクトルと既存クラスターを比較し、近い旅行者タイプを推定します。',
+      descZh: '比较特征向量与既有Cluster，推定相近的旅行者类型。'
+    },
+    {
+      no: '05',
+      titleJa: '推薦傾向データの参照',
+      titleZh: '参考推荐趋势数据',
+      descJa: '同行者・旅行時期別の過去推薦傾向を参照します。',
+      descZh: '参考同行者与旅行时期分类下的过去推荐趋势。'
+    },
+    {
+      no: '06',
+      titleJa: '推薦結果の提示',
+      titleZh: '输出推荐结果',
+      descJa: '推薦エリア、宿泊施設、AI旅行プランを提示します。',
+      descZh: '输出推荐区域、住宿设施与AI旅行计划。'
+    }
+  ];
+
+  const stepHtml = steps.map(step => `
+    <div class="process-step">
+      <div class="process-no">${step.no}</div>
+      <div class="process-content">
+        <div class="process-title">
+          ${langText(step.titleJa, step.titleZh)}
+        </div>
+        <div class="process-desc">
+          ${langText(step.descJa, step.descZh)}
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+  section.innerHTML = `
+    <div class="section-header">
+      <div class="section-icon blue">🔎</div>
+      <div>
+        <h2>${langText('推薦プロセス', '推荐流程')}</h2>
+        <p>${langText('本システムにおける推薦結果生成の流れ', '本系统生成推荐结果的处理流程')}</p>
+      </div>
+    </div>
+
+    <div class="section-body">
+      <div class="process-flow">
+        ${stepHtml}
+      </div>
+
+      <div class="profile-note">
+        ${langText(
+          '本システムでは、AIに直接推薦を任せるのではなく、回答データ、旅行者タイプ、過去推薦傾向、宿泊施設データを段階的に組み合わせて推薦結果を生成します。',
+          '本系统并不是直接把推荐交给AI生成，而是分阶段结合回答数据、旅行者类型、过去推荐趋势与住宿设施数据来生成推荐结果。'
+        )}
+      </div>
+    </div>
+  `;
+
+  insertSectionAfter(section, document.getElementById('profileAnalysisSection'));
 }
 
 function renderDataBasis() {
