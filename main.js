@@ -171,17 +171,25 @@ function showResult(clusterInfo, clusterIndex, recommendedSpots, recommendedHote
   spotsList.innerHTML = "";
   const rankClass = ["r1", "r2", "r3"];
 
-  recommendedSpots.slice(0, 3).forEach((spot, i) => {
-    spotsList.innerHTML += `
-      <div class="spot-item">
-        <div class="spot-rank ${rankClass[i]}">${i + 1}</div>
-        <div class="spot-main">
-          <div class="spot-name">${spot.place}</div>
-          <div class="spot-reason">${getSpotReason(spot)}</div>
-        </div>
-        <div class="spot-users">${spot.source === 'data' ? `📊 ${spot.score}pt` : '📌 クラスター'}</div>
-      </div>`;
-  });
+ recommendedSpots.slice(0, 3).forEach((spot, i) => {
+  const categoryLabel = window.currentLang === 'zh' ? spot.categoryZh : spot.categoryJa;
+  const sourceLabel =
+    spot.source === 'global' ? langText('全体傾向', '整体趋势') :
+    spot.source === 'global_mid' ? langText('中位候補', '中位候选') :
+    spot.source === 'cluster' ? langText('クラスター', 'Cluster') :
+    langText('条件別傾向', '条件趋势');
+
+  spotsList.innerHTML += `
+    <div class="spot-item">
+      <div class="spot-rank ${rankClass[i]}">${i + 1}</div>
+      <div class="spot-main">
+        <div class="spot-category">${categoryLabel}</div>
+        <div class="spot-name">${spot.place}</div>
+        <div class="spot-reason">${getSpotReason(spot)}</div>
+      </div>
+      <div class="spot-users">📊 ${sourceLabel}</div>
+    </div>`;
+});
 
   const hotelGrid = document.getElementById("hotelGrid");
   hotelGrid.innerHTML = "";
@@ -255,6 +263,17 @@ function installResearchStyles() {
   style.id = 'researchStyles';
   style.textContent = `
     .spot-main { flex: 1; min-width: 0; }
+        .spot-category {
+      display: inline-block;
+      font-size: 10.5px;
+      font-weight: 800;
+      color: #1d4ed8;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      padding: 2px 8px;
+      border-radius: 999px;
+      margin-bottom: 4px;
+    }
     .spot-reason, .hotel-reason {
       font-size: 11.5px;
       color: var(--text-sub);
@@ -393,25 +412,39 @@ function langText(ja, zh) {
 }
 
 function getSpotReason(spot) {
-  if (spot.source === 'data') {
+  if (spot.category === 'classic') {
     return langText(
-      '推薦理由：同行者・旅行時期別の過去推薦傾向に基づき、候補エリアとして抽出しました。',
-      '推荐理由：根据同行者与旅行时期分类下的过去推荐趋势，作为候选区域抽出。'
+      '推薦理由：2025年度の推薦ログにおいて高頻度に出現した、安定性の高い定番候補として抽出しました。',
+      '推荐理由：该地点在2025年度推荐日志中高频出现，作为稳定性较高的经典候选抽出。'
+    );
+  }
+
+  if (spot.category === 'personalized') {
+    return langText(
+      '推薦理由：同行者・旅行時期別の過去推薦傾向、および旅行者タイプとの対応に基づき抽出しました。',
+      '推荐理由：根据同行者、旅行时期分类下的过去推荐趋势，以及旅行者类型的匹配关系抽出。'
+    );
+  }
+
+  if (spot.category === 'discovery') {
+    return langText(
+      '推薦理由：高頻度スポットに偏りすぎないよう、旅行者クラスターとの関連性を考慮して補完候補として抽出しました。',
+      '推荐理由：为了避免过度偏向热门地点，结合旅行者 cluster 的相关性作为发现型候选抽出。'
     );
   }
 
   return langText(
-    '推薦理由：旅行者クラスター別の代表的な訪問エリアに基づき、補完候補として抽出しました。',
-    '推荐理由：根据旅行者 cluster 的代表性访问区域，作为补充候选抽出。'
+    '推薦理由：推薦データと旅行者タイプに基づき候補として抽出しました。',
+    '推荐理由：基于推荐数据与旅行者类型作为候选抽出。'
   );
 }
-
 function getHotelReason(hotel, recommendedSpots) {
   return langText(
     '宿泊理由：推薦エリアと同一または関連するQR設置エリアに登録された宿泊施設から抽出しました。',
     '住宿理由：从与推荐区域相同或相关的QR设置区域中登记的住宿设施里抽出。'
   );
 }
+
 
 function insertSectionAfter(newEl, afterEl) {
   if (!afterEl || !afterEl.parentNode) return;
@@ -698,6 +731,34 @@ function getRecommendedSpots(clusterInfo, companion, season, visitedPlaces) {
     ? visitedPlaces.split(/[、,，\s]+/).map(s => s.trim()).filter(Boolean)
     : [];
 
+  const isVisited = (place) => {
+    if (!visited.length) return false;
+    return visited.some(v => place.includes(v) || (v.length > 1 && place.includes(v)));
+  };
+
+  const used = new Set();
+
+  // 1. 定番推薦：2025年度推薦ログ全体で高頻度のスポット
+  const globalTop = (DATA_SUMMARY?.top_spots || [])
+    .filter(s => s && s.place && !isVisited(s.place));
+
+  let classic = null;
+  for (const s of globalTop) {
+    if (!used.has(s.place)) {
+      classic = {
+        place: s.place,
+        score: s.count || 0,
+        source: 'global',
+        category: 'classic',
+        categoryJa: '定番推薦',
+        categoryZh: '经典推荐'
+      };
+      used.add(s.place);
+      break;
+    }
+  }
+
+  // 2. 個性化推薦：同行者×季節、同行者、季節の推薦傾向
   const keys = [];
   if (companion && season) keys.push(`${companion}×${season}`);
   if (companion) keys.push(`companion:${companion}`);
@@ -707,34 +768,109 @@ function getRecommendedSpots(clusterInfo, companion, season, visitedPlaces) {
   keys.forEach((key, priority) => {
     const spots = SPOT_WEIGHTS[key] || [];
     spots.forEach(s => {
+      if (!s.place || isVisited(s.place)) return;
       if (!scoreMap[s.place]) scoreMap[s.place] = 0;
       scoreMap[s.place] += s.score * (3 - priority);
     });
   });
 
-  let sorted = Object.entries(scoreMap)
-    .map(([place, score]) => ({ place, score: Math.round(score), source: 'data' }))
+  const personalizedCandidates = Object.entries(scoreMap)
+    .map(([place, score]) => ({
+      place,
+      score: Math.round(score),
+      source: 'data',
+      category: 'personalized',
+      categoryJa: '個性化推薦',
+      categoryZh: '个性化推荐'
+    }))
     .sort((a, b) => b.score - a.score);
 
-  if (visited.length > 0) {
-    sorted = sorted.filter(s =>
-      !visited.some(v => s.place.includes(v) || (v.length > 1 && s.place.includes(v)))
-    );
+  let personalized = null;
+  for (const s of personalizedCandidates) {
+    if (!used.has(s.place)) {
+      personalized = s;
+      used.add(s.place);
+      break;
+    }
   }
 
-  const result = sorted.slice(0, 5);
+  // 3. 発見推薦：人気上位に偏りすぎないよう、クラスター候補や中位候補から補完
+  const discoveryCandidates = [];
 
-  if (result.length < 3 && clusterInfo && Array.isArray(clusterInfo.top_places)) {
+  // Cluster由来の候補
+  if (clusterInfo && Array.isArray(clusterInfo.top_places)) {
     clusterInfo.top_places.forEach(p => {
-      if (result.length >= 5) return;
-      const already = result.some(r => r.place === p.place);
-      if (!already) {
-        result.push({ place: p.place, score: p.users, source: 'cluster' });
-      }
+      if (!p.place || isVisited(p.place)) return;
+      discoveryCandidates.push({
+        place: p.place,
+        score: p.users || 0,
+        source: 'cluster',
+        category: 'discovery',
+        categoryJa: '発見推薦',
+        categoryZh: '发现推荐'
+      });
     });
   }
 
-  return result.slice(0, 5);
+  // 条件別推薦の下位候補も発見候補に使う
+  personalizedCandidates.slice(2, 8).forEach(p => {
+    discoveryCandidates.push({
+      ...p,
+      category: 'discovery',
+      categoryJa: '発見推薦',
+      categoryZh: '发现推荐'
+    });
+  });
+
+  // 全体高頻度の中位候補も発見候補に使う
+  globalTop.slice(5, 12).forEach(s => {
+    discoveryCandidates.push({
+      place: s.place,
+      score: s.count || 0,
+      source: 'global_mid',
+      category: 'discovery',
+      categoryJa: '発見推薦',
+      categoryZh: '发现推荐'
+    });
+  });
+
+  let discovery = null;
+  for (const s of discoveryCandidates) {
+    if (!used.has(s.place)) {
+      discovery = s;
+      used.add(s.place);
+      break;
+    }
+  }
+
+  // 兜底：如果某一类缺失，就从已有候选中补齐
+  const result = [];
+
+  if (classic) result.push(classic);
+  if (personalized) result.push(personalized);
+  if (discovery) result.push(discovery);
+
+  const fallbackCandidates = [
+    ...personalizedCandidates,
+    ...globalTop.map(s => ({
+      place: s.place,
+      score: s.count || 0,
+      source: 'global',
+      category: 'classic',
+      categoryJa: '定番推薦',
+      categoryZh: '经典推荐'
+    })),
+    ...discoveryCandidates
+  ];
+
+  for (const s of fallbackCandidates) {
+    if (result.length >= 3) break;
+    if (!s.place || used.has(s.place) || isVisited(s.place)) continue;
+    result.push(s);
+    used.add(s.place);
+  }
+
+  return result.slice(0, 3);
 }
 
 // ===== 7. 住宿匹配 =====
