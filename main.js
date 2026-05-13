@@ -152,6 +152,7 @@ document.addEventListener("DOMContentLoaded", () => {
 function showResult(clusterInfo, clusterIndex, recommendedSpots, recommendedHotels) {
   document.getElementById("quizSection").style.display = "none";
   document.getElementById("resultSection").style.display = "block";
+  document.body.classList.add("result-mode");
   window.scrollTo({ top: 0, behavior: "smooth" });
 
   const name = clusterInfo
@@ -211,6 +212,7 @@ function showResult(clusterInfo, clusterIndex, recommendedSpots, recommendedHote
   }
 
   renderDataBasis();
+  setupResultDashboardUI();
 
   const aiResult = document.getElementById("aiResult");
   aiResult.innerHTML = `<div class="ai-loading"><div class="spinner"></div><span>${
@@ -262,6 +264,406 @@ function installResearchStyles() {
   const style = document.createElement('style');
   style.id = 'researchStyles';
   style.textContent = `
+      /* ===== UI v2: Dashboard Layout + Tabs ===== */
+    body.result-mode main {
+      max-width: 1060px;
+      padding-top: 32px;
+    }
+
+    body.result-mode #resultSection {
+      animation: resultFadeIn 0.45s ease both;
+    }
+
+    .result-tabs {
+      position: sticky;
+      top: 58px;
+      z-index: 90;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin: 0 0 20px;
+      padding: 10px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.82);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      box-shadow: 0 12px 34px rgba(15, 23, 42, 0.10);
+    }
+
+    .result-tab {
+      border: none;
+      cursor: pointer;
+      border-radius: 14px;
+      padding: 12px 10px;
+      background: transparent;
+      color: #64748b;
+      font-size: 13px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      transition: all 0.22s ease;
+      white-space: nowrap;
+    }
+
+    .result-tab:hover {
+      background: #eff6ff;
+      color: #2563eb;
+      transform: translateY(-1px);
+    }
+
+    .result-tab.active {
+      color: white;
+      background: linear-gradient(135deg, #2563eb, #0ea5e9);
+      box-shadow: 0 8px 22px rgba(37, 99, 235, 0.30);
+    }
+
+    .tab-icon {
+      font-size: 15px;
+    }
+
+    .tab-hidden {
+      display: none !important;
+    }
+
+    .tab-active-section {
+      animation: tabContentIn 0.35s ease both;
+    }
+
+    @keyframes tabContentIn {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    body.result-mode .cluster-badge-card {
+      min-height: 170px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background:
+        radial-gradient(circle at 82% 20%, rgba(255,255,255,0.25), transparent 28%),
+        radial-gradient(circle at 12% 86%, rgba(14,165,233,0.28), transparent 30%),
+        linear-gradient(135deg, #0f172a 0%, #1d4ed8 48%, #0ea5e9 100%);
+      box-shadow: 0 20px 48px rgba(15, 23, 42, 0.25);
+      border: 1px solid rgba(255,255,255,0.22);
+    }
+
+    body.result-mode .cluster-badge-card h3 {
+      font-size: 26px;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+
+    body.result-mode .cluster-badge-card p {
+      max-width: 700px;
+      line-height: 1.75;
+    }
+
+    body.result-mode .section-card {
+      box-shadow: 0 14px 38px rgba(15, 23, 42, 0.08);
+      border: 1px solid #e8edf5;
+      transition: transform 0.22s ease, box-shadow 0.22s ease;
+    }
+
+    body.result-mode .section-card:hover {
+      box-shadow: 0 18px 48px rgba(15, 23, 42, 0.12);
+    }
+
+    body.result-mode #spotsList {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    body.result-mode #spotsList .spot-item {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      min-height: 230px;
+      padding: 18px;
+      border-radius: 20px;
+      background:
+        linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+      border: 1px solid #dbeafe;
+      box-shadow: 0 12px 30px rgba(37, 99, 235, 0.10);
+      transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+      overflow: hidden;
+    }
+
+    body.result-mode #spotsList .spot-item::before {
+      content: '';
+      position: absolute;
+      top: -42px;
+      right: -42px;
+      width: 118px;
+      height: 118px;
+      border-radius: 999px;
+      background: rgba(59, 130, 246, 0.08);
+    }
+
+    body.result-mode #spotsList .spot-item:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 18px 42px rgba(37, 99, 235, 0.18);
+      border-color: #93c5fd;
+    }
+
+    body.result-mode #spotsList .spot-rank {
+      width: 36px;
+      height: 36px;
+      border-radius: 13px;
+      margin-bottom: 12px;
+      z-index: 1;
+    }
+
+    body.result-mode #spotsList .spot-main {
+      z-index: 1;
+      width: 100%;
+    }
+
+    body.result-mode #spotsList .spot-category {
+      margin-bottom: 8px;
+    }
+
+    body.result-mode #spotsList .spot-name {
+      font-size: 15.5px;
+      font-weight: 850;
+      line-height: 1.45;
+      margin-bottom: 8px;
+    }
+
+    body.result-mode #spotsList .spot-reason {
+      font-size: 12px;
+      line-height: 1.7;
+      color: #475569;
+    }
+
+    body.result-mode #spotsList .spot-users {
+      margin-top: auto;
+      padding-top: 14px;
+      font-size: 11.5px;
+      font-weight: 800;
+      color: #2563eb;
+      z-index: 1;
+    }
+
+    body.result-mode .hotel-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    body.result-mode .hotel-card {
+      transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+    }
+
+    body.result-mode .hotel-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 14px 32px rgba(15, 23, 42, 0.12);
+      border-color: #bfdbfe;
+    }
+
+    @media (max-width: 860px) {
+      body.result-mode main {
+        max-width: 700px;
+      }
+
+      body.result-mode #spotsList {
+        grid-template-columns: 1fr;
+      }
+
+      body.result-mode .hotel-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .result-tabs {
+        grid-template-columns: repeat(2, 1fr);
+        top: 52px;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .result-tabs {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        padding: 8px;
+      }
+
+      .result-tab {
+        font-size: 12px;
+        padding: 10px 8px;
+      }
+
+      body.result-mode .cluster-badge-card h3 {
+        font-size: 22px;
+      }
+    }
+      /* ===== UI v2 Dashboard Enhancement ===== */
+    #resultSection {
+      animation: resultFadeIn 0.45s ease both;
+    }
+
+    @keyframes resultFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(14px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    #resultSection .section-card,
+    #resultSection .cluster-badge-card {
+      animation: cardRise 0.55s ease both;
+    }
+
+    #resultSection .section-card:nth-child(2) { animation-delay: 0.05s; }
+    #resultSection .section-card:nth-child(3) { animation-delay: 0.10s; }
+    #resultSection .section-card:nth-child(4) { animation-delay: 0.15s; }
+
+    @keyframes cardRise {
+      from {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    #clusterBadge {
+      background:
+        radial-gradient(circle at 85% 20%, rgba(255,255,255,0.22), transparent 28%),
+        linear-gradient(135deg, #0f172a 0%, #1d4ed8 48%, #0ea5e9 100%);
+      box-shadow: 0 18px 42px rgba(15, 23, 42, 0.25);
+      border: 1px solid rgba(255,255,255,0.24);
+    }
+
+    #clusterBadge h3 {
+      font-size: 24px;
+      letter-spacing: -0.02em;
+    }
+
+    #clusterBadge p {
+      max-width: 560px;
+      line-height: 1.7;
+    }
+
+    #spotsList {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    #spotsList .spot-item {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      min-height: 210px;
+      padding: 16px;
+      border-radius: 18px;
+      background:
+        linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+      border: 1px solid #dbeafe;
+      box-shadow: 0 10px 28px rgba(37, 99, 235, 0.10);
+      transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+      overflow: hidden;
+    }
+
+    #spotsList .spot-item::before {
+      content: '';
+      position: absolute;
+      top: -40px;
+      right: -40px;
+      width: 110px;
+      height: 110px;
+      border-radius: 999px;
+      background: rgba(59, 130, 246, 0.08);
+    }
+
+    #spotsList .spot-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 16px 38px rgba(37, 99, 235, 0.18);
+      border-color: #93c5fd;
+    }
+
+    #spotsList .spot-rank {
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      margin-bottom: 10px;
+      z-index: 1;
+    }
+
+    #spotsList .spot-main {
+      z-index: 1;
+      width: 100%;
+    }
+
+    #spotsList .spot-category {
+      margin-bottom: 8px;
+    }
+
+    #spotsList .spot-name {
+      font-size: 15px;
+      font-weight: 800;
+      line-height: 1.45;
+      margin-bottom: 8px;
+    }
+
+    #spotsList .spot-reason {
+      font-size: 12px;
+      line-height: 1.65;
+      color: #475569;
+    }
+
+    #spotsList .spot-users {
+      margin-top: auto;
+      padding-top: 12px;
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #2563eb;
+      z-index: 1;
+    }
+
+    .trait-bar {
+      width: 0;
+      animation: traitGrow 0.9s ease forwards;
+    }
+
+    @keyframes traitGrow {
+      from {
+        width: 0;
+      }
+    }
+
+    .hotel-card {
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .hotel-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 26px rgba(15, 23, 42, 0.10);
+    }
+
+    @media (max-width: 780px) {
+      #spotsList {
+        grid-template-columns: 1fr;
+      }
+
+      #spotsList .spot-item {
+        min-height: auto;
+      }
+    }
     .spot-main { flex: 1; min-width: 0; }
         .spot-category {
       display: inline-block;
@@ -723,6 +1125,93 @@ function renderDataBasis() {
 
   insertSectionAfter(section, document.getElementById('hotelSection'));
 }
+function setupResultDashboardUI() {
+  const clusterBadge = document.getElementById("clusterBadge");
+  const spotsSection = document.getElementById("spotsList")?.closest(".section-card");
+  const hotelSection = document.getElementById("hotelSection");
+  const aiSection = document.getElementById("aiResult")?.closest(".section-card");
+
+  if (spotsSection) spotsSection.id = "spotsSection";
+  if (aiSection) aiSection.id = "aiPlanSection";
+
+  const oldTabs = document.getElementById("resultTabs");
+  if (oldTabs) oldTabs.remove();
+
+  const tabs = document.createElement("div");
+  tabs.id = "resultTabs";
+  tabs.className = "result-tabs";
+
+  tabs.innerHTML = `
+    <button class="result-tab active" data-tab="overview">
+      <span class="tab-icon">🏆</span>
+      <span>${langText("おすすめ", "推荐结果")}</span>
+    </button>
+    <button class="result-tab" data-tab="profile">
+      <span class="tab-icon">🧭</span>
+      <span>${langText("旅行者画像", "旅行者画像")}</span>
+    </button>
+    <button class="result-tab" data-tab="data">
+      <span class="tab-icon">📊</span>
+      <span>${langText("データ根拠", "数据依据")}</span>
+    </button>
+    <button class="result-tab" data-tab="ai">
+      <span class="tab-icon">✨</span>
+      <span>${langText("AIプラン", "AI行程")}</span>
+    </button>
+  `;
+
+  if (clusterBadge && clusterBadge.parentNode) {
+    clusterBadge.parentNode.insertBefore(tabs, clusterBadge.nextSibling);
+  }
+
+  tabs.querySelectorAll(".result-tab").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const tab = btn.dataset.tab;
+      tabs.querySelectorAll(".result-tab").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      setResultTab(tab);
+    });
+  });
+
+  setResultTab("overview");
+}
+
+function setResultTab(tab) {
+  const sectionGroups = {
+    overview: ["spotsSection", "hotelSection"],
+    profile: ["profileAnalysisSection", "processVisualizationSection"],
+    data: ["dataBasisSection"],
+    ai: ["aiPlanSection"]
+  };
+
+  const allSectionIds = [
+    "spotsSection",
+    "hotelSection",
+    "profileAnalysisSection",
+    "processVisualizationSection",
+    "dataBasisSection",
+    "aiPlanSection"
+  ];
+
+  allSectionIds.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.classList.add("tab-hidden");
+    el.classList.remove("tab-active-section");
+  });
+
+  (sectionGroups[tab] || []).forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.classList.remove("tab-hidden");
+    el.classList.add("tab-active-section");
+  });
+
+  const tabs = document.getElementById("resultTabs");
+  if (tabs) {
+    tabs.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+}
 
 // ===== 6. 景点筛选逻辑 =====
 // 优先级：同行者×季节 > 同行者 > 季节 > Cluster Top3（兜底）
@@ -1082,7 +1571,10 @@ function restartQuiz() {
   if (quizSection) quizSection.style.display = 'block';
 
   document.getElementById('profileAnalysisSection')?.remove();
+  document.getElementById('processVisualizationSection')?.remove();
   document.getElementById('dataBasisSection')?.remove();
+  document.getElementById('resultTabs')?.remove();
+  document.body.classList.remove("result-mode");
 
   updateProgress();
   window.scrollTo({ top: 0, behavior: 'smooth' });
