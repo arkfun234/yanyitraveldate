@@ -7,6 +7,7 @@ let TAG_WEIGHTS   = {};
 let CLUSTERS      = {};
 let TOPPLACES     = null;
 let SPOT_WEIGHTS  = {};   // 同行者×季节 → 景点权重
+let SPOT_MASTER   = [];   // data/spot_master.json の具体スポット候補
 let HOTELS        = [];   // 住宿数据
 let DATA_SUMMARY  = null; // 2025年度AI推薦データの要約
 
@@ -23,15 +24,17 @@ Promise.all([
   fetch("cluster_profiles.json").then(r => r.json()),
   fetch("20_top_places.json").then(r => r.json()),
   fetch("spot_weights_by_companion_season.json").then(r => r.json()),
+  fetch("data/spot_master.json").then(r => r.json()),
   fetch("hotels.json").then(r => r.json()),
   fetch("data_summary_2025.json").then(r => r.ok ? r.json() : null).catch(() => null),
-]).then(([qData, mapData, weightsData, clusters, topPlacesData, spotWeights, hotels, dataSummary]) => {
+]).then(([qData, mapData, weightsData, clusters, topPlacesData, spotWeights, spotMaster, hotels, dataSummary]) => {
   QUESTIONS    = qData;
   Q2PSYCH      = mapData;
   TAG_WEIGHTS  = weightsData;
   CLUSTERS     = clusters;
   TOPPLACES    = topPlacesData;
   SPOT_WEIGHTS = spotWeights;
+  SPOT_MASTER  = Array.isArray(spotMaster?.spots) ? spotMaster.spots : [];
   HOTELS       = hotels;
   DATA_SUMMARY = dataSummary;
   installResearchStyles();
@@ -124,12 +127,12 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
-    const recommendedSpots = getRecommendedSpots(
+    const recommendedSpots = attachSelectedSpots(getRecommendedSpots(
       clusterInfo,
       window.userCompanion,
       window.userSeason,
       window.userVisitedPlaces
-    );
+    ));
 
     const recommendedHotels = getRecommendedHotels(recommendedSpots);
 
@@ -174,6 +177,14 @@ function showResult(clusterInfo, clusterIndex, recommendedSpots, recommendedHote
 
  recommendedSpots.slice(0, 3).forEach((spot, i) => {
   const categoryLabel = window.currentLang === 'zh' ? spot.categoryZh : spot.categoryJa;
+  const selectedSpot = spot.selectedSpot;
+  const spotName = selectedSpot?.name || spot.place;
+  const spotImage = selectedSpot?.image
+    ? `<img class="spot-image" src="${escapeHtml(selectedSpot.image)}" alt="${escapeHtml(spotName)}" loading="lazy">`
+    : "";
+  const spotLink = selectedSpot?.url
+    ? `<a class="spot-link" href="${escapeHtml(selectedSpot.url)}" target="_blank" rel="noopener noreferrer">${langText('公式・詳細ページ', '官方/详情页面')}</a>`
+    : "";
   const sourceLabel =
     spot.source === 'global' ? langText('全体傾向', '整体趋势') :
     spot.source === 'global_mid' ? langText('中位候補', '中位候选') :
@@ -182,11 +193,14 @@ function showResult(clusterInfo, clusterIndex, recommendedSpots, recommendedHote
 
   spotsList.innerHTML += `
     <div class="spot-item">
+      ${spotImage}
       <div class="spot-rank ${rankClass[i]}">${i + 1}</div>
       <div class="spot-main">
-        <div class="spot-category">${categoryLabel}</div>
-        <div class="spot-name">${spot.place}</div>
-        <div class="spot-reason">${getSpotReason(spot)}</div>
+        <div class="spot-category">${escapeHtml(categoryLabel)}</div>
+        <div class="spot-name">${escapeHtml(spotName)}</div>
+        <div class="spot-area">${langText('所属エリア', '所属区域')}：${escapeHtml(spot.place)}</div>
+        <div class="spot-reason">${escapeHtml(getSpotReason(spot))}</div>
+        ${spotLink}
       </div>
       <div class="spot-users">📊 ${sourceLabel}</div>
     </div>`;
@@ -620,10 +634,37 @@ function installResearchStyles() {
       margin-bottom: 8px;
     }
 
+    #spotsList .spot-image {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-bottom: 12px;
+      z-index: 1;
+      background: #e2e8f0;
+    }
+
+    #spotsList .spot-area {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #64748b;
+      margin-bottom: 8px;
+    }
+
     #spotsList .spot-reason {
       font-size: 12px;
       line-height: 1.65;
       color: #475569;
+    }
+
+    #spotsList .spot-link {
+      display: inline-flex;
+      margin-top: 10px;
+      font-size: 11.5px;
+      font-weight: 800;
+      color: #1d4ed8;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(29, 78, 216, 0.35);
     }
 
     #spotsList .spot-users {
@@ -1213,6 +1254,121 @@ function setResultTab(tab) {
   }
 }
 
+function escapeHtml(value) {
+  return String(value ?? '').replace(/[&<>"']/g, ch => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+  }[ch]));
+}
+
+function normalizeSpotName(value) {
+  return String(value || '')
+    .toLowerCase()
+    .replace(/（[^）]*）|\([^)]*\)/g, '')
+    .replace(/エリア/g, '')
+    .replace(/[ \t\r\n　・･\-ー−_]/g, '')
+    .replace(/(福井県|県|市|町|村|地区|地域|周辺|方面|観光|温泉郷|温泉)$/g, '')
+    .trim();
+}
+
+function spotTextFields(masterSpot) {
+  return [
+    masterSpot.name,
+    masterSpot.primary_area,
+    ...(masterSpot.areas || []),
+    ...(masterSpot.categories || []),
+    ...(masterSpot.purpose_tags || []),
+    ...(masterSpot.trait_tags || []),
+    masterSpot.description
+  ].filter(Boolean);
+}
+
+function toSelectedSpot(masterSpot) {
+  if (!masterSpot) return null;
+  const area = masterSpot.primary_area || (masterSpot.areas || []).join('、') || '';
+  return {
+    name: masterSpot.name || '',
+    area,
+    category: (masterSpot.categories || [])[0] || '',
+    image: masterSpot.image || '',
+    url: masterSpot.url || (masterSpot.website || [])[0] || '',
+    description: masterSpot.description || '',
+    lat: masterSpot.lat ?? null,
+    lng: masterSpot.lng ?? null,
+    purpose_tags: masterSpot.purpose_tags || [],
+    trait_tags: masterSpot.trait_tags || []
+  };
+}
+
+function findSpotFromMaster(areaRecommendation, usedSpotNames = new Set()) {
+  if (!Array.isArray(SPOT_MASTER) || SPOT_MASTER.length === 0 || !areaRecommendation?.place) {
+    return null;
+  }
+
+  const target = normalizeSpotName(areaRecommendation.place);
+  const availableSpots = SPOT_MASTER.filter(s => s?.name && !usedSpotNames.has(s.name));
+
+  const areaMatch = availableSpots.find(s => {
+    const areaNames = [s.primary_area, ...(s.areas || [])].filter(Boolean).map(normalizeSpotName);
+    return areaNames.some(area => area && target && (area === target || area.includes(target) || target.includes(area)));
+  });
+  if (areaMatch) return areaMatch;
+
+  const targetParts = String(areaRecommendation.place || '')
+    .split(/[、,・･\s　/]+/)
+    .map(normalizeSpotName)
+    .filter(part => part.length >= 2);
+
+  let best = null;
+  let bestScore = 0;
+  availableSpots.forEach(s => {
+    const fields = spotTextFields(s);
+    const normalizedFields = fields.map(normalizeSpotName).filter(Boolean);
+    let score = 0;
+
+    normalizedFields.forEach(field => {
+      if (!field || !target) return;
+      if (field === target) score += 10;
+      else if (field.includes(target) || target.includes(field)) score += 5;
+      targetParts.forEach(part => {
+        if (field.includes(part) || part.includes(field)) score += 2;
+      });
+    });
+
+    if (score > bestScore) {
+      bestScore = score;
+      best = s;
+    }
+  });
+
+  return bestScore > 0 ? best : null;
+}
+
+function attachSelectedSpots(recommendedSpots) {
+  const usedSpotNames = new Set();
+  return (recommendedSpots || []).map(areaRecommendation => {
+    const masterSpot = findSpotFromMaster(areaRecommendation, usedSpotNames);
+    const selectedSpot = toSelectedSpot(masterSpot) || {
+      name: areaRecommendation.place || '',
+      area: areaRecommendation.place || '',
+      category: '',
+      image: '',
+      url: '',
+      description: '',
+      lat: null,
+      lng: null,
+      purpose_tags: [],
+      trait_tags: []
+    };
+
+    if (selectedSpot.name) usedSpotNames.add(selectedSpot.name);
+    return { ...areaRecommendation, selectedSpot };
+  });
+}
+
 // ===== 6. 景点筛选逻辑 =====
 // 优先级：同行者×季节 > 同行者 > 季节 > Cluster Top3（兜底）
 function getRecommendedSpots(clusterInfo, companion, season, visitedPlaces) {
@@ -1500,7 +1656,10 @@ async function callGeminiAI(payload) {
     `■ 同行者: ${payload.companion || '未回答'}\n` +
     `■ 旅行時期: ${payload.season || '未定'}\n` +
     `■ recommended_spots（このリストの場所のみ使用すること）:\n` +
-    payload.recommended_spots.map((s, i) => `  ${i + 1}. ${s.place}`).join('\n') +
+    payload.recommended_spots.map((s, i) => {
+      const selectedName = s.selectedSpot?.name || s.place;
+      return `  ${i + 1}. ${selectedName}（所属エリア: ${s.place}）`;
+    }).join('\n') +
     `\n\n【提案フォーマット】\n` +
     `1) 2〜3文でユーザーの旅行スタイルを要約（タイプ名を含める）\n` +
     `2) recommended_spotsのTop3を使って、具体的な過ごし方を3つ箇条書きで提案\n` +
