@@ -1,0 +1,5677 @@
+{
+  "traits": [
+    "planning",
+    "relaxation",
+    "exploration_experience",
+    "food_value",
+    "nature",
+    "efficiency_touring"
+  ],
+  "source_files": [
+    "cluster_profiles.json",
+    "20_top_places.json"
+  ],
+  "normalization": "Field evidence is averaged per trait, then cluster-name and top-place boosts are added, planning and efficiency_touring are capped, and final trait scores are normalized to 0-1 within each cluster.",
+  "clusters": [
+    {
+      "cluster_id": "cluster_0",
+      "cluster_name": "悠然滞在型家族層",
+      "trait_scores": {
+        "planning": 0.0889,
+        "relaxation": 1.0,
+        "exploration_experience": 0.7981,
+        "food_value": 0.929,
+        "nature": 0.5393,
+        "efficiency_touring": 0.9326
+      },
+      "raw_trait_scores": {
+        "planning": 0.065972,
+        "relaxation": 0.042244,
+        "exploration_experience": 0.052365,
+        "food_value": 0.509571,
+        "nature": 0.040264,
+        "efficiency_touring": 0.692189
+      },
+      "final_raw_trait_scores": {
+        "planning": 0.065972,
+        "relaxation": 0.742244,
+        "exploration_experience": 0.592365,
+        "food_value": 0.689571,
+        "nature": 0.400264,
+        "efficiency_touring": 0.692189
+      },
+      "trait_boosts": {
+        "planning": {
+          "name_boost": 0,
+          "top_place_boost": 0.0,
+          "cap_applied": 0.0
+        },
+        "relaxation": {
+          "name_boost": 0.7,
+          "top_place_boost": 0.0,
+          "cap_applied": 0.0
+        },
+        "exploration_experience": {
+          "name_boost": 0,
+          "top_place_boost": 0.54,
+          "cap_applied": 0.0
+        },
+        "food_value": {
+          "name_boost": 0,
+          "top_place_boost": 0.18,
+          "cap_applied": 0.0
+        },
+        "nature": {
+          "name_boost": 0,
+          "top_place_boost": 0.36,
+          "cap_applied": 0.0
+        },
+        "efficiency_touring": {
+          "name_boost": 0,
+          "top_place_boost": 0.0,
+          "cap_applied": 0.0
+        }
+      },
+      "trait_source_fields": {
+        "planning": [
+          {
+            "field": "情報収集_友人・知人",
+            "value": 1.0,
+            "weight": 1.0,
+            "weighted_value": 1.0
+          },
+          {
+            "field": "交通手段_新幹線",
+            "value": 0.05412541254125412,
+            "weight": 1.0,
+            "weighted_value": 0.05412541254125412
+          },
+          {
+            "field": "情報収集_Instagram",
+            "value": 0.033663366336633666,
+            "weight": 1.0,
+            "weighted_value": 0.033663366336633666
+          },
+          {
+            "field": "情報収集_新聞・雑誌・ガイドブック",
+            "value": 0.026402640264026403,
+            "weight": 1.0,
+            "weighted_value": 0.026402640264026403
+          },
+          {
+            "field": "情報収集_TV・ラジオ番組やCM",
+            "value": 0.0231023102310231,
+            "weight": 1.0,
+            "weighted_value": 0.0231023102310231
+          },
+          {
+            "field": "情報収集_観光展・物産展",
+            "value": 0.02046204620462046,
+            "weight": 1.0,
+            "weighted_value": 0.02046204620462046
+          },
+          {
+            "field": "情報収集_観光パンフレット・ポスター",
+            "value": 0.01914191419141914,
+            "weight": 1.0,
+            "weighted_value": 0.01914191419141914
+          },
+          {
+            "field": "交通手段_在来線",
+            "value": 0.015841584158415842,
+            "weight": 1.0,
+            "weighted_value": 0.015841584158415842
+          }
+        ],
+        "relaxation": [
+          {
+            "field": "訪問目的_温泉や露天風呂",
+            "value": 0.07920792079207921,
+            "weight": 1.0,
+            "weighted_value": 0.07920792079207921
+          },
+          {
+            "field": "訪問目的_宿でのんびり過ごす",
+            "value": 0.047524752475247525,
+            "weight": 1.0,
+            "weighted_value": 0.047524752475247525
+          },
+          {
+            "field": "施設に求めるもの",
+            "value": 0.0,
+            "weight": 1.0,
+            "weighted_value": 0.0
+          }
+        ],
+        "exploration_experience": [
+          {
+            "field": "訪問目的_名所、旧跡の観光",
+            "value": 0.13333333333333333,
+            "weight": 1.0,
+            "weighted_value": 0.13333333333333333
+          },
+          {
+            "field": "訪問目的_まちあるき、都市散策",
+            "value": 0.08118811881188119,
+            "weight": 1.0,
+            "weighted_value": 0.08118811881188119
+          },
+          {
+            "field": "訪問目的_テーマパーク（遊園地、動物園、博物館など）",
+            "value": 0.048184818481848184,
+            "weight": 1.0,
+            "weighted_value": 0.048184818481848184
+          },
+          {
+            "field": "訪問目的_お祭りやイベントへの参加・見物",
+            "value": 0.031023102310231022,
+            "weight": 1.0,
+            "weighted_value": 0.031023102310231022
+          },
+          {
+            "field": "訪問目的_各種体験（手作り、果物狩りなど）",
+            "value": 0.010561056105610561,
+            "weight": 1.0,
+            "weighted_value": 0.010561056105610561
+          },
+          {
+            "field": "訪問目的_スポーツ観戦や芸能鑑賞（コンサート等）",
+            "value": 0.009900990099009901,
+            "weight": 1.0,
+            "weighted_value": 0.009900990099009901
+          }
+        ],
+        "food_value": [
+          {
+            "field": "県内消費額",
+            "value": 1.0,
+            "weight": 1.0,
+            "weighted_value": 1.0
+          },
+          {
+            "field": "訪問目的_地元の美味しいものを食べる",
+            "value": 0.4363036303630363,
+            "weight": 1.0,
+            "weighted_value": 0.4363036303630363
+          },
+          {
+            "field": "訪問目的_買い物、アウトレット",
+            "value": 0.0924092409240924,
+            "weight": 1.0,
+            "weighted_value": 0.0924092409240924
+          }
+        ],
+        "nature": [
+          {
+            "field": "訪問目的_花見や紅葉などの自然鑑賞",
+            "value": 0.04554455445544554,
+            "weight": 1.0,
+            "weighted_value": 0.04554455445544554
+          },
+          {
+            "field": "訪問目的_アウトドア（海水浴、釣り、登山など）",
+            "value": 0.03498349834983498,
+            "weight": 1.0,
+            "weighted_value": 0.03498349834983498
+          }
+        ],
+        "efficiency_touring": [
+          {
+            "field": "エリア訪問回数",
+            "value": 1.0,
+            "weight": 1.0,
+            "weighted_value": 1.0
+          },
+          {
+            "field": "交通手段_自家用車",
+            "value": 0.9650165016501651,
+            "weight": 1.0,
+            "weighted_value": 0.9650165016501651
+          },
+          {
+            "field": "訪問目的_ドライブ・ツーリング",
+            "value": 0.11155115511551156,
+            "weight": 1.0,
+            "weighted_value": 0.11155115511551156
+          }
+        ]
+      },
+      "top_behavior_features": [
+        {
+          "field": "NPS",
+          "value": 8.025742574257425
+        },
+        {
+          "field": "満足度",
+          "value": 4.32013201320132
+        },
+        {
+          "field": "満足度(商品・サービス)",
+          "value": 4.304950495049505
+        },
+        {
+          "field": "今後の来訪意向",
+          "value": 4.0
+        },
+        {
+          "field": "年代",
+          "value": 2.0
+        },
+        {
+          "field": "同行者",
+          "value": 2.0
+        },
+        {
+          "field": "満足度(商品・サービス)の理由",
+          "value": 1.0
+        },
+        {
+          "field": "満足度の理由",
+          "value": 1.0
+        },
+        {
+          "field": "県内消費額",
+          "value": 1.0
+        },
+        {
+          "field": "エリア訪問回数",
+          "value": 1.0
+        }
+      ],
+      "top_places": [
+        {
+          "rank": 1,
+          "place": "越前そばの里 エリア",
+          "users": 312
+        },
+        {
+          "rank": 2,
+          "place": "かつやま恐竜の森 エリア",
+          "users": 102
+        },
+        {
+          "rank": 3,
+          "place": "大本山 永平寺 エリア",
+          "users": 95
+        }
+      ]
+    },
+    {
+      "cluster_id": "cluster_1",
+      "cluster_name": "自然感受型家族層",
+      "trait_scores": {
+        "planning": 0.1125,
+        "relaxation": 0.1243,
+        "exploration_experience": 0.7472,
+        "food_value": 0.5452,
+        "nature": 1.0,
+        "efficiency_touring": 0.2837
+      },
+      "raw_trait_scores": {
+        "planning": 0.146856,
+        "relaxation": 0.162242,
+        "exploration_experience": 0.255162,
+        "food_value": 0.711504,
+        "nature": 0.095133,
+        "efficiency_touring": 0.370206
+      },
+      "final_raw_trait_scores": {
+        "planning": 0.146856,
+        "relaxation": 0.162242,
+        "exploration_experience": 0.975162,
+        "food_value": 0.711504,
+        "nature": 1.305133,
+        "efficiency_touring": 0.370206
+      },
+      "trait_boosts": {
+        "planning": {
+          "name_boost": 0,
+          "top_place_boost": 0.0,
+          "cap_applied": 0.0
+        },
+        "relaxation": {
+          "name_boost": 0,
+          "top_place_boost": 0.0,
+          "cap_applied": 0.0
+        },
+        "exploration_experience": {
+          "name_boost": 0,
+          "top_place_boost": 0.72,
+          "cap_applied": 0.0
+        },
+        "food_value": {
+          "name_boost": 0,
+          "top_place_boost": 0.0,
+          "cap_applied": 0.0
+        },
+        "nature": {
+          "name_boost": 0.85,
+          "top_place_boost": 0.36,
+          "cap_applied": 0.0
+        },
+        "efficiency_touring": {
+          "name_boost": 0,
+          "top_place_boost": 0.0,
+          "cap_applied": 0.0
+        }
+      },
+      "trait_source_fields": {
+        "planning": [
+          {
+            "field": "宿泊数（全体）",
+            "value": 1.0,
+            "weight": 1.0,
+            "weighted_value": 1.0
+          },
+          {
+            "field": "情報収集_インターネット・アプリ",
+            "value": 0.779646017699115,
+            "weight": 1.0,
+            "weighted_value": 0.779646017699115
+          },
+          {
+            "field": "情報収集_新聞・雑誌・ガイドブック",
+            "value": 0.24336283185840707,
+            "weight": 1.0,
+            "weighted_value": 0.24336283185840707
+          },
+          {
+            "field": "情報収集_観光パンフレット・ポスター",
+            "value": 0.15398230088495576,
+            "weight": 1.0,
+            "weighted_value": 0.15398230088495576
+          },
+          {
+            "field": "情報収集_Instagram",
+            "value": 0.13982300884955753,
+            "weight": 1.0,
+            "weighted_value": 0.13982300884955753
+          },
+          {
+            "field": "情報収集_観光展・物産展",
+            "value": 0.08495575221238938,
+            "weight": 1.0,
+            "weighted_value": 0.08495575221238938
+          },
+          {
+            "field": "情報収集_友人・知人",
+            "value": 0.07964601769911504,
+            "weight": 1.0,
+            "weighted_value": 0.07964601769911504
+          },
+          {
+            "field": "情報収集_TV・ラジオ番組やCM",
+            "value": 0.06991150442477877,
+            "weight": 1.0,
+            "weighted_value": 0.06991150442477877
+          }
+        ],
+        "relaxation": [
+          {
+            "field": "訪問目的_温泉や露天風呂",
+            "value": 0.3185840707964602,
+            "weight": 1.0,
+            "weighted_value": 0.3185840707964602
+          },
+          {
+            "field": "訪問目的_宿でのんびり過ごす",
+            "value": 0.168141592920354,
+            "weight": 1.0,
+            "weighted_value": 0.168141592920354
+          },
+          {
+            "field": "施設に求めるもの",
+            "value": 0.0,
+            "weight": 1.0,
+            "weighted_value": 0.0
+          }
+        ],
+        "exploration_experience": [
+          {
+            "field": "訪問目的_名所、旧跡の観光",
+            "value": 1.0,
+            "weight": 1.0,
+            "weighted_value": 1.0
+          },
+          {
+            "field": "訪問目的_まちあるき、都市散策",
+            "value": 0.2345132743362832,
+            "weight": 1.0,
+            "weighted_value": 0.2345132743362832
+          },
+          {
+            "field": "訪問目的_テーマパーク（遊園地、動物園、博物館など）",
+            "value": 0.22831858407079647,
+            "weight": 1.0,
+            "weighted_value": 0.22831858407079647
+          },
+          {
+            "field": "訪問目的_お祭りやイベントへの参加・見物",
+            "value": 0.034513274336283185,
+            "weight": 1.0,
+            "weighted_value": 0.034513274336283185
+          },
+          {
+            "field": "訪問目的_各種体験（手作り、果物狩りなど）",
+            "value": 0.024778761061946902,
+            "weight": 1.0,
+            "weighted_value": 0.024778761061946902
+          },
+          {
+            "field": "訪問目的_スポーツ観戦や芸能鑑賞（コンサート等）",
+            "value": 0.008849557522123894,
+            "weight": 1.0,
+            "weighted_value": 0.008849557522123894
+          }
+        ],
+        "food_value": [
+          {
+            "field": "県内消費額",
+            "value": 1.0,
+            "weight": 1.0,
+            "weighted_value": 1.0
+          },
+          {
+            "field": "訪問目的_地元の美味しいものを食べる",
+            "value": 0.9964601769911504,
+            "weight": 1.0,
+            "weighted_value": 0.9964601769911504
+          },
+          {
+            "field": "訪問目的_買い物、アウトレット",
+            "value": 0.13805309734513274,
+            "weight": 1.0,
+            "weighted_value": 0.13805309734513274
+          }
+        ],
+        "nature": [
+          {
+            "field": "訪問目的_花見や紅葉などの自然鑑賞",
+            "value": 0.1584070796460177,
+            "weight": 1.0,
+            "weighted_value": 0.1584070796460177
+          },
+          {
+            "field": "訪問目的_アウトドア（海水浴、釣り、登山など）",
+            "value": 0.03185840707964602,
+            "weight": 1.0,
+            "weighted_value": 0.03185840707964602
+          }
+        ],
+        "efficiency_touring": [
+          {
+            "field": "交通手段_自家用車",
+            "value": 0.9530973451327434,
+            "weight": 1.0,
+            "weighted_value": 0.9530973451327434
+          },
+          {
+            "field": "訪問目的_ドライブ・ツーリング",
+            "value": 0.15752212389380532,
+            "weight": 1.0,
+            "weighted_value": 0.15752212389380532
+          },
+          {
+            "field": "エリア訪問回数",
+            "value": 0.0,
+            "weight": 1.0,
+            "weighted_value": 0.0
+          }
+        ]
+      },
+      "top_behavior_features": [
+        {
+          "field": "NPS",
+          "value": 8.22212389380531
+        },
+        {
+          "field": "満足度",
+          "value": 4.409734513274336
+        },
+        {
+          "field": "満足度(商品・サービス)",
+          "value": 4.35929203539823
+        },
+        {
+          "field": "今後の来訪意向",
+          "value": 4.0
+        },
+        {
+          "field": "年代",
+          "value": 2.0
+        },
+        {
+          "field": "同行者",
+          "value": 2.0
+        },
+        {
+          "field": "満足度(商品・サービス)の理由",
+          "value": 1.0
+        },
+        {
+          "field": "満足度の理由",
+          "value": 1.0
+        },
+        {
+          "field": "宿泊数（全体）",
+          "value": 1.0
+        },
+        {
+          "field": "県内消費額",
+          "value": 1.0
+        }
+      ],
+      "top_places": [
+        {
+          "rank": 1,
+          "place": "大本山 永平寺 エリア",
+          "users": 170
+        },
+        {
+          "rank": 2,
+          "place": "かつやま恐竜の森 エリア",
+          "users": 100
+        },
+        {
+          "rank": 3,
+          "place": "越前大野城・城下町 エリア",
+          "users": 79
+        }
+      ]
+    },
+    {
+      "cluster_id": "cluster_2",
+      "cluster_name": "文化探究型家族層",
+      "trait_scores": {
+        "planning": 0.0826,
+        "relaxation": 0.1932,
+        "exploration_experience": 1.0,
+        "food_value": 0.1977,
+        "nature": 0.164,
+        "efficiency_touring": 0.0066
+      },
+      "raw_trait_scores": {
+        "planning": 0.197035,
+        "relaxation": 0.100893,
+        "exploration_experience": 0.145185,
+        "food_value": 0.471639,
+        "nature": 0.031137,
+        "efficiency_touring": 0.015689
+      },
+      "final_raw_trait_scores": {
+        "planning": 0.197035,
+        "relaxation": 0.460893,
+        "exploration_experience": 2.385185,
+        "food_value": 0.471639,
+        "nature": 0.391137,
+        "efficiency_touring": 0.015689
+      },
+      "trait_boosts": {
+        "planning": {
+          "name_boost": 0,
+          "top_place_boost": 0.0,
+          "cap_applied": 0.0
+        },
+        "relaxation": {
+          "name_boost": 0,
+          "top_place_boost": 0.36,
+          "cap_applied": 0.0
+        },
+        "exploration_experience": {
+          "name_boost": 1.7,
+          "top_place_boost": 0.54,
+          "cap_applied": 0.0
+        },
+        "food_value": {
+          "name_boost": 0,
+          "top_place_boost": 0.0,
+          "cap_applied": 0.0
+        },
+        "nature": {
+          "name_boost": 0,
+          "top_place_boost": 0.36,
+          "cap_applied": 0.0
+        },
+        "efficiency_touring": {
+          "name_boost": 0,
+          "top_place_boost": 0.0,
+          "cap_applied": 0.0
+        }
+      },
+      "trait_source_fields": {
+        "planning": [
+          {
+            "field": "宿泊数（全体）",
+            "value": 1.0,
+            "weight": 1.0,
+            "weighted_value": 1.0
+          },
+          {
+            "field": "交通手段_レンタカー",
+            "value": 1.0,
+            "weight": 1.0,
+            "weighted_value": 1.0
+          },
+          {
+            "field": "情報収集_インターネット・アプリ",
+            "value": 0.5438088341781318,
+            "weight": 1.0,
+            "weighted_value": 0.5438088341781318
+          },
+          {
+            "field": "交通手段_新幹線",
+            "value": 0.38522809558291093,
+            "weight": 1.0,
+            "weighted_value": 0.38522809558291093
+          },
+          {
+            "field": "情報収集_新聞・雑誌・ガイドブック",
+            "value": 0.2346125995655322,
+            "weight": 1.0,
+            "weighted_value": 0.2346125995655322
+          },
+          {
+            "field": "情報収集_友人・知人",
+            "value": 0.12816799420709632,
+            "weight": 1.0,
+            "weighted_value": 0.12816799420709632
+          },
+          {
+            "field": "情報収集_観光パンフレット・ポスター",
+            "value": 0.1165821868211441,
+            "weight": 1.0,
+            "weighted_value": 0.1165821868211441
+          },
+          {
+            "field": "情報収集_観光展・物産展",
+            "value": 0.0941346850108617,
+            "weight": 1.0,
+            "weighted_value": 0.0941346850108617
+          }
+        ],
+        "relaxation": [
+          {
+            "field": "訪問目的_温泉や露天風呂",
+            "value": 0.19623461259956554,
+            "weight": 1.0,
+            "weighted_value": 0.19623461259956554
+          },
+          {
+            "field": "訪問目的_宿でのんびり過ごす",
+            "value": 0.10644460535843592,
+            "weight": 1.0,
+            "weighted_value": 0.10644460535843592
+          },
+          {
+            "field": "施設に求めるもの",
+            "value": 0.0,
+            "weight": 1.0,
+            "weighted_value": 0.0
+          }
+        ],
+        "exploration_experience": [
+          {
+            "field": "訪問目的_名所、旧跡の観光",
+            "value": 0.388124547429399,
+            "weight": 1.0,
+            "weighted_value": 0.388124547429399
+          },
+          {
+            "field": "訪問目的_テーマパーク（遊園地、動物園、博物館など）",
+            "value": 0.33454018826937004,
+            "weight": 1.0,
+            "weighted_value": 0.33454018826937004
+          },
+          {
+            "field": "訪問目的_まちあるき、都市散策",
+            "value": 0.0941346850108617,
+            "weight": 1.0,
+            "weighted_value": 0.0941346850108617
+          },
+          {
+            "field": "訪問目的_お祭りやイベントへの参加・見物",
+            "value": 0.024619840695148443,
+            "weight": 1.0,
+            "weighted_value": 0.024619840695148443
+          },
+          {
+            "field": "訪問目的_各種体験（手作り、果物狩りなど）",
+            "value": 0.017378711078928313,
+            "weight": 1.0,
+            "weighted_value": 0.017378711078928313
+          },
+          {
+            "field": "訪問目的_スポーツ観戦や芸能鑑賞（コンサート等）",
+            "value": 0.012309920347574221,
+            "weight": 1.0,
+            "weighted_value": 0.012309920347574221
+          }
+        ],
+        "food_value": [
+          {
+            "field": "県内消費額",
+            "value": 1.0,
+            "weight": 1.0,
+            "weighted_value": 1.0
+          },
+          {
+            "field": "訪問目的_地元の美味しいものを食べる",
+            "value": 0.38233164373642287,
+            "weight": 1.0,
+            "weighted_value": 0.38233164373642287
+          },
+          {
+            "field": "訪問目的_買い物、アウトレット",
+            "value": 0.03258508327299059,
+            "weight": 1.0,
+            "weighted_value": 0.03258508327299059
+          }
+        ],
+        "nature": [
+          {
+            "field": "訪問目的_アウトドア（海水浴、釣り、登山など）",
+            "value": 0.03548153511947864,
+            "weight": 1.0,
+            "weighted_value": 0.03548153511947864
+          },
+          {
+            "field": "訪問目的_花見や紅葉などの自然鑑賞",
+            "value": 0.026792179580014484,
+            "weight": 1.0,
+            "weighted_value": 0.026792179580014484
+          }
+        ],
+        "efficiency_touring": [
+          {
+            "field": "訪問目的_ドライブ・ツーリング",
+            "value": 0.04489500362056481,
+            "weight": 1.0,
+            "weighted_value": 0.04489500362056481
+          },
+          {
+            "field": "交通手段_自家用車",
+            "value": 0.002172338884866039,
+            "weight": 1.0,
+            "weighted_value": 0.002172338884866039
+          },
+          {
+            "field": "エリア訪問回数",
+            "value": 0.0,
+            "weight": 1.0,
+            "weighted_value": 0.0
+          }
+        ]
+      },
+      "top_behavior_features": [
+        {
+          "field": "NPS",
+          "value": 8.13323678493845
+        },
+        {
+          "field": "満足度",
+          "value": 4.348298334540188
+        },
+        {
+          "field": "満足度(商品・サービス)",
+          "value": 4.284576393917451
+        },
+        {
+          "field": "今後の来訪意向",
+          "value": 3.0
+        },
+        {
+          "field": "年代",
+          "value": 2.0
+        },
+        {
+          "field": "同行者",
+          "value": 2.0
+        },
+        {
+          "field": "満足度(商品・サービス)の理由",
+          "value": 1.0
+        },
+        {
+          "field": "満足度の理由",
+          "value": 1.0
+        },
+        {
+          "field": "宿泊数（全体）",
+          "value": 1.0
+        },
+        {
+          "field": "県内消費額",
+          "value": 1.0
+        }
+      ],
+      "top_places": [
+        {
+          "rank": 1,
+          "place": "かつやま恐竜の森 エリア",
+          "users": 291
+        },
+        {
+          "rank": 2,
+          "place": "大本山 永平寺 エリア",
+          "users": 201
+        },
+        {
+          "rank": 3,
+          "place": "あわら湯のまち エリア",
+          "users": 93
+        }
+      ]
+    },
+    {
+      "cluster_id": "cluster_3",
+      "cluster_name": "温泉癒し型家族層",
+      "trait_scores": {
+        "planning": 0.0527,
+        "relaxation": 1.0,
+        "exploration_experience": 0.0947,
+        "food_value": 0.3191,
+        "nature": 0.0859,
+        "efficiency_touring": 0.1264
+      },
+      "raw_trait_scores": {
+        "planning": 0.138715,
+        "relaxation": 0.574554,
+        "exploration_experience": 0.069372,
+        "food_value": 0.660622,
+        "nature": 0.0462,
+        "efficiency_touring": 0.333045
+      },
+      "final_raw_trait_scores": {
+        "planning": 0.138715,
+        "relaxation": 2.634554,
+        "exploration_experience": 0.249372,
+        "food_value": 0.840622,
+        "nature": 0.2262,
+        "efficiency_touring": 0.333045
+      },
+      "trait_boosts": {
+        "planning": {
+          "name_boost": 0,
+          "top_place_boost": 0.0,
+          "cap_applied": 0.0
+        },
+        "relaxation": {
+          "name_boost": 1.7,
+          "top_place_boost": 0.36,
+          "cap_applied": 0.0
+        },
+        "exploration_experience": {
+          "name_boost": 0,
+          "top_place_boost": 0.18,
+          "cap_applied": 0.0
+        },
+        "food_value": {
+          "name_boost": 0,
+          "top_place_boost": 0.18,
+          "cap_applied": 0.0
+        },
+        "nature": {
+          "name_boost": 0,
+          "top_place_boost": 0.18,
+          "cap_applied": 0.0
+        },
+        "efficiency_touring": {
+          "name_boost": 0,
+          "top_place_boost": 0.0,
+          "cap_applied": 0.0
+        }
+      },
+      "trait_source_fields": {
+        "planning": [
+          {
+            "field": "宿泊数（全体）",
+            "value": 1.0,
+            "weight": 1.0,
+            "weighted_value": 1.0
+          },
+          {
+            "field": "情報収集_インターネット・アプリ",
+            "value": 0.29620034542314333,
+            "weight": 1.0,
+            "weighted_value": 0.29620034542314333
+          },
+          {
+            "field": "情報収集_観光展・物産展",
+            "value": 0.2219343696027634,
+            "weight": 1.0,
+            "weighted_value": 0.2219343696027634
+          },
+          {
+            "field": "情報収集_新聞・雑誌・ガイドブック",
+            "value": 0.21329879101899826,
+            "weight": 1.0,
+            "weighted_value": 0.21329879101899826
+          },
+          {
+            "field": "情報収集_観光パンフレット・ポスター",
+            "value": 0.17443868739205526,
+            "weight": 1.0,
+            "weighted_value": 0.17443868739205526
+          },
+          {
+            "field": "情報収集_友人・知人",
+            "value": 0.14939550949913644,
+            "weight": 1.0,
+            "weighted_value": 0.14939550949913644
+          },
+          {
+            "field": "情報収集_Instagram",
+            "value": 0.1459412780656304,
+            "weight": 1.0,
+            "weighted_value": 0.1459412780656304
+          },
+          {
+            "field": "情報収集_宿泊施設",
+            "value": 0.11917098445595854,
+            "weight": 1.0,
+            "weighted_value": 0.11917098445595854
+          }
+        ],
+        "relaxation": [
+          {
+            "field": "訪問目的_温泉や露天風呂",
+            "value": 0.9378238341968912,
+            "weight": 1.0,
+            "weighted_value": 0.9378238341968912
+          },
+          {
+            "field": "訪問目的_宿でのんびり過ごす",
+            "value": 0.7858376511226253,
+            "weight": 1.0,
+            "weighted_value": 0.7858376511226253
+          },
+          {
+            "field": "施設に求めるもの",
+            "value": 0.0,
+            "weight": 1.0,
+            "weighted_value": 0.0
+          }
+        ],
+        "exploration_experience": [
+          {
+            "field": "訪問目的_テーマパーク（遊園地、動物園、博物館など）",
+            "value": 0.18825561312607944,
+            "weight": 1.0,
+            "weighted_value": 0.18825561312607944
+          },
+          {
+            "field": "訪問目的_名所、旧跡の観光",
+            "value": 0.09844559585492228,
+            "weight": 1.0,
+            "weighted_value": 0.09844559585492228
+          },
+          {
+            "field": "訪問目的_まちあるき、都市散策",
+            "value": 0.07772020725388601,
+            "weight": 1.0,
+            "weighted_value": 0.07772020725388601
+          },
+          {
+            "field": "訪問目的_お祭りやイベントへの参加・見物",
+            "value": 0.02677029360967185,
+            "weight": 1.0,
+            "weighted_value": 0.02677029360967185
+          },
+          {
+            "field": "訪問目的_各種体験（手作り、果物狩りなど）",
+            "value": 0.022452504317789293,
+            "weight": 1.0,
+            "weighted_value": 0.022452504317789293
+          },
+          {
+            "field": "訪問目的_スポーツ観戦や芸能鑑賞（コンサート等）",
+            "value": 0.0025906735751295338,
+            "weight": 1.0,
+            "weighted_value": 0.0025906735751295338
+          }
+        ],
+        "food_value": [
+          {
+            "field": "県内消費額",
+            "value": 1.0,
+            "weight": 1.0,
+            "weighted_value": 1.0
+          },
+          {
+            "field": "訪問目的_地元の美味しいものを食べる",
+            "value": 0.8894645941278065,
+            "weight": 1.0,
+            "weighted_value": 0.8894645941278065
+          },
+          {
+            "field": "訪問目的_買い物、アウトレット",
+            "value": 0.0924006908462867,
+            "weight": 1.0,
+            "weighted_value": 0.0924006908462867
+          }
+        ],
+        "nature": [
+          {
+            "field": "訪問目的_花見や紅葉などの自然鑑賞",
+            "value": 0.06649395509499137,
+            "weight": 1.0,
+            "weighted_value": 0.06649395509499137
+          },
+          {
+            "field": "訪問目的_アウトドア（海水浴、釣り、登山など）",
+            "value": 0.025906735751295335,
+            "weight": 1.0,
+            "weighted_value": 0.025906735751295335
+          }
+        ],
+        "efficiency_touring": [
+          {
+            "field": "交通手段_自家用車",
+            "value": 0.9490500863557858,
+            "weight": 1.0,
+            "weighted_value": 0.9490500863557858
+          },
+          {
+            "field": "訪問目的_ドライブ・ツーリング",
+            "value": 0.05008635578583765,
+            "weight": 1.0,
+            "weighted_value": 0.05008635578583765
+          },
+          {
+            "field": "エリア訪問回数",
+            "value": 0.0,
+            "weight": 1.0,
+            "weighted_value": 0.0
+          }
+        ]
+      },
+      "top_behavior_features": [
+        {
+          "field": "NPS",
+          "value": 8.309153713298791
+        },
+        {
+          "field": "満足度",
+          "value": 4.4309153713298794
+        },
+        {
+          "field": "満足度(商品・サービス)",
+          "value": 4.398100172711572
+        },
+        {
+          "field": "今後の来訪意向",
+          "value": 4.0
+        },
+        {
+          "field": "年代",
+          "value": 2.0
+        },
+        {
+          "field": "同行者",
+          "value": 2.0
+        },
+        {
+          "field": "満足度(商品・サービス)の理由",
+          "value": 1.0
+        },
+        {
+          "field": "満足度の理由",
+          "value": 1.0
+        },
+        {
+          "field": "宿泊数（全体）",
+          "value": 1.0
+        },
+        {
+          "field": "県内消費額",
+          "value": 1.0
+        }
+      ],
+      "top_places": [
+        {
+          "rank": 1,
+          "place": "あわら湯のまち エリア",
+          "users": 314
+        },
+        {
+          "rank": 2,
+          "place": "越前そばの里 エリア",
+          "users": 123
+        },
+        {
+          "rank": 3,
+          "place": "かつやま恐竜の森 エリア",
+          "users": 102
+        }
+      ]
+    },
+    {
+      "cluster_id": "cluster_4",
+      "cluster_name": "郷土美食探索型家族層",
+      "trait_scores": {
+        "planning": 0.0628,
+        "relaxation": 0.2146,
+        "exploration_experience": 0.4825,
+        "food_value": 1.0,
+        "nature": 0.1061,
+        "efficiency_touring": 0.1676
+      },
+      "raw_trait_scores": {
+        "planning": 0.134205,
+        "relaxation": 0.098282,
+        "exploration_experience": 0.050337,
+        "food_value": 0.705371,
+        "nature": 0.046641,
+        "efficiency_touring": 0.357904
+      },
+      "final_raw_trait_scores": {
+        "planning": 0.134205,
+        "relaxation": 0.458282,
+        "exploration_experience": 1.030337,
+        "food_value": 2.135371,
+        "nature": 0.226641,
+        "efficiency_touring": 0.357904
+      },
+      "trait_boosts": {
+        "planning": {
+          "name_boost": 0,
+          "top_place_boost": 0.0,
+          "cap_applied": 0.0
+        },
+        "relaxation": {
+          "name_boost": 0,
+          "top_place_boost": 0.36,
+          "cap_applied": 0.0
+        },
+        "exploration_experience": {
+          "name_boost": 0.8,
+          "top_place_boost": 0.18,
+          "cap_applied": 0.0
+        },
+        "food_value": {
+          "name_boost": 1.25,
+          "top_place_boost": 0.18,
+          "cap_applied": 0.0
+        },
+        "nature": {
+          "name_boost": 0,
+          "top_place_boost": 0.18,
+          "cap_applied": 0.0
+        },
+        "efficiency_touring": {
+          "name_boost": 0,
+          "top_place_boost": 0.0,
+          "cap_applied": 0.0
+        }
+      },
+      "trait_source_fields": {
+        "planning": [
+          {
+            "field": "宿泊数（全体）",
+            "value": 1.0,
+            "weight": 1.0,
+            "weighted_value": 1.0
+          },
+          {
+            "field": "情報収集_インターネット・アプリ",
+            "value": 1.0,
+            "weight": 1.0,
+            "weighted_value": 1.0
+          },
+          {
+            "field": "情報収集_観光パンフレット・ポスター",
+            "value": 0.10306588388780169,
+            "weight": 1.0,
+            "weighted_value": 0.10306588388780169
+          },
+          {
+            "field": "情報収集_Instagram",
+            "value": 0.09523809523809523,
+            "weight": 1.0,
+            "weighted_value": 0.09523809523809523
+          },
+          {
+            "field": "情報収集_新聞・雑誌・ガイドブック",
+            "value": 0.07893020221787345,
+            "weight": 1.0,
+            "weighted_value": 0.07893020221787345
+          },
+          {
+            "field": "情報収集_友人・知人",
+            "value": 0.06262230919765166,
+            "weight": 1.0,
+            "weighted_value": 0.06262230919765166
+          },
+          {
+            "field": "情報収集_観光展・物産展",
+            "value": 0.051532941943900845,
+            "weight": 1.0,
+            "weighted_value": 0.051532941943900845
+          },
+          {
+            "field": "情報収集_TV・ラジオ番組やCM",
+            "value": 0.033920417482061316,
+            "weight": 1.0,
+            "weighted_value": 0.033920417482061316
+          }
+        ],
+        "relaxation": [
+          {
+            "field": "訪問目的_温泉や露天風呂",
+            "value": 0.1989562948467058,
+            "weight": 1.0,
+            "weighted_value": 0.1989562948467058
+          },
+          {
+            "field": "訪問目的_宿でのんびり過ごす",
+            "value": 0.0958904109589041,
+            "weight": 1.0,
+            "weighted_value": 0.0958904109589041
+          },
+          {
+            "field": "施設に求めるもの",
+            "value": 0.0,
+            "weight": 1.0,
+            "weighted_value": 0.0
+          }
+        ],
+        "exploration_experience": [
+          {
+            "field": "訪問目的_テーマパーク（遊園地、動物園、博物館など）",
+            "value": 0.17025440313111545,
+            "weight": 1.0,
+            "weighted_value": 0.17025440313111545
+          },
+          {
+            "field": "訪問目的_まちあるき、都市散策",
+            "value": 0.09001956947162426,
+            "weight": 1.0,
+            "weighted_value": 0.09001956947162426
+          },
+          {
+            "field": "訪問目的_お祭りやイベントへの参加・見物",
+            "value": 0.0228310502283105,
+            "weight": 1.0,
+            "weighted_value": 0.0228310502283105
+          },
+          {
+            "field": "訪問目的_各種体験（手作り、果物狩りなど）",
+            "value": 0.015003261578604044,
+            "weight": 1.0,
+            "weighted_value": 0.015003261578604044
+          },
+          {
+            "field": "訪問目的_スポーツ観戦や芸能鑑賞（コンサート等）",
+            "value": 0.003913894324853229,
+            "weight": 1.0,
+            "weighted_value": 0.003913894324853229
+          },
+          {
+            "field": "訪問目的_名所、旧跡の観光",
+            "value": 0.0,
+            "weight": 1.0,
+            "weighted_value": 0.0
+          }
+        ],
+        "food_value": [
+          {
+            "field": "県内消費額",
+            "value": 1.0,
+            "weight": 1.0,
+            "weighted_value": 1.0
+          },
+          {
+            "field": "訪問目的_地元の美味しいものを食べる",
+            "value": 1.0,
+            "weight": 1.0,
+            "weighted_value": 1.0
+          },
+          {
+            "field": "訪問目的_買い物、アウトレット",
+            "value": 0.11611219830397912,
+            "weight": 1.0,
+            "weighted_value": 0.11611219830397912
+          }
+        ],
+        "nature": [
+          {
+            "field": "訪問目的_花見や紅葉などの自然鑑賞",
+            "value": 0.05870841487279843,
+            "weight": 1.0,
+            "weighted_value": 0.05870841487279843
+          },
+          {
+            "field": "訪問目的_アウトドア（海水浴、釣り、登山など）",
+            "value": 0.03457273320287019,
+            "weight": 1.0,
+            "weighted_value": 0.03457273320287019
+          }
+        ],
+        "efficiency_touring": [
+          {
+            "field": "交通手段_自家用車",
+            "value": 0.9686888454011742,
+            "weight": 1.0,
+            "weighted_value": 0.9686888454011742
+          },
+          {
+            "field": "訪問目的_ドライブ・ツーリング",
+            "value": 0.1050228310502283,
+            "weight": 1.0,
+            "weighted_value": 0.1050228310502283
+          },
+          {
+            "field": "エリア訪問回数",
+            "value": 0.0,
+            "weight": 1.0,
+            "weighted_value": 0.0
+          }
+        ]
+      },
+      "top_behavior_features": [
+        {
+          "field": "NPS",
+          "value": 8.04044357469015
+        },
+        {
+          "field": "満足度",
+          "value": 4.324200913242009
+        },
+        {
+          "field": "満足度(商品・サービス)",
+          "value": 4.312459230267449
+        },
+        {
+          "field": "今後の来訪意向",
+          "value": 4.0
+        },
+        {
+          "field": "年代",
+          "value": 2.0
+        },
+        {
+          "field": "同行者",
+          "value": 2.0
+        },
+        {
+          "field": "満足度(商品・サービス)の理由",
+          "value": 1.0
+        },
+        {
+          "field": "満足度の理由",
+          "value": 1.0
+        },
+        {
+          "field": "宿泊数（全体）",
+          "value": 1.0
+        },
+        {
+          "field": "県内消費額",
+          "value": 1.0
+        }
+      ],
+      "top_places": [
+        {
+          "rank": 1,
+          "place": "越前そばの里 エリア",
+          "users": 221
+        },
+        {
+          "rank": 2,
+          "place": "かつやま恐竜の森 エリア",
+          "users": 138
+        },
+        {
+          "rank": 3,
+          "place": "あわら湯のまち エリア",
+          "users": 83
+        }
+      ]
+    },
+    {
+      "cluster_id": "cluster_5",
+      "cluster_name": "文化滞在型家族層",
+      "trait_scores": {
+        "planning": 0.0644,
+        "relaxation": 1.0,
+        "exploration_experience": 0.9687,
+        "food_value": 0.5646,
+        "nature": 0.2041,
+        "efficiency_touring": 0.3263
+      },
+      "raw_trait_scores": {
+        "planning": 0.072626,
+        "relaxation": 0.06843,
+        "exploration_experience": 0.063139,
+        "food_value": 0.457143,
+        "nature": 0.050265,
+        "efficiency_touring": 0.368254
+      },
+      "final_raw_trait_scores": {
+        "planning": 0.072626,
+        "relaxation": 1.12843,
+        "exploration_experience": 1.093139,
+        "food_value": 0.637143,
+        "nature": 0.230265,
+        "efficiency_touring": 0.368254
+      },
+      "trait_boosts": {
+        "planning": {
+          "name_boost": 0,
+          "top_place_boost": 0.0,
+          "cap_applied": 0.0
+        },
+        "relaxation": {
+          "name_boost": 0.7,
+          "top_place_boost": 0.36,
+          "cap_applied": 0.0
+        },
+        "exploration_experience": {
+          "name_boost": 0.85,
+          "top_place_boost": 0.18,
+          "cap_applied": 0.0
+        },
+        "food_value": {
+          "name_boost": 0,
+          "top_place_boost": 0.18,
+          "cap_applied": 0.0
+        },
+        "nature": {
+          "name_boost": 0,
+          "top_place_boost": 0.18,
+          "cap_applied": 0.0
+        },
+        "efficiency_touring": {
+          "name_boost": 0,
+          "top_place_boost": 0.0,
+          "cap_applied": 0.0
+        }
+      },
+      "trait_source_fields": {
+        "planning": [
+          {
+            "field": "情報収集_Instagram",
+            "value": 1.0,
+            "weight": 1.0,
+            "weighted_value": 1.0
+          },
+          {
+            "field": "情報収集_インターネット・アプリ",
+            "value": 0.08571428571428572,
+            "weight": 1.0,
+            "weighted_value": 0.08571428571428572
+          },
+          {
+            "field": "情報収集_Twitter",
+            "value": 0.04973544973544974,
+            "weight": 1.0,
+            "weighted_value": 0.04973544973544974
+          },
+          {
+            "field": "情報収集_観光展・物産展",
+            "value": 0.039153439153439155,
+            "weight": 1.0,
+            "weighted_value": 0.039153439153439155
+          },
+          {
+            "field": "情報収集_新聞・雑誌・ガイドブック",
+            "value": 0.03492063492063492,
+            "weight": 1.0,
+            "weighted_value": 0.03492063492063492
+          },
+          {
+            "field": "情報収集_Facebook",
+            "value": 0.027513227513227514,
+            "weight": 1.0,
+            "weighted_value": 0.027513227513227514
+          },
+          {
+            "field": "情報収集_観光パンフレット・ポスター",
+            "value": 0.02433862433862434,
+            "weight": 1.0,
+            "weighted_value": 0.02433862433862434
+          },
+          {
+            "field": "情報収集_友人・知人",
+            "value": 0.01904761904761905,
+            "weight": 1.0,
+            "weighted_value": 0.01904761904761905
+          }
+        ],
+        "relaxation": [
+          {
+            "field": "訪問目的_温泉や露天風呂",
+            "value": 0.11005291005291006,
+            "weight": 1.0,
+            "weighted_value": 0.11005291005291006
+          },
+          {
+            "field": "訪問目的_宿でのんびり過ごす",
+            "value": 0.09523809523809523,
+            "weight": 1.0,
+            "weighted_value": 0.09523809523809523
+          },
+          {
+            "field": "施設に求めるもの",
+            "value": 0.0,
+            "weight": 1.0,
+            "weighted_value": 0.0
+          }
+        ],
+        "exploration_experience": [
+          {
+            "field": "訪問目的_テーマパーク（遊園地、動物園、博物館など）",
+            "value": 0.12380952380952381,
+            "weight": 1.0,
+            "weighted_value": 0.12380952380952381
+          },
+          {
+            "field": "訪問目的_まちあるき、都市散策",
+            "value": 0.10793650793650794,
+            "weight": 1.0,
+            "weighted_value": 0.10793650793650794
+          },
+          {
+            "field": "訪問目的_名所、旧跡の観光",
+            "value": 0.08148148148148149,
+            "weight": 1.0,
+            "weighted_value": 0.08148148148148149
+          },
+          {
+            "field": "訪問目的_お祭りやイベントへの参加・見物",
+            "value": 0.042328042328042326,
+            "weight": 1.0,
+            "weighted_value": 0.042328042328042326
+          },
+          {
+            "field": "訪問目的_各種体験（手作り、果物狩りなど）",
+            "value": 0.014814814814814815,
+            "weight": 1.0,
+            "weighted_value": 0.014814814814814815
+          },
+          {
+            "field": "訪問目的_スポーツ観戦や芸能鑑賞（コンサート等）",
+            "value": 0.008465608465608466,
+            "weight": 1.0,
+            "weighted_value": 0.008465608465608466
+          }
+        ],
+        "food_value": [
+          {
+            "field": "県内消費額",
+            "value": 1.0,
+            "weight": 1.0,
+            "weighted_value": 1.0
+          },
+          {
+            "field": "訪問目的_地元の美味しいものを食べる",
+            "value": 0.2867724867724868,
+            "weight": 1.0,
+            "weighted_value": 0.2867724867724868
+          },
+          {
+            "field": "訪問目的_買い物、アウトレット",
+            "value": 0.08465608465608465,
+            "weight": 1.0,
+            "weighted_value": 0.08465608465608465
+          }
+        ],
+        "nature": [
+          {
+            "field": "訪問目的_花見や紅葉などの自然鑑賞",
+            "value": 0.05396825396825397,
+            "weight": 1.0,
+            "weighted_value": 0.05396825396825397
+          },
+          {
+            "field": "訪問目的_アウトドア（海水浴、釣り、登山など）",
+            "value": 0.04656084656084656,
+            "weight": 1.0,
+            "weighted_value": 0.04656084656084656
+          }
+        ],
+        "efficiency_touring": [
+          {
+            "field": "交通手段_自家用車",
+            "value": 0.9735449735449735,
+            "weight": 1.0,
+            "weighted_value": 0.9735449735449735
+          },
+          {
+            "field": "訪問目的_ドライブ・ツーリング",
+            "value": 0.1312169312169312,
+            "weight": 1.0,
+            "weighted_value": 0.1312169312169312
+          },
+          {
+            "field": "エリア訪問回数",
+            "value": 0.0,
+            "weight": 1.0,
+            "weighted_value": 0.0
+          }
+        ]
+      },
+      "top_behavior_features": [
+        {
+          "field": "NPS",
+          "value": 8.227513227513228
+        },
+        {
+          "field": "満足度",
+          "value": 4.3883597883597885
+        },
+        {
+          "field": "満足度(商品・サービス)",
+          "value": 4.365079365079365
+        },
+        {
+          "field": "今後の来訪意向",
+          "value": 4.0
+        },
+        {
+          "field": "年代",
+          "value": 2.0
+        },
+        {
+          "field": "同行者",
+          "value": 2.0
+        },
+        {
+          "field": "満足度(商品・サービス)の理由",
+          "value": 1.0
+        },
+        {
+          "field": "満足度の理由",
+          "value": 1.0
+        },
+        {
+          "field": "県内消費額",
+          "value": 1.0
+        },
+        {
+          "field": "情報収集_Instagram",
+          "value": 1.0
+        }
+      ],
+      "top_places": [
+        {
+          "rank": 1,
+          "place": "あわら湯のまち エリア",
+          "users": 124
+        },
+        {
+          "rank": 2,
+          "place": "かつやま恐竜の森 エリア",
+          "users": 98
+        },
+        {
+          "rank": 3,
+          "place": "越前そばの里 エリア",
+          "users": 52
+        }
+      ]
+    },
+    {
+      "cluster_id": "cluster_6",
+      "cluster_name": "リラックス重視型家族層",
+      "trait_scores": {
+        "planning": 0.0983,
+        "relaxation": 1.0,
+        "exploration_experience": 0.2953,
+        "food_value": 0.2886,
+        "nature": 0.3111,
+        "efficiency_touring": 0.5731
+      },
+      "raw_trait_scores": {
+        "planning": 0.118804,
+        "relaxation": 0.048567,
+        "exploration_experience": 0.176854,
+        "food_value": 0.348733,
+        "nature": 0.015991,
+        "efficiency_touring": 0.332623
+      },
+      "final_raw_trait_scores": {
+        "planning": 0.118804,
+        "relaxation": 1.208567,
+        "exploration_experience": 0.356854,
+        "food_value": 0.348733,
+        "nature": 0.375991,
+        "efficiency_touring": 0.692623
+      },
+      "trait_boosts": {
+        "planning": {
+          "name_boost": 0,
+          "top_place_boost": 0.0,
+          "cap_applied": 0.0
+        },
+        "relaxation": {
+          "name_boost": 0.8,
+          "top_place_boost": 0.36,
+          "cap_applied": 0.0
+        },
+        "exploration_experience": {
+          "name_boost": 0,
+          "top_place_boost": 0.18,
+          "cap_applied": 0.0
+        },
+        "food_value": {
+          "name_boost": 0,
+          "top_place_boost": 0.0,
+          "cap_applied": 0.0
+        },
+        "nature": {
+          "name_boost": 0,
+          "top_place_boost": 0.36,
+          "cap_applied": 0.0
+        },
+        "efficiency_touring": {
+          "name_boost": 0,
+          "top_place_boost": 0.36,
+          "cap_applied": 0.0
+        }
+      },
+      "trait_source_fields": {
+        "planning": [
+          {
+            "field": "宿泊数（全体）",
+            "value": 1.0,
+            "weight": 1.0,
+            "weighted_value": 1.0
+          },
+          {
+            "field": "情報収集_インターネット・アプリ",
+            "value": 0.550817341862118,
+            "weight": 1.0,
+            "weighted_value": 0.550817341862118
+          },
+          {
+            "field": "情報収集_友人・知人",
+            "value": 0.1378820184790334,
+            "weight": 1.0,
+            "weighted_value": 0.1378820184790334
+          },
+          {
+            "field": "情報収集_新聞・雑誌・ガイドブック",
+            "value": 0.12935323383084577,
+            "weight": 1.0,
+            "weighted_value": 0.12935323383084577
+          },
+          {
+            "field": "情報収集_観光パンフレット・ポスター",
+            "value": 0.09381663113006397,
+            "weight": 1.0,
+            "weighted_value": 0.09381663113006397
+          },
+          {
+            "field": "情報収集_Instagram",
+            "value": 0.0923951670220327,
+            "weight": 1.0,
+            "weighted_value": 0.0923951670220327
+          },
+          {
+            "field": "情報収集_TV・ラジオ番組やCM",
+            "value": 0.048329779673063254,
+            "weight": 1.0,
+            "weighted_value": 0.048329779673063254
+          },
+          {
+            "field": "情報収集_観光展・物産展",
+            "value": 0.04051172707889126,
+            "weight": 1.0,
+            "weighted_value": 0.04051172707889126
+          }
+        ],
+        "relaxation": [
+          {
+            "field": "訪問目的_温泉や露天風呂",
+            "value": 0.09879175550817342,
+            "weight": 1.0,
+            "weighted_value": 0.09879175550817342
+          },
+          {
+            "field": "訪問目的_宿でのんびり過ごす",
+            "value": 0.046908315565031986,
+            "weight": 1.0,
+            "weighted_value": 0.046908315565031986
+          },
+          {
+            "field": "施設に求めるもの",
+            "value": 0.0,
+            "weight": 1.0,
+            "weighted_value": 0.0
+          }
+        ],
+        "exploration_experience": [
+          {
+            "field": "訪問目的_テーマパーク（遊園地、動物園、博物館など）",
+            "value": 1.0,
+            "weight": 1.0,
+            "weighted_value": 1.0
+          },
+          {
+            "field": "訪問目的_名所、旧跡の観光",
+            "value": 0.022743425728500355,
+            "weight": 1.0,
+            "weighted_value": 0.022743425728500355
+          },
+          {
+            "field": "訪問目的_まちあるき、都市散策",
+            "value": 0.016346837242359632,
+            "weight": 1.0,
+            "weighted_value": 0.016346837242359632
+          },
+          {
+            "field": "訪問目的_お祭りやイベントへの参加・見物",
+            "value": 0.00923951670220327,
+            "weight": 1.0,
+            "weighted_value": 0.00923951670220327
+          },
+          {
+            "field": "訪問目的_各種体験（手作り、果物狩りなど）",
+            "value": 0.008528784648187633,
+            "weight": 1.0,
+            "weighted_value": 0.008528784648187633
+          },
+          {
+            "field": "訪問目的_スポーツ観戦や芸能鑑賞（コンサート等）",
+            "value": 0.0042643923240938165,
+            "weight": 1.0,
+            "weighted_value": 0.0042643923240938165
+          }
+        ],
+        "food_value": [
+          {
+            "field": "県内消費額",
+            "value": 1.0,
+            "weight": 1.0,
+            "weighted_value": 1.0
+          },
+          {
+            "field": "訪問目的_地元の美味しいものを食べる",
+            "value": 0.026297085998578537,
+            "weight": 1.0,
+            "weighted_value": 0.026297085998578537
+          },
+          {
+            "field": "訪問目的_買い物、アウトレット",
+            "value": 0.01990049751243781,
+            "weight": 1.0,
+            "weighted_value": 0.01990049751243781
+          }
+        ],
+        "nature": [
+          {
+            "field": "訪問目的_アウトドア（海水浴、釣り、登山など）",
+            "value": 0.01990049751243781,
+            "weight": 1.0,
+            "weighted_value": 0.01990049751243781
+          },
+          {
+            "field": "訪問目的_花見や紅葉などの自然鑑賞",
+            "value": 0.012082444918265814,
+            "weight": 1.0,
+            "weighted_value": 0.012082444918265814
+          }
+        ],
+        "efficiency_touring": [
+          {
+            "field": "交通手段_自家用車",
+            "value": 0.9779673063255153,
+            "weight": 1.0,
+            "weighted_value": 0.9779673063255153
+          },
+          {
+            "field": "訪問目的_ドライブ・ツーリング",
+            "value": 0.01990049751243781,
+            "weight": 1.0,
+            "weighted_value": 0.01990049751243781
+          },
+          {
+            "field": "エリア訪問回数",
+            "value": 0.0,
+            "weight": 1.0,
+            "weighted_value": 0.0
+          }
+        ]
+      },
+      "top_behavior_features": [
+        {
+          "field": "NPS",
+          "value": 8.296375266524521
+        },
+        {
+          "field": "満足度",
+          "value": 4.412935323383085
+        },
+        {
+          "field": "満足度(商品・サービス)",
+          "value": 4.380241648898365
+        },
+        {
+          "field": "今後の来訪意向",
+          "value": 4.0
+        },
+        {
+          "field": "年代",
+          "value": 2.0
+        },
+        {
+          "field": "同行者",
+          "value": 2.0
+        },
+        {
+          "field": "満足度(商品・サービス)の理由",
+          "value": 1.0
+        },
+        {
+          "field": "満足度の理由",
+          "value": 1.0
+        },
+        {
+          "field": "宿泊数（全体）",
+          "value": 1.0
+        },
+        {
+          "field": "県内消費額",
+          "value": 1.0
+        }
+      ],
+      "top_places": [
+        {
+          "rank": 1,
+          "place": "かつやま恐竜の森 エリア",
+          "users": 659
+        },
+        {
+          "rank": 2,
+          "place": "道の駅「恐竜渓谷かつやま」 エリア",
+          "users": 99
+        },
+        {
+          "rank": 3,
+          "place": "あわら湯のまち エリア",
+          "users": 76
+        }
+      ]
+    },
+    {
+      "cluster_id": "cluster_7",
+      "cluster_name": "安定滞在型家族層",
+      "trait_scores": {
+        "planning": 0.0667,
+        "relaxation": 0.9485,
+        "exploration_experience": 0.489,
+        "food_value": 0.4627,
+        "nature": 0.254,
+        "efficiency_touring": 1.0
+      },
+      "raw_trait_scores": {
+        "planning": 0.053382,
+        "relaxation": 0.058824,
+        "exploration_experience": 0.031194,
+        "food_value": 0.190137,
+        "nature": 0.023173,
+        "efficiency_touring": 1.338681
+      },
+      "final_raw_trait_scores": {
+        "planning": 0.053382,
+        "relaxation": 0.758824,
+        "exploration_experience": 0.391194,
+        "food_value": 0.370137,
+        "nature": 0.203173,
+        "efficiency_touring": 0.8
+      },
+      "trait_boosts": {
+        "planning": {
+          "name_boost": 0,
+          "top_place_boost": 0.0,
+          "cap_applied": 0.0
+        },
+        "relaxation": {
+          "name_boost": 0.7,
+          "top_place_boost": 0.0,
+          "cap_applied": 0.0
+        },
+        "exploration_experience": {
+          "name_boost": 0,
+          "top_place_boost": 0.36,
+          "cap_applied": 0.0
+        },
+        "food_value": {
+          "name_boost": 0,
+          "top_place_boost": 0.18,
+          "cap_applied": 0.0
+        },
+        "nature": {
+          "name_boost": 0,
+          "top_place_boost": 0.18,
+          "cap_applied": 0.0
+        },
+        "efficiency_touring": {
+          "name_boost": 0,
+          "top_place_boost": 0.36,
+          "cap_applied": 0.898681
+        }
+      },
+      "trait_source_fields": {
+        "planning": [
+          {
+            "field": "情報収集_インターネット・アプリ",
+            "value": 0.42424242424242425,
+            "weight": 1.0,
+            "weighted_value": 0.42424242424242425
+          },
+          {
+            "field": "情報収集_友人・知人",
+            "value": 0.14795008912655971,
+            "weight": 1.0,
+            "weighted_value": 0.14795008912655971
+          },
+          {
+            "field": "情報収集_Instagram",
+            "value": 0.10338680926916222,
+            "weight": 1.0,
+            "weighted_value": 0.10338680926916222
+          },
+          {
+            "field": "情報収集_観光パンフレット・ポスター",
+            "value": 0.0784313725490196,
+            "weight": 1.0,
+            "weighted_value": 0.0784313725490196
+          },
+          {
+            "field": "情報収集_観光連盟やDMOのHP",
+            "value": 0.05169340463458111,
+            "weight": 1.0,
+            "weighted_value": 0.05169340463458111
+          },
+          {
+            "field": "情報収集_TV・ラジオ番組やCM",
+            "value": 0.0481283422459893,
+            "weight": 1.0,
+            "weighted_value": 0.0481283422459893
+          },
+          {
+            "field": "情報収集_ブログ",
+            "value": 0.0427807486631016,
+            "weight": 1.0,
+            "weighted_value": 0.0427807486631016
+          },
+          {
+            "field": "情報収集_Facebook",
+            "value": 0.035650623885918005,
+            "weight": 1.0,
+            "weighted_value": 0.035650623885918005
+          }
+        ],
+        "relaxation": [
+          {
+            "field": "訪問目的_温泉や露天風呂",
+            "value": 0.1354723707664884,
+            "weight": 1.0,
+            "weighted_value": 0.1354723707664884
+          },
+          {
+            "field": "訪問目的_宿でのんびり過ごす",
+            "value": 0.040998217468805706,
+            "weight": 1.0,
+            "weighted_value": 0.040998217468805706
+          },
+          {
+            "field": "施設に求めるもの",
+            "value": 0.0,
+            "weight": 1.0,
+            "weighted_value": 0.0
+          }
+        ],
+        "exploration_experience": [
+          {
+            "field": "訪問目的_まちあるき、都市散策",
+            "value": 0.0659536541889483,
+            "weight": 1.0,
+            "weighted_value": 0.0659536541889483
+          },
+          {
+            "field": "訪問目的_お祭りやイベントへの参加・見物",
+            "value": 0.053475935828877004,
+            "weight": 1.0,
+            "weighted_value": 0.053475935828877004
+          },
+          {
+            "field": "訪問目的_名所、旧跡の観光",
+            "value": 0.030303030303030304,
+            "weight": 1.0,
+            "weighted_value": 0.030303030303030304
+          },
+          {
+            "field": "訪問目的_テーマパーク（遊園地、動物園、博物館など）",
+            "value": 0.0196078431372549,
+            "weight": 1.0,
+            "weighted_value": 0.0196078431372549
+          },
+          {
+            "field": "訪問目的_各種体験（手作り、果物狩りなど）",
+            "value": 0.0142602495543672,
+            "weight": 1.0,
+            "weighted_value": 0.0142602495543672
+          },
+          {
+            "field": "訪問目的_スポーツ観戦や芸能鑑賞（コンサート等）",
+            "value": 0.0035650623885918,
+            "weight": 1.0,
+            "weighted_value": 0.0035650623885918
+          }
+        ],
+        "food_value": [
+          {
+            "field": "訪問目的_買い物、アウトレット",
+            "value": 0.3226381461675579,
+            "weight": 1.0,
+            "weighted_value": 0.3226381461675579
+          },
+          {
+            "field": "訪問目的_地元の美味しいものを食べる",
+            "value": 0.24777183600713013,
+            "weight": 1.0,
+            "weighted_value": 0.24777183600713013
+          },
+          {
+            "field": "県内消費額",
+            "value": 0.0,
+            "weight": 1.0,
+            "weighted_value": 0.0
+          }
+        ],
+        "nature": [
+          {
+            "field": "訪問目的_花見や紅葉などの自然鑑賞",
+            "value": 0.030303030303030304,
+            "weight": 1.0,
+            "weighted_value": 0.030303030303030304
+          },
+          {
+            "field": "訪問目的_アウトドア（海水浴、釣り、登山など）",
+            "value": 0.016042780748663103,
+            "weight": 1.0,
+            "weighted_value": 0.016042780748663103
+          }
+        ],
+        "efficiency_touring": [
+          {
+            "field": "エリア訪問回数",
+            "value": 3.0,
+            "weight": 1.0,
+            "weighted_value": 3.0
+          },
+          {
+            "field": "交通手段_自家用車",
+            "value": 0.9714795008912656,
+            "weight": 1.0,
+            "weighted_value": 0.9714795008912656
+          },
+          {
+            "field": "訪問目的_ドライブ・ツーリング",
+            "value": 0.044563279857397504,
+            "weight": 1.0,
+            "weighted_value": 0.044563279857397504
+          }
+        ]
+      },
+      "top_behavior_features": [
+        {
+          "field": "NPS",
+          "value": 7.390374331550802
+        },
+        {
+          "field": "満足度",
+          "value": 4.044563279857398
+        },
+        {
+          "field": "満足度(商品・サービス)",
+          "value": 4.042780748663102
+        },
+        {
+          "field": "エリア訪問回数",
+          "value": 3.0
+        },
+        {
+          "field": "年代",
+          "value": 2.0
+        },
+        {
+          "field": "同行者",
+          "value": 2.0
+        },
+        {
+          "field": "満足度(商品・サービス)の理由",
+          "value": 1.0
+        },
+        {
+          "field": "満足度の理由",
+          "value": 1.0
+        },
+        {
+          "field": "交通手段_自家用車",
+          "value": 0.9714795008912656
+        },
+        {
+          "field": "交通手段_県外から訪れていない（福井県在住）",
+          "value": 0.9393939393939394
+        }
+      ],
+      "top_places": [
+        {
+          "rank": 1,
+          "place": "越前そばの里 エリア",
+          "users": 72
+        },
+        {
+          "rank": 2,
+          "place": "越前大野城・城下町 エリア",
+          "users": 32
+        },
+        {
+          "rank": 3,
+          "place": "道の駅「恐竜渓谷かつやま」 エリア",
+          "users": 29
+        }
+      ]
+    },
+    {
+      "cluster_id": "cluster_8",
+      "cluster_name": "穏やか体験型家族層",
+      "trait_scores": {
+        "planning": 0.0617,
+        "relaxation": 1.0,
+        "exploration_experience": 0.8605,
+        "food_value": 0.5726,
+        "nature": 0.3641,
+        "efficiency_touring": 0.7069
+      },
+      "raw_trait_scores": {
+        "planning": 0.069867,
+        "relaxation": 0.031625,
+        "exploration_experience": 0.043739,
+        "food_value": 0.467993,
+        "nature": 0.052028,
+        "efficiency_touring": 0.710788
+      },
+      "final_raw_trait_scores": {
+        "planning": 0.069867,
+        "relaxation": 1.131625,
+        "exploration_experience": 0.973739,
+        "food_value": 0.647993,
+        "nature": 0.412028,
+        "efficiency_touring": 0.8
+      },
+      "trait_boosts": {
+        "planning": {
+          "name_boost": 0,
+          "top_place_boost": 0.0,
+          "cap_applied": 0.0
+        },
+        "relaxation": {
+          "name_boost": 1.1,
+          "top_place_boost": 0.0,
+          "cap_applied": 0.0
+        },
+        "exploration_experience": {
+          "name_boost": 0.75,
+          "top_place_boost": 0.18,
+          "cap_applied": 0.0
+        },
+        "food_value": {
+          "name_boost": 0,
+          "top_place_boost": 0.18,
+          "cap_applied": 0.0
+        },
+        "nature": {
+          "name_boost": 0,
+          "top_place_boost": 0.36,
+          "cap_applied": 0.0
+        },
+        "efficiency_touring": {
+          "name_boost": 0,
+          "top_place_boost": 0.36,
+          "cap_applied": 0.270788
+        }
+      },
+      "trait_source_fields": {
+        "planning": [
+          {
+            "field": "情報収集_観光パンフレット・ポスター",
+            "value": 1.0,
+            "weight": 1.0,
+            "weighted_value": 1.0
+          },
+          {
+            "field": "情報収集_新聞・雑誌・ガイドブック",
+            "value": 0.07804131599081866,
+            "weight": 1.0,
+            "weighted_value": 0.07804131599081866
+          },
+          {
+            "field": "情報収集_観光展・物産展",
+            "value": 0.041315990818668706,
+            "weight": 1.0,
+            "weighted_value": 0.041315990818668706
+          },
+          {
+            "field": "情報収集_観光協会等の案内所",
+            "value": 0.03136954858454476,
+            "weight": 1.0,
+            "weighted_value": 0.03136954858454476
+          },
+          {
+            "field": "情報収集_TV・ラジオ番組やCM",
+            "value": 0.028309104820198928,
+            "weight": 1.0,
+            "weighted_value": 0.028309104820198928
+          },
+          {
+            "field": "交通手段_在来線",
+            "value": 0.02448355011476664,
+            "weight": 1.0,
+            "weighted_value": 0.02448355011476664
+          },
+          {
+            "field": "情報収集_観光連盟やDMOのHP",
+            "value": 0.02448355011476664,
+            "weight": 1.0,
+            "weighted_value": 0.02448355011476664
+          },
+          {
+            "field": "情報収集_インターネット・アプリ",
+            "value": 0.02448355011476664,
+            "weight": 1.0,
+            "weighted_value": 0.02448355011476664
+          }
+        ],
+        "relaxation": [
+          {
+            "field": "訪問目的_温泉や露天風呂",
+            "value": 0.060443764345830146,
+            "weight": 1.0,
+            "weighted_value": 0.060443764345830146
+          },
+          {
+            "field": "訪問目的_宿でのんびり過ごす",
+            "value": 0.03442999234889059,
+            "weight": 1.0,
+            "weighted_value": 0.03442999234889059
+          },
+          {
+            "field": "施設に求めるもの",
+            "value": 0.0,
+            "weight": 1.0,
+            "weighted_value": 0.0
+          }
+        ],
+        "exploration_experience": [
+          {
+            "field": "訪問目的_まちあるき、都市散策",
+            "value": 0.15378729915837797,
+            "weight": 1.0,
+            "weighted_value": 0.15378729915837797
+          },
+          {
+            "field": "訪問目的_お祭りやイベントへの参加・見物",
+            "value": 0.060443764345830146,
+            "weight": 1.0,
+            "weighted_value": 0.060443764345830146
+          },
+          {
+            "field": "訪問目的_テーマパーク（遊園地、動物園、博物館など）",
+            "value": 0.026778882938026015,
+            "weight": 1.0,
+            "weighted_value": 0.026778882938026015
+          },
+          {
+            "field": "訪問目的_各種体験（手作り、果物狩りなど）",
+            "value": 0.016067329762815608,
+            "weight": 1.0,
+            "weighted_value": 0.016067329762815608
+          },
+          {
+            "field": "訪問目的_スポーツ観戦や芸能鑑賞（コンサート等）",
+            "value": 0.005355776587605203,
+            "weight": 1.0,
+            "weighted_value": 0.005355776587605203
+          },
+          {
+            "field": "訪問目的_名所、旧跡の観光",
+            "value": 0.0,
+            "weight": 1.0,
+            "weighted_value": 0.0
+          }
+        ],
+        "food_value": [
+          {
+            "field": "県内消費額",
+            "value": 1.0,
+            "weight": 1.0,
+            "weighted_value": 1.0
+          },
+          {
+            "field": "訪問目的_地元の美味しいものを食べる",
+            "value": 0.26013771996939555,
+            "weight": 1.0,
+            "weighted_value": 0.26013771996939555
+          },
+          {
+            "field": "訪問目的_買い物、アウトレット",
+            "value": 0.14384085692425402,
+            "weight": 1.0,
+            "weighted_value": 0.14384085692425402
+          }
+        ],
+        "nature": [
+          {
+            "field": "訪問目的_花見や紅葉などの自然鑑賞",
+            "value": 0.0811017597551645,
+            "weight": 1.0,
+            "weighted_value": 0.0811017597551645
+          },
+          {
+            "field": "訪問目的_アウトドア（海水浴、釣り、登山など）",
+            "value": 0.022953328232593728,
+            "weight": 1.0,
+            "weighted_value": 0.022953328232593728
+          }
+        ],
+        "efficiency_touring": [
+          {
+            "field": "エリア訪問回数",
+            "value": 1.0,
+            "weight": 1.0,
+            "weighted_value": 1.0
+          },
+          {
+            "field": "交通手段_自家用車",
+            "value": 0.9227237949502678,
+            "weight": 1.0,
+            "weighted_value": 0.9227237949502678
+          },
+          {
+            "field": "訪問目的_ドライブ・ツーリング",
+            "value": 0.20964039785768937,
+            "weight": 1.0,
+            "weighted_value": 0.20964039785768937
+          }
+        ]
+      },
+      "top_behavior_features": [
+        {
+          "field": "NPS",
+          "value": 7.371078806426932
+        },
+        {
+          "field": "満足度",
+          "value": 4.0856924254016835
+        },
+        {
+          "field": "満足度(商品・サービス)",
+          "value": 4.069625095638868
+        },
+        {
+          "field": "今後の来訪意向",
+          "value": 4.0
+        },
+        {
+          "field": "年代",
+          "value": 2.0
+        },
+        {
+          "field": "同行者",
+          "value": 2.0
+        },
+        {
+          "field": "満足度(商品・サービス)の理由",
+          "value": 1.0
+        },
+        {
+          "field": "満足度の理由",
+          "value": 1.0
+        },
+        {
+          "field": "県内消費額",
+          "value": 1.0
+        },
+        {
+          "field": "エリア訪問回数",
+          "value": 1.0
+        }
+      ],
+      "top_places": [
+        {
+          "rank": 1,
+          "place": "越前そばの里 エリア",
+          "users": 73
+        },
+        {
+          "rank": 2,
+          "place": "越前大野城・城下町 エリア",
+          "users": 67
+        },
+        {
+          "rank": 3,
+          "place": "道の駅「南えちぜん山海里」 エリア",
+          "users": 60
+        }
+      ]
+    },
+    {
+      "cluster_id": "cluster_9",
+      "cluster_name": "自然優先型家族層",
+      "trait_scores": {
+        "planning": 0.0481,
+        "relaxation": 0.032,
+        "exploration_experience": 0.7374,
+        "food_value": 0.2799,
+        "nature": 1.0,
+        "efficiency_touring": 0.277
+      },
+      "raw_trait_scores": {
+        "planning": 0.059784,
+        "relaxation": 0.039792,
+        "exploration_experience": 0.195898,
+        "food_value": 0.34772,
+        "nature": 0.03214,
+        "efficiency_touring": 0.344047
+      },
+      "final_raw_trait_scores": {
+        "planning": 0.059784,
+        "relaxation": 0.039792,
+        "exploration_experience": 0.915898,
+        "food_value": 0.34772,
+        "nature": 1.24214,
+        "efficiency_touring": 0.344047
+      },
+      "trait_boosts": {
+        "planning": {
+          "name_boost": 0,
+          "top_place_boost": 0.0,
+          "cap_applied": 0.0
+        },
+        "relaxation": {
+          "name_boost": 0,
+          "top_place_boost": 0.0,
+          "cap_applied": 0.0
+        },
+        "exploration_experience": {
+          "name_boost": 0,
+          "top_place_boost": 0.72,
+          "cap_applied": 0.0
+        },
+        "food_value": {
+          "name_boost": 0,
+          "top_place_boost": 0.0,
+          "cap_applied": 0.0
+        },
+        "nature": {
+          "name_boost": 0.85,
+          "top_place_boost": 0.36,
+          "cap_applied": 0.0
+        },
+        "efficiency_touring": {
+          "name_boost": 0,
+          "top_place_boost": 0.0,
+          "cap_applied": 0.0
+        }
+      },
+      "trait_source_fields": {
+        "planning": [
+          {
+            "field": "情報収集_インターネット・アプリ",
+            "value": 0.7061524334251607,
+            "weight": 1.0,
+            "weighted_value": 0.7061524334251607
+          },
+          {
+            "field": "情報収集_新聞・雑誌・ガイドブック",
+            "value": 0.1919191919191919,
+            "weight": 1.0,
+            "weighted_value": 0.1919191919191919
+          },
+          {
+            "field": "情報収集_TV・ラジオ番組やCM",
+            "value": 0.051423324150596875,
+            "weight": 1.0,
+            "weighted_value": 0.051423324150596875
+          },
+          {
+            "field": "情報収集_観光協会等の案内所",
+            "value": 0.04224058769513315,
+            "weight": 1.0,
+            "weighted_value": 0.04224058769513315
+          },
+          {
+            "field": "情報収集_Instagram",
+            "value": 0.02662993572084481,
+            "weight": 1.0,
+            "weighted_value": 0.02662993572084481
+          },
+          {
+            "field": "情報収集_観光展・物産展",
+            "value": 0.021120293847566574,
+            "weight": 1.0,
+            "weighted_value": 0.021120293847566574
+          },
+          {
+            "field": "情報収集_観光連盟やDMOのHP",
+            "value": 0.020202020202020204,
+            "weight": 1.0,
+            "weighted_value": 0.020202020202020204
+          },
+          {
+            "field": "情報収集_宿泊施設",
+            "value": 0.01928374655647383,
+            "weight": 1.0,
+            "weighted_value": 0.01928374655647383
+          }
+        ],
+        "relaxation": [
+          {
+            "field": "訪問目的_温泉や露天風呂",
+            "value": 0.0881542699724518,
+            "weight": 1.0,
+            "weighted_value": 0.0881542699724518
+          },
+          {
+            "field": "訪問目的_宿でのんびり過ごす",
+            "value": 0.031221303948576674,
+            "weight": 1.0,
+            "weighted_value": 0.031221303948576674
+          },
+          {
+            "field": "施設に求めるもの",
+            "value": 0.0,
+            "weight": 1.0,
+            "weighted_value": 0.0
+          }
+        ],
+        "exploration_experience": [
+          {
+            "field": "訪問目的_名所、旧跡の観光",
+            "value": 1.0,
+            "weight": 1.0,
+            "weighted_value": 1.0
+          },
+          {
+            "field": "訪問目的_テーマパーク（遊園地、動物園、博物館など）",
+            "value": 0.1046831955922865,
+            "weight": 1.0,
+            "weighted_value": 0.1046831955922865
+          },
+          {
+            "field": "訪問目的_まちあるき、都市散策",
+            "value": 0.047750229568411386,
+            "weight": 1.0,
+            "weighted_value": 0.047750229568411386
+          },
+          {
+            "field": "訪問目的_お祭りやイベントへの参加・見物",
+            "value": 0.015610651974288337,
+            "weight": 1.0,
+            "weighted_value": 0.015610651974288337
+          },
+          {
+            "field": "訪問目的_各種体験（手作り、果物狩りなど）",
+            "value": 0.004591368227731864,
+            "weight": 1.0,
+            "weighted_value": 0.004591368227731864
+          },
+          {
+            "field": "訪問目的_スポーツ観戦や芸能鑑賞（コンサート等）",
+            "value": 0.0027548209366391185,
+            "weight": 1.0,
+            "weighted_value": 0.0027548209366391185
+          }
+        ],
+        "food_value": [
+          {
+            "field": "県内消費額",
+            "value": 1.0,
+            "weight": 1.0,
+            "weighted_value": 1.0
+          },
+          {
+            "field": "訪問目的_買い物、アウトレット",
+            "value": 0.04315886134067952,
+            "weight": 1.0,
+            "weighted_value": 0.04315886134067952
+          },
+          {
+            "field": "訪問目的_地元の美味しいものを食べる",
+            "value": 0.0,
+            "weight": 1.0,
+            "weighted_value": 0.0
+          }
+        ],
+        "nature": [
+          {
+            "field": "訪問目的_花見や紅葉などの自然鑑賞",
+            "value": 0.046831955922865015,
+            "weight": 1.0,
+            "weighted_value": 0.046831955922865015
+          },
+          {
+            "field": "訪問目的_アウトドア（海水浴、釣り、登山など）",
+            "value": 0.017447199265381085,
+            "weight": 1.0,
+            "weighted_value": 0.017447199265381085
+          }
+        ],
+        "efficiency_touring": [
+          {
+            "field": "交通手段_自家用車",
+            "value": 0.9770431588613406,
+            "weight": 1.0,
+            "weighted_value": 0.9770431588613406
+          },
+          {
+            "field": "訪問目的_ドライブ・ツーリング",
+            "value": 0.05509641873278237,
+            "weight": 1.0,
+            "weighted_value": 0.05509641873278237
+          },
+          {
+            "field": "エリア訪問回数",
+            "value": 0.0,
+            "weight": 1.0,
+            "weighted_value": 0.0
+          }
+        ]
+      },
+      "top_behavior_features": [
+        {
+          "field": "NPS",
+          "value": 7.8797061524334255
+        },
+        {
+          "field": "満足度",
+          "value": 4.274563820018366
+        },
+        {
+          "field": "満足度(商品・サービス)",
+          "value": 4.243342516069789
+        },
+        {
+          "field": "今後の来訪意向",
+          "value": 4.0
+        },
+        {
+          "field": "年代",
+          "value": 2.0
+        },
+        {
+          "field": "同行者",
+          "value": 2.0
+        },
+        {
+          "field": "満足度(商品・サービス)の理由",
+          "value": 1.0
+        },
+        {
+          "field": "満足度の理由",
+          "value": 1.0
+        },
+        {
+          "field": "県内消費額",
+          "value": 1.0
+        },
+        {
+          "field": "訪問目的_名所、旧跡の観光",
+          "value": 1.0
+        }
+      ],
+      "top_places": [
+        {
+          "rank": 1,
+          "place": "大本山 永平寺 エリア",
+          "users": 171
+        },
+        {
+          "rank": 2,
+          "place": "越前大野城・城下町 エリア",
+          "users": 90
+        },
+        {
+          "rank": 3,
+          "place": "かつやま恐竜の森 エリア",
+          "users": 80
+        }
+      ]
+    },
+    {
+      "cluster_id": "cluster_10",
+      "cluster_name": "穏やか美食型家族層",
+      "trait_scores": {
+        "planning": 0.0875,
+        "relaxation": 0.6805,
+        "exploration_experience": 0.5457,
+        "food_value": 1.0,
+        "nature": 0.2384,
+        "efficiency_touring": 0.1867
+      },
+      "raw_trait_scores": {
+        "planning": 0.150184,
+        "relaxation": 0.068471,
+        "exploration_experience": 0.217091,
+        "food_value": 0.467091,
+        "nature": 0.049363,
+        "efficiency_touring": 0.320594
+      },
+      "final_raw_trait_scores": {
+        "planning": 0.150184,
+        "relaxation": 1.168471,
+        "exploration_experience": 0.937091,
+        "food_value": 1.717091,
+        "nature": 0.409363,
+        "efficiency_touring": 0.320594
+      },
+      "trait_boosts": {
+        "planning": {
+          "name_boost": 0,
+          "top_place_boost": 0.0,
+          "cap_applied": 0.0
+        },
+        "relaxation": {
+          "name_boost": 1.1,
+          "top_place_boost": 0.0,
+          "cap_applied": 0.0
+        },
+        "exploration_experience": {
+          "name_boost": 0,
+          "top_place_boost": 0.72,
+          "cap_applied": 0.0
+        },
+        "food_value": {
+          "name_boost": 1.25,
+          "top_place_boost": 0.0,
+          "cap_applied": 0.0
+        },
+        "nature": {
+          "name_boost": 0,
+          "top_place_boost": 0.36,
+          "cap_applied": 0.0
+        },
+        "efficiency_touring": {
+          "name_boost": 0,
+          "top_place_boost": 0.0,
+          "cap_applied": 0.0
+        }
+      },
+      "trait_source_fields": {
+        "planning": [
+          {
+            "field": "宿泊数（全体）",
+            "value": 1.0,
+            "weight": 1.0,
+            "weighted_value": 1.0
+          },
+          {
+            "field": "情報収集_観光パンフレット・ポスター",
+            "value": 1.0,
+            "weight": 1.0,
+            "weighted_value": 1.0
+          },
+          {
+            "field": "情報収集_新聞・雑誌・ガイドブック",
+            "value": 0.16719745222929935,
+            "weight": 1.0,
+            "weighted_value": 0.16719745222929935
+          },
+          {
+            "field": "情報収集_インターネット・アプリ",
+            "value": 0.13535031847133758,
+            "weight": 1.0,
+            "weighted_value": 0.13535031847133758
+          },
+          {
+            "field": "情報収集_観光展・物産展",
+            "value": 0.12579617834394904,
+            "weight": 1.0,
+            "weighted_value": 0.12579617834394904
+          },
+          {
+            "field": "交通手段_旅行会社ツアーバス",
+            "value": 0.06369426751592357,
+            "weight": 1.0,
+            "weighted_value": 0.06369426751592357
+          },
+          {
+            "field": "情報収集_観光協会等の案内所",
+            "value": 0.06369426751592357,
+            "weight": 1.0,
+            "weighted_value": 0.06369426751592357
+          },
+          {
+            "field": "情報収集_Instagram",
+            "value": 0.06050955414012739,
+            "weight": 1.0,
+            "weighted_value": 0.06050955414012739
+          }
+        ],
+        "relaxation": [
+          {
+            "field": "訪問目的_温泉や露天風呂",
+            "value": 0.1624203821656051,
+            "weight": 1.0,
+            "weighted_value": 0.1624203821656051
+          },
+          {
+            "field": "訪問目的_宿でのんびり過ごす",
+            "value": 0.042993630573248405,
+            "weight": 1.0,
+            "weighted_value": 0.042993630573248405
+          },
+          {
+            "field": "施設に求めるもの",
+            "value": 0.0,
+            "weight": 1.0,
+            "weighted_value": 0.0
+          }
+        ],
+        "exploration_experience": [
+          {
+            "field": "訪問目的_名所、旧跡の観光",
+            "value": 1.0,
+            "weight": 1.0,
+            "weighted_value": 1.0
+          },
+          {
+            "field": "訪問目的_まちあるき、都市散策",
+            "value": 0.15445859872611464,
+            "weight": 1.0,
+            "weighted_value": 0.15445859872611464
+          },
+          {
+            "field": "訪問目的_テーマパーク（遊園地、動物園、博物館など）",
+            "value": 0.1035031847133758,
+            "weight": 1.0,
+            "weighted_value": 0.1035031847133758
+          },
+          {
+            "field": "訪問目的_お祭りやイベントへの参加・見物",
+            "value": 0.01751592356687898,
+            "weight": 1.0,
+            "weighted_value": 0.01751592356687898
+          },
+          {
+            "field": "訪問目的_各種体験（手作り、果物狩りなど）",
+            "value": 0.01751592356687898,
+            "weight": 1.0,
+            "weighted_value": 0.01751592356687898
+          },
+          {
+            "field": "訪問目的_スポーツ観戦や芸能鑑賞（コンサート等）",
+            "value": 0.009554140127388535,
+            "weight": 1.0,
+            "weighted_value": 0.009554140127388535
+          }
+        ],
+        "food_value": [
+          {
+            "field": "県内消費額",
+            "value": 1.0,
+            "weight": 1.0,
+            "weighted_value": 1.0
+          },
+          {
+            "field": "訪問目的_地元の美味しいものを食べる",
+            "value": 0.3089171974522293,
+            "weight": 1.0,
+            "weighted_value": 0.3089171974522293
+          },
+          {
+            "field": "訪問目的_買い物、アウトレット",
+            "value": 0.09235668789808917,
+            "weight": 1.0,
+            "weighted_value": 0.09235668789808917
+          }
+        ],
+        "nature": [
+          {
+            "field": "訪問目的_花見や紅葉などの自然鑑賞",
+            "value": 0.08917197452229299,
+            "weight": 1.0,
+            "weighted_value": 0.08917197452229299
+          },
+          {
+            "field": "訪問目的_アウトドア（海水浴、釣り、登山など）",
+            "value": 0.009554140127388535,
+            "weight": 1.0,
+            "weighted_value": 0.009554140127388535
+          }
+        ],
+        "efficiency_touring": [
+          {
+            "field": "交通手段_自家用車",
+            "value": 0.8742038216560509,
+            "weight": 1.0,
+            "weighted_value": 0.8742038216560509
+          },
+          {
+            "field": "訪問目的_ドライブ・ツーリング",
+            "value": 0.0875796178343949,
+            "weight": 1.0,
+            "weighted_value": 0.0875796178343949
+          },
+          {
+            "field": "エリア訪問回数",
+            "value": 0.0,
+            "weight": 1.0,
+            "weighted_value": 0.0
+          }
+        ]
+      },
+      "top_behavior_features": [
+        {
+          "field": "NPS",
+          "value": 7.937898089171974
+        },
+        {
+          "field": "満足度",
+          "value": 4.289808917197452
+        },
+        {
+          "field": "満足度(商品・サービス)",
+          "value": 4.25796178343949
+        },
+        {
+          "field": "今後の来訪意向",
+          "value": 4.0
+        },
+        {
+          "field": "年代",
+          "value": 2.0
+        },
+        {
+          "field": "同行者",
+          "value": 2.0
+        },
+        {
+          "field": "満足度(商品・サービス)の理由",
+          "value": 1.0
+        },
+        {
+          "field": "満足度の理由",
+          "value": 1.0
+        },
+        {
+          "field": "宿泊数（全体）",
+          "value": 1.0
+        },
+        {
+          "field": "県内消費額",
+          "value": 1.0
+        }
+      ],
+      "top_places": [
+        {
+          "rank": 1,
+          "place": "大本山 永平寺 エリア",
+          "users": 65
+        },
+        {
+          "rank": 2,
+          "place": "越前大野城・城下町 エリア",
+          "users": 57
+        },
+        {
+          "rank": 3,
+          "place": "かつやま恐竜の森 エリア",
+          "users": 39
+        }
+      ]
+    },
+    {
+      "cluster_id": "cluster_11",
+      "cluster_name": "一人静養型中年層",
+      "trait_scores": {
+        "planning": 0.1819,
+        "relaxation": 1.0,
+        "exploration_experience": 0.3702,
+        "food_value": 0.5186,
+        "nature": 0.2707,
+        "efficiency_touring": 0.24
+      },
+      "raw_trait_scores": {
+        "planning": 0.144878,
+        "relaxation": 0.046595,
+        "exploration_experience": 0.114919,
+        "food_value": 0.413082,
+        "nature": 0.035618,
+        "efficiency_touring": 0.011201
+      },
+      "final_raw_trait_scores": {
+        "planning": 0.144878,
+        "relaxation": 0.796595,
+        "exploration_experience": 0.294919,
+        "food_value": 0.413082,
+        "nature": 0.215618,
+        "efficiency_touring": 0.191201
+      },
+      "trait_boosts": {
+        "planning": {
+          "name_boost": 0,
+          "top_place_boost": 0.0,
+          "cap_applied": 0.0
+        },
+        "relaxation": {
+          "name_boost": 0.75,
+          "top_place_boost": 0.0,
+          "cap_applied": 0.0
+        },
+        "exploration_experience": {
+          "name_boost": 0,
+          "top_place_boost": 0.18,
+          "cap_applied": 0.0
+        },
+        "food_value": {
+          "name_boost": 0,
+          "top_place_boost": 0.0,
+          "cap_applied": 0.0
+        },
+        "nature": {
+          "name_boost": 0,
+          "top_place_boost": 0.18,
+          "cap_applied": 0.0
+        },
+        "efficiency_touring": {
+          "name_boost": 0,
+          "top_place_boost": 0.18,
+          "cap_applied": 0.0
+        }
+      },
+      "trait_source_fields": {
+        "planning": [
+          {
+            "field": "宿泊数（全体）",
+            "value": 1.0,
+            "weight": 1.0,
+            "weighted_value": 1.0
+          },
+          {
+            "field": "交通手段_在来線",
+            "value": 0.4327956989247312,
+            "weight": 1.0,
+            "weighted_value": 0.4327956989247312
+          },
+          {
+            "field": "交通手段_旅行会社ツアーバス",
+            "value": 0.28225806451612906,
+            "weight": 1.0,
+            "weighted_value": 0.28225806451612906
+          },
+          {
+            "field": "情報収集_観光協会等の案内所",
+            "value": 0.22446236559139784,
+            "weight": 1.0,
+            "weighted_value": 0.22446236559139784
+          },
+          {
+            "field": "情報収集_新聞・雑誌・ガイドブック",
+            "value": 0.13440860215053763,
+            "weight": 1.0,
+            "weighted_value": 0.13440860215053763
+          },
+          {
+            "field": "情報収集_観光パンフレット・ポスター",
+            "value": 0.13172043010752688,
+            "weight": 1.0,
+            "weighted_value": 0.13172043010752688
+          },
+          {
+            "field": "情報収集_友人・知人",
+            "value": 0.09946236559139784,
+            "weight": 1.0,
+            "weighted_value": 0.09946236559139784
+          },
+          {
+            "field": "情報収集_観光連盟やDMOのHP",
+            "value": 0.08870967741935484,
+            "weight": 1.0,
+            "weighted_value": 0.08870967741935484
+          }
+        ],
+        "relaxation": [
+          {
+            "field": "訪問目的_温泉や露天風呂",
+            "value": 0.09946236559139784,
+            "weight": 1.0,
+            "weighted_value": 0.09946236559139784
+          },
+          {
+            "field": "訪問目的_宿でのんびり過ごす",
+            "value": 0.04032258064516129,
+            "weight": 1.0,
+            "weighted_value": 0.04032258064516129
+          },
+          {
+            "field": "施設に求めるもの",
+            "value": 0.0,
+            "weight": 1.0,
+            "weighted_value": 0.0
+          }
+        ],
+        "exploration_experience": [
+          {
+            "field": "訪問目的_名所、旧跡の観光",
+            "value": 0.29435483870967744,
+            "weight": 1.0,
+            "weighted_value": 0.29435483870967744
+          },
+          {
+            "field": "訪問目的_まちあるき、都市散策",
+            "value": 0.24596774193548387,
+            "weight": 1.0,
+            "weighted_value": 0.24596774193548387
+          },
+          {
+            "field": "訪問目的_テーマパーク（遊園地、動物園、博物館など）",
+            "value": 0.08870967741935484,
+            "weight": 1.0,
+            "weighted_value": 0.08870967741935484
+          },
+          {
+            "field": "訪問目的_お祭りやイベントへの参加・見物",
+            "value": 0.030913978494623656,
+            "weight": 1.0,
+            "weighted_value": 0.030913978494623656
+          },
+          {
+            "field": "訪問目的_各種体験（手作り、果物狩りなど）",
+            "value": 0.01747311827956989,
+            "weight": 1.0,
+            "weighted_value": 0.01747311827956989
+          },
+          {
+            "field": "訪問目的_スポーツ観戦や芸能鑑賞（コンサート等）",
+            "value": 0.012096774193548387,
+            "weight": 1.0,
+            "weighted_value": 0.012096774193548387
+          }
+        ],
+        "food_value": [
+          {
+            "field": "県内消費額",
+            "value": 1.0,
+            "weight": 1.0,
+            "weighted_value": 1.0
+          },
+          {
+            "field": "訪問目的_地元の美味しいものを食べる",
+            "value": 0.21370967741935484,
+            "weight": 1.0,
+            "weighted_value": 0.21370967741935484
+          },
+          {
+            "field": "訪問目的_買い物、アウトレット",
+            "value": 0.025537634408602152,
+            "weight": 1.0,
+            "weighted_value": 0.025537634408602152
+          }
+        ],
+        "nature": [
+          {
+            "field": "訪問目的_花見や紅葉などの自然鑑賞",
+            "value": 0.06182795698924731,
+            "weight": 1.0,
+            "weighted_value": 0.06182795698924731
+          },
+          {
+            "field": "訪問目的_アウトドア（海水浴、釣り、登山など）",
+            "value": 0.009408602150537635,
+            "weight": 1.0,
+            "weighted_value": 0.009408602150537635
+          }
+        ],
+        "efficiency_touring": [
+          {
+            "field": "訪問目的_ドライブ・ツーリング",
+            "value": 0.03225806451612903,
+            "weight": 1.0,
+            "weighted_value": 0.03225806451612903
+          },
+          {
+            "field": "交通手段_自家用車",
+            "value": 0.0013440860215053765,
+            "weight": 1.0,
+            "weighted_value": 0.0013440860215053765
+          },
+          {
+            "field": "エリア訪問回数",
+            "value": 0.0,
+            "weight": 1.0,
+            "weighted_value": 0.0
+          }
+        ]
+      },
+      "top_behavior_features": [
+        {
+          "field": "NPS",
+          "value": 7.814516129032258
+        },
+        {
+          "field": "満足度",
+          "value": 4.172043010752688
+        },
+        {
+          "field": "満足度(商品・サービス)",
+          "value": 4.143817204301075
+        },
+        {
+          "field": "今後の来訪意向",
+          "value": 4.0
+        },
+        {
+          "field": "年代",
+          "value": 2.0
+        },
+        {
+          "field": "満足度(商品・サービス)の理由",
+          "value": 1.0
+        },
+        {
+          "field": "満足度の理由",
+          "value": 1.0
+        },
+        {
+          "field": "宿泊数（全体）",
+          "value": 1.0
+        },
+        {
+          "field": "県内消費額",
+          "value": 1.0
+        },
+        {
+          "field": "交通手段_在来線",
+          "value": 0.4327956989247312
+        }
+      ],
+      "top_places": [
+        {
+          "rank": 1,
+          "place": "福井駅前 エリア",
+          "users": 83
+        },
+        {
+          "rank": 2,
+          "place": "かつやま恐竜の森 エリア",
+          "users": 68
+        },
+        {
+          "rank": 3,
+          "place": "JR敦賀駅前 エリア",
+          "users": 49
+        }
+      ]
+    },
+    {
+      "cluster_id": "cluster_12",
+      "cluster_name": "安心滞在型家族層",
+      "trait_scores": {
+        "planning": 0.0852,
+        "relaxation": 1.0,
+        "exploration_experience": 0.5236,
+        "food_value": 0.81,
+        "nature": 0.2764,
+        "efficiency_touring": 0.8334
+      },
+      "raw_trait_scores": {
+        "planning": 0.068043,
+        "relaxation": 0.098395,
+        "exploration_experience": 0.058011,
+        "food_value": 0.466719,
+        "nature": 0.040647,
+        "efficiency_touring": 0.665351
+      },
+      "final_raw_trait_scores": {
+        "planning": 0.068043,
+        "relaxation": 0.798395,
+        "exploration_experience": 0.418011,
+        "food_value": 0.646719,
+        "nature": 0.220647,
+        "efficiency_touring": 0.665351
+      },
+      "trait_boosts": {
+        "planning": {
+          "name_boost": 0,
+          "top_place_boost": 0.0,
+          "cap_applied": 0.0
+        },
+        "relaxation": {
+          "name_boost": 0.7,
+          "top_place_boost": 0.0,
+          "cap_applied": 0.0
+        },
+        "exploration_experience": {
+          "name_boost": 0,
+          "top_place_boost": 0.36,
+          "cap_applied": 0.0
+        },
+        "food_value": {
+          "name_boost": 0,
+          "top_place_boost": 0.18,
+          "cap_applied": 0.0
+        },
+        "nature": {
+          "name_boost": 0,
+          "top_place_boost": 0.18,
+          "cap_applied": 0.0
+        },
+        "efficiency_touring": {
+          "name_boost": 0,
+          "top_place_boost": 0.0,
+          "cap_applied": 0.0
+        }
+      },
+      "trait_source_fields": {
+        "planning": [
+          {
+            "field": "情報収集_観光展・物産展",
+            "value": 1.0,
+            "weight": 1.0,
+            "weighted_value": 1.0
+          },
+          {
+            "field": "情報収集_新聞・雑誌・ガイドブック",
+            "value": 0.06314127861089187,
+            "weight": 1.0,
+            "weighted_value": 0.06314127861089187
+          },
+          {
+            "field": "交通手段_在来線",
+            "value": 0.050513022888713496,
+            "weight": 1.0,
+            "weighted_value": 0.050513022888713496
+          },
+          {
+            "field": "情報収集_観光パンフレット・ポスター",
+            "value": 0.037884767166535126,
+            "weight": 1.0,
+            "weighted_value": 0.037884767166535126
+          },
+          {
+            "field": "情報収集_TV・ラジオ番組やCM",
+            "value": 0.025256511444356748,
+            "weight": 1.0,
+            "weighted_value": 0.025256511444356748
+          },
+          {
+            "field": "交通手段_新幹線",
+            "value": 0.020520915548539857,
+            "weight": 1.0,
+            "weighted_value": 0.020520915548539857
+          },
+          {
+            "field": "情報収集_Instagram",
+            "value": 0.018153117600631413,
+            "weight": 1.0,
+            "weighted_value": 0.018153117600631413
+          },
+          {
+            "field": "交通手段_レンタカー",
+            "value": 0.01578531965272297,
+            "weight": 1.0,
+            "weighted_value": 0.01578531965272297
+          }
+        ],
+        "relaxation": [
+          {
+            "field": "訪問目的_宿でのんびり過ごす",
+            "value": 0.1712707182320442,
+            "weight": 1.0,
+            "weighted_value": 0.1712707182320442
+          },
+          {
+            "field": "訪問目的_温泉や露天風呂",
+            "value": 0.1239147592738753,
+            "weight": 1.0,
+            "weighted_value": 0.1239147592738753
+          },
+          {
+            "field": "施設に求めるもの",
+            "value": 0.0,
+            "weight": 1.0,
+            "weighted_value": 0.0
+          }
+        ],
+        "exploration_experience": [
+          {
+            "field": "訪問目的_名所、旧跡の観光",
+            "value": 0.13496448303078137,
+            "weight": 1.0,
+            "weighted_value": 0.13496448303078137
+          },
+          {
+            "field": "訪問目的_テーマパーク（遊園地、動物園、博物館など）",
+            "value": 0.11444356748224152,
+            "weight": 1.0,
+            "weighted_value": 0.11444356748224152
+          },
+          {
+            "field": "訪問目的_まちあるき、都市散策",
+            "value": 0.050513022888713496,
+            "weight": 1.0,
+            "weighted_value": 0.050513022888713496
+          },
+          {
+            "field": "訪問目的_お祭りやイベントへの参加・見物",
+            "value": 0.03314917127071823,
+            "weight": 1.0,
+            "weighted_value": 0.03314917127071823
+          },
+          {
+            "field": "訪問目的_スポーツ観戦や芸能鑑賞（コンサート等）",
+            "value": 0.008681925808997633,
+            "weight": 1.0,
+            "weighted_value": 0.008681925808997633
+          },
+          {
+            "field": "訪問目的_各種体験（手作り、果物狩りなど）",
+            "value": 0.006314127861089187,
+            "weight": 1.0,
+            "weighted_value": 0.006314127861089187
+          }
+        ],
+        "food_value": [
+          {
+            "field": "県内消費額",
+            "value": 1.0,
+            "weight": 1.0,
+            "weighted_value": 1.0
+          },
+          {
+            "field": "訪問目的_地元の美味しいものを食べる",
+            "value": 0.30781373322809785,
+            "weight": 1.0,
+            "weighted_value": 0.30781373322809785
+          },
+          {
+            "field": "訪問目的_買い物、アウトレット",
+            "value": 0.09234411996842937,
+            "weight": 1.0,
+            "weighted_value": 0.09234411996842937
+          }
+        ],
+        "nature": [
+          {
+            "field": "訪問目的_花見や紅葉などの自然鑑賞",
+            "value": 0.056037884767166535,
+            "weight": 1.0,
+            "weighted_value": 0.056037884767166535
+          },
+          {
+            "field": "訪問目的_アウトドア（海水浴、釣り、登山など）",
+            "value": 0.025256511444356748,
+            "weight": 1.0,
+            "weighted_value": 0.025256511444356748
+          }
+        ],
+        "efficiency_touring": [
+          {
+            "field": "エリア訪問回数",
+            "value": 1.0,
+            "weight": 1.0,
+            "weighted_value": 1.0
+          },
+          {
+            "field": "交通手段_自家用車",
+            "value": 0.9005524861878453,
+            "weight": 1.0,
+            "weighted_value": 0.9005524861878453
+          },
+          {
+            "field": "訪問目的_ドライブ・ツーリング",
+            "value": 0.09550118389897395,
+            "weight": 1.0,
+            "weighted_value": 0.09550118389897395
+          }
+        ]
+      },
+      "top_behavior_features": [
+        {
+          "field": "NPS",
+          "value": 7.7853196527229676
+        },
+        {
+          "field": "満足度(商品・サービス)",
+          "value": 4.413575374901342
+        },
+        {
+          "field": "満足度",
+          "value": 4.399368587213891
+        },
+        {
+          "field": "今後の来訪意向",
+          "value": 4.0
+        },
+        {
+          "field": "年代",
+          "value": 2.0
+        },
+        {
+          "field": "同行者",
+          "value": 2.0
+        },
+        {
+          "field": "満足度(商品・サービス)の理由",
+          "value": 1.0
+        },
+        {
+          "field": "満足度の理由",
+          "value": 1.0
+        },
+        {
+          "field": "県内消費額",
+          "value": 1.0
+        },
+        {
+          "field": "エリア訪問回数",
+          "value": 1.0
+        }
+      ],
+      "top_places": [
+        {
+          "rank": 1,
+          "place": "かつやま恐竜の森 エリア",
+          "users": 137
+        },
+        {
+          "rank": 2,
+          "place": "越前そばの里 エリア",
+          "users": 111
+        },
+        {
+          "rank": 3,
+          "place": "越前大野城・城下町 エリア",
+          "users": 69
+        }
+      ]
+    },
+    {
+      "cluster_id": "cluster_13",
+      "cluster_name": "静養重視型中年層",
+      "trait_scores": {
+        "planning": 0.2351,
+        "relaxation": 1.0,
+        "exploration_experience": 0.3668,
+        "food_value": 0.5185,
+        "nature": 0.2606,
+        "efficiency_touring": 0.2353
+      },
+      "raw_trait_scores": {
+        "planning": 0.183086,
+        "relaxation": 0.028843,
+        "exploration_experience": 0.105696,
+        "food_value": 0.403797,
+        "nature": 0.023001,
+        "efficiency_touring": 0.003286
+      },
+      "final_raw_trait_scores": {
+        "planning": 0.183086,
+        "relaxation": 0.778843,
+        "exploration_experience": 0.285696,
+        "food_value": 0.403797,
+        "nature": 0.203001,
+        "efficiency_touring": 0.183286
+      },
+      "trait_boosts": {
+        "planning": {
+          "name_boost": 0,
+          "top_place_boost": 0.0,
+          "cap_applied": 0.0
+        },
+        "relaxation": {
+          "name_boost": 0.75,
+          "top_place_boost": 0.0,
+          "cap_applied": 0.0
+        },
+        "exploration_experience": {
+          "name_boost": 0,
+          "top_place_boost": 0.18,
+          "cap_applied": 0.0
+        },
+        "food_value": {
+          "name_boost": 0,
+          "top_place_boost": 0.0,
+          "cap_applied": 0.0
+        },
+        "nature": {
+          "name_boost": 0,
+          "top_place_boost": 0.18,
+          "cap_applied": 0.0
+        },
+        "efficiency_touring": {
+          "name_boost": 0,
+          "top_place_boost": 0.18,
+          "cap_applied": 0.0
+        }
+      },
+      "trait_source_fields": {
+        "planning": [
+          {
+            "field": "宿泊数（全体）",
+            "value": 1.0,
+            "weight": 1.0,
+            "weighted_value": 1.0
+          },
+          {
+            "field": "情報収集_インターネット・アプリ",
+            "value": 0.9945235487404163,
+            "weight": 1.0,
+            "weighted_value": 0.9945235487404163
+          },
+          {
+            "field": "交通手段_在来線",
+            "value": 0.5071193866374589,
+            "weight": 1.0,
+            "weighted_value": 0.5071193866374589
+          },
+          {
+            "field": "交通手段_新幹線",
+            "value": 0.488499452354874,
+            "weight": 1.0,
+            "weighted_value": 0.488499452354874
+          },
+          {
+            "field": "交通手段_旅行会社ツアーバス",
+            "value": 0.11829134720700986,
+            "weight": 1.0,
+            "weighted_value": 0.11829134720700986
+          },
+          {
+            "field": "情報収集_観光パンフレット・ポスター",
+            "value": 0.05805038335158817,
+            "weight": 1.0,
+            "weighted_value": 0.05805038335158817
+          },
+          {
+            "field": "情報収集_新聞・雑誌・ガイドブック",
+            "value": 0.04819277108433735,
+            "weight": 1.0,
+            "weighted_value": 0.04819277108433735
+          },
+          {
+            "field": "情報収集_Instagram",
+            "value": 0.03943044906900329,
+            "weight": 1.0,
+            "weighted_value": 0.03943044906900329
+          }
+        ],
+        "relaxation": [
+          {
+            "field": "訪問目的_温泉や露天風呂",
+            "value": 0.05366922234392114,
+            "weight": 1.0,
+            "weighted_value": 0.05366922234392114
+          },
+          {
+            "field": "訪問目的_宿でのんびり過ごす",
+            "value": 0.03285870755750274,
+            "weight": 1.0,
+            "weighted_value": 0.03285870755750274
+          },
+          {
+            "field": "施設に求めるもの",
+            "value": 0.0,
+            "weight": 1.0,
+            "weighted_value": 0.0
+          }
+        ],
+        "exploration_experience": [
+          {
+            "field": "訪問目的_テーマパーク（遊園地、動物園、博物館など）",
+            "value": 0.1927710843373494,
+            "weight": 1.0,
+            "weighted_value": 0.1927710843373494
+          },
+          {
+            "field": "訪問目的_名所、旧跡の観光",
+            "value": 0.16538882803943045,
+            "weight": 1.0,
+            "weighted_value": 0.16538882803943045
+          },
+          {
+            "field": "訪問目的_まちあるき、都市散策",
+            "value": 0.14676889375684557,
+            "weight": 1.0,
+            "weighted_value": 0.14676889375684557
+          },
+          {
+            "field": "訪問目的_スポーツ観戦や芸能鑑賞（コンサート等）",
+            "value": 0.05914567360350493,
+            "weight": 1.0,
+            "weighted_value": 0.05914567360350493
+          },
+          {
+            "field": "訪問目的_お祭りやイベントへの参加・見物",
+            "value": 0.04381161007667032,
+            "weight": 1.0,
+            "weighted_value": 0.04381161007667032
+          },
+          {
+            "field": "訪問目的_各種体験（手作り、果物狩りなど）",
+            "value": 0.02628696604600219,
+            "weight": 1.0,
+            "weighted_value": 0.02628696604600219
+          }
+        ],
+        "food_value": [
+          {
+            "field": "県内消費額",
+            "value": 1.0,
+            "weight": 1.0,
+            "weighted_value": 1.0
+          },
+          {
+            "field": "訪問目的_地元の美味しいものを食べる",
+            "value": 0.16100766703176342,
+            "weight": 1.0,
+            "weighted_value": 0.16100766703176342
+          },
+          {
+            "field": "訪問目的_買い物、アウトレット",
+            "value": 0.050383351588170866,
+            "weight": 1.0,
+            "weighted_value": 0.050383351588170866
+          }
+        ],
+        "nature": [
+          {
+            "field": "訪問目的_花見や紅葉などの自然鑑賞",
+            "value": 0.033953997809419496,
+            "weight": 1.0,
+            "weighted_value": 0.033953997809419496
+          },
+          {
+            "field": "訪問目的_アウトドア（海水浴、釣り、登山など）",
+            "value": 0.012048192771084338,
+            "weight": 1.0,
+            "weighted_value": 0.012048192771084338
+          }
+        ],
+        "efficiency_touring": [
+          {
+            "field": "交通手段_自家用車",
+            "value": 0.0065717415115005475,
+            "weight": 1.0,
+            "weighted_value": 0.0065717415115005475
+          },
+          {
+            "field": "訪問目的_ドライブ・ツーリング",
+            "value": 0.0032858707557502738,
+            "weight": 1.0,
+            "weighted_value": 0.0032858707557502738
+          },
+          {
+            "field": "エリア訪問回数",
+            "value": 0.0,
+            "weight": 1.0,
+            "weighted_value": 0.0
+          }
+        ]
+      },
+      "top_behavior_features": [
+        {
+          "field": "NPS",
+          "value": 7.672508214676889
+        },
+        {
+          "field": "満足度",
+          "value": 4.130339539978094
+        },
+        {
+          "field": "満足度(商品・サービス)",
+          "value": 4.086527929901424
+        },
+        {
+          "field": "今後の来訪意向",
+          "value": 4.0
+        },
+        {
+          "field": "年代",
+          "value": 2.0
+        },
+        {
+          "field": "満足度(商品・サービス)の理由",
+          "value": 1.0
+        },
+        {
+          "field": "満足度の理由",
+          "value": 1.0
+        },
+        {
+          "field": "宿泊数（全体）",
+          "value": 1.0
+        },
+        {
+          "field": "県内消費額",
+          "value": 1.0
+        },
+        {
+          "field": "情報収集_インターネット・アプリ",
+          "value": 0.9945235487404163
+        }
+      ],
+      "top_places": [
+        {
+          "rank": 1,
+          "place": "福井駅前 エリア",
+          "users": 162
+        },
+        {
+          "rank": 2,
+          "place": "かつやま恐竜の森 エリア",
+          "users": 134
+        },
+        {
+          "rank": 3,
+          "place": "JR敦賀駅前 エリア",
+          "users": 95
+        }
+      ]
+    },
+    {
+      "cluster_id": "cluster_14",
+      "cluster_name": "リラックス美食型家族層",
+      "trait_scores": {
+        "planning": 0.032,
+        "relaxation": 0.4347,
+        "exploration_experience": 0.1276,
+        "food_value": 1.0,
+        "nature": 0.2127,
+        "efficiency_touring": 0.4168
+      },
+      "raw_trait_scores": {
+        "planning": 0.061328,
+        "relaxation": 0.034335,
+        "exploration_experience": 0.064914,
+        "food_value": 0.48927,
+        "nature": 0.048283,
+        "efficiency_touring": 0.688126
+      },
+      "final_raw_trait_scores": {
+        "planning": 0.061328,
+        "relaxation": 0.834335,
+        "exploration_experience": 0.244914,
+        "food_value": 1.91927,
+        "nature": 0.408283,
+        "efficiency_touring": 0.8
+      },
+      "trait_boosts": {
+        "planning": {
+          "name_boost": 0,
+          "top_place_boost": 0.0,
+          "cap_applied": 0.0
+        },
+        "relaxation": {
+          "name_boost": 0.8,
+          "top_place_boost": 0.0,
+          "cap_applied": 0.0
+        },
+        "exploration_experience": {
+          "name_boost": 0,
+          "top_place_boost": 0.18,
+          "cap_applied": 0.0
+        },
+        "food_value": {
+          "name_boost": 1.25,
+          "top_place_boost": 0.18,
+          "cap_applied": 0.0
+        },
+        "nature": {
+          "name_boost": 0,
+          "top_place_boost": 0.36,
+          "cap_applied": 0.0
+        },
+        "efficiency_touring": {
+          "name_boost": 0,
+          "top_place_boost": 0.36,
+          "cap_applied": 0.248126
+        }
+      },
+      "trait_source_fields": {
+        "planning": [
+          {
+            "field": "情報収集_インターネット・アプリ",
+            "value": 0.3240343347639485,
+            "weight": 1.0,
+            "weighted_value": 0.3240343347639485
+          },
+          {
+            "field": "情報収集_友人・知人",
+            "value": 0.2446351931330472,
+            "weight": 1.0,
+            "weighted_value": 0.2446351931330472
+          },
+          {
+            "field": "情報収集_Instagram",
+            "value": 0.17381974248927037,
+            "weight": 1.0,
+            "weighted_value": 0.17381974248927037
+          },
+          {
+            "field": "情報収集_新聞・雑誌・ガイドブック",
+            "value": 0.11373390557939914,
+            "weight": 1.0,
+            "weighted_value": 0.11373390557939914
+          },
+          {
+            "field": "情報収集_TV・ラジオ番組やCM",
+            "value": 0.0944206008583691,
+            "weight": 1.0,
+            "weighted_value": 0.0944206008583691
+          },
+          {
+            "field": "情報収集_観光展・物産展",
+            "value": 0.045064377682403435,
+            "weight": 1.0,
+            "weighted_value": 0.045064377682403435
+          },
+          {
+            "field": "情報収集_観光パンフレット・ポスター",
+            "value": 0.028969957081545063,
+            "weight": 1.0,
+            "weighted_value": 0.028969957081545063
+          },
+          {
+            "field": "情報収集_観光連盟やDMOのHP",
+            "value": 0.028969957081545063,
+            "weight": 1.0,
+            "weighted_value": 0.028969957081545063
+          }
+        ],
+        "relaxation": [
+          {
+            "field": "訪問目的_温泉や露天風呂",
+            "value": 0.07510729613733906,
+            "weight": 1.0,
+            "weighted_value": 0.07510729613733906
+          },
+          {
+            "field": "訪問目的_宿でのんびり過ごす",
+            "value": 0.027896995708154508,
+            "weight": 1.0,
+            "weighted_value": 0.027896995708154508
+          },
+          {
+            "field": "施設に求めるもの",
+            "value": 0.0,
+            "weight": 1.0,
+            "weighted_value": 0.0
+          }
+        ],
+        "exploration_experience": [
+          {
+            "field": "訪問目的_まちあるき、都市散策",
+            "value": 0.1405579399141631,
+            "weight": 1.0,
+            "weighted_value": 0.1405579399141631
+          },
+          {
+            "field": "訪問目的_名所、旧跡の観光",
+            "value": 0.0944206008583691,
+            "weight": 1.0,
+            "weighted_value": 0.0944206008583691
+          },
+          {
+            "field": "訪問目的_お祭りやイベントへの参加・見物",
+            "value": 0.06437768240343347,
+            "weight": 1.0,
+            "weighted_value": 0.06437768240343347
+          },
+          {
+            "field": "訪問目的_テーマパーク（遊園地、動物園、博物館など）",
+            "value": 0.055793991416309016,
+            "weight": 1.0,
+            "weighted_value": 0.055793991416309016
+          },
+          {
+            "field": "訪問目的_各種体験（手作り、果物狩りなど）",
+            "value": 0.027896995708154508,
+            "weight": 1.0,
+            "weighted_value": 0.027896995708154508
+          },
+          {
+            "field": "訪問目的_スポーツ観戦や芸能鑑賞（コンサート等）",
+            "value": 0.006437768240343348,
+            "weight": 1.0,
+            "weighted_value": 0.006437768240343348
+          }
+        ],
+        "food_value": [
+          {
+            "field": "県内消費額",
+            "value": 1.0,
+            "weight": 1.0,
+            "weighted_value": 1.0
+          },
+          {
+            "field": "訪問目的_地元の美味しいものを食べる",
+            "value": 0.26931330472103004,
+            "weight": 1.0,
+            "weighted_value": 0.26931330472103004
+          },
+          {
+            "field": "訪問目的_買い物、アウトレット",
+            "value": 0.1984978540772532,
+            "weight": 1.0,
+            "weighted_value": 0.1984978540772532
+          }
+        ],
+        "nature": [
+          {
+            "field": "訪問目的_花見や紅葉などの自然鑑賞",
+            "value": 0.07188841201716738,
+            "weight": 1.0,
+            "weighted_value": 0.07188841201716738
+          },
+          {
+            "field": "訪問目的_アウトドア（海水浴、釣り、登山など）",
+            "value": 0.02467811158798283,
+            "weight": 1.0,
+            "weighted_value": 0.02467811158798283
+          }
+        ],
+        "efficiency_touring": [
+          {
+            "field": "エリア訪問回数",
+            "value": 1.0,
+            "weight": 1.0,
+            "weighted_value": 1.0
+          },
+          {
+            "field": "交通手段_自家用車",
+            "value": 0.9560085836909872,
+            "weight": 1.0,
+            "weighted_value": 0.9560085836909872
+          },
+          {
+            "field": "訪問目的_ドライブ・ツーリング",
+            "value": 0.10836909871244635,
+            "weight": 1.0,
+            "weighted_value": 0.10836909871244635
+          }
+        ]
+      },
+      "top_behavior_features": [
+        {
+          "field": "NPS",
+          "value": 7.90450643776824
+        },
+        {
+          "field": "今後の来訪意向",
+          "value": 5.0
+        },
+        {
+          "field": "満足度",
+          "value": 4.21244635193133
+        },
+        {
+          "field": "満足度(商品・サービス)",
+          "value": 4.1931330472103
+        },
+        {
+          "field": "年代",
+          "value": 2.0
+        },
+        {
+          "field": "同行者",
+          "value": 2.0
+        },
+        {
+          "field": "満足度(商品・サービス)の理由",
+          "value": 1.0
+        },
+        {
+          "field": "満足度の理由",
+          "value": 1.0
+        },
+        {
+          "field": "県内消費額",
+          "value": 1.0
+        },
+        {
+          "field": "エリア訪問回数",
+          "value": 1.0
+        }
+      ],
+      "top_places": [
+        {
+          "rank": 1,
+          "place": "越前そばの里 エリア",
+          "users": 137
+        },
+        {
+          "rank": 2,
+          "place": "道の駅「恐竜渓谷かつやま」 エリア",
+          "users": 57
+        },
+        {
+          "rank": 3,
+          "place": "かずら橋 エリア",
+          "users": 51
+        }
+      ]
+    },
+    {
+      "cluster_id": "cluster_15",
+      "cluster_name": "落ち着き滞在型家族層",
+      "trait_scores": {
+        "planning": 0.2634,
+        "relaxation": 1.0,
+        "exploration_experience": 0.8472,
+        "food_value": 0.5237,
+        "nature": 0.4943,
+        "efficiency_touring": 0.2485
+      },
+      "raw_trait_scores": {
+        "planning": 0.198629,
+        "relaxation": 0.054195,
+        "exploration_experience": 0.098924,
+        "food_value": 0.394952,
+        "nature": 0.012806,
+        "efficiency_touring": 0.007424
+      },
+      "final_raw_trait_scores": {
+        "planning": 0.198629,
+        "relaxation": 0.754195,
+        "exploration_experience": 0.638924,
+        "food_value": 0.394952,
+        "nature": 0.372806,
+        "efficiency_touring": 0.187424
+      },
+      "trait_boosts": {
+        "planning": {
+          "name_boost": 0,
+          "top_place_boost": 0.0,
+          "cap_applied": 0.0
+        },
+        "relaxation": {
+          "name_boost": 0.7,
+          "top_place_boost": 0.0,
+          "cap_applied": 0.0
+        },
+        "exploration_experience": {
+          "name_boost": 0,
+          "top_place_boost": 0.54,
+          "cap_applied": 0.0
+        },
+        "food_value": {
+          "name_boost": 0,
+          "top_place_boost": 0.0,
+          "cap_applied": 0.0
+        },
+        "nature": {
+          "name_boost": 0,
+          "top_place_boost": 0.36,
+          "cap_applied": 0.0
+        },
+        "efficiency_touring": {
+          "name_boost": 0,
+          "top_place_boost": 0.18,
+          "cap_applied": 0.0
+        }
+      },
+      "trait_source_fields": {
+        "planning": [
+          {
+            "field": "宿泊数（全体）",
+            "value": 1.0,
+            "weight": 1.0,
+            "weighted_value": 1.0
+          },
+          {
+            "field": "交通手段_新幹線",
+            "value": 0.9933184855233853,
+            "weight": 1.0,
+            "weighted_value": 0.9933184855233853
+          },
+          {
+            "field": "交通手段_レンタカー",
+            "value": 0.32962138084632514,
+            "weight": 1.0,
+            "weighted_value": 0.32962138084632514
+          },
+          {
+            "field": "交通手段_在来線",
+            "value": 0.22828507795100222,
+            "weight": 1.0,
+            "weighted_value": 0.22828507795100222
+          },
+          {
+            "field": "情報収集_観光パンフレット・ポスター",
+            "value": 0.22717149220489977,
+            "weight": 1.0,
+            "weighted_value": 0.22717149220489977
+          },
+          {
+            "field": "情報収集_友人・知人",
+            "value": 0.22494432071269488,
+            "weight": 1.0,
+            "weighted_value": 0.22494432071269488
+          },
+          {
+            "field": "情報収集_観光展・物産展",
+            "value": 0.14810690423162584,
+            "weight": 1.0,
+            "weighted_value": 0.14810690423162584
+          },
+          {
+            "field": "情報収集_観光協会等の案内所",
+            "value": 0.11915367483296214,
+            "weight": 1.0,
+            "weighted_value": 0.11915367483296214
+          }
+        ],
+        "relaxation": [
+          {
+            "field": "訪問目的_宿でのんびり過ごす",
+            "value": 0.09465478841870824,
+            "weight": 1.0,
+            "weighted_value": 0.09465478841870824
+          },
+          {
+            "field": "訪問目的_温泉や露天風呂",
+            "value": 0.06792873051224944,
+            "weight": 1.0,
+            "weighted_value": 0.06792873051224944
+          },
+          {
+            "field": "施設に求めるもの",
+            "value": 0.0,
+            "weight": 1.0,
+            "weighted_value": 0.0
+          }
+        ],
+        "exploration_experience": [
+          {
+            "field": "訪問目的_名所、旧跡の観光",
+            "value": 0.20489977728285078,
+            "weight": 1.0,
+            "weighted_value": 0.20489977728285078
+          },
+          {
+            "field": "訪問目的_テーマパーク（遊園地、動物園、博物館など）",
+            "value": 0.17706013363028952,
+            "weight": 1.0,
+            "weighted_value": 0.17706013363028952
+          },
+          {
+            "field": "訪問目的_まちあるき、都市散策",
+            "value": 0.14142538975501115,
+            "weight": 1.0,
+            "weighted_value": 0.14142538975501115
+          },
+          {
+            "field": "訪問目的_お祭りやイベントへの参加・見物",
+            "value": 0.044543429844097995,
+            "weight": 1.0,
+            "weighted_value": 0.044543429844097995
+          },
+          {
+            "field": "訪問目的_スポーツ観戦や芸能鑑賞（コンサート等）",
+            "value": 0.013363028953229399,
+            "weight": 1.0,
+            "weighted_value": 0.013363028953229399
+          },
+          {
+            "field": "訪問目的_各種体験（手作り、果物狩りなど）",
+            "value": 0.012249443207126948,
+            "weight": 1.0,
+            "weighted_value": 0.012249443207126948
+          }
+        ],
+        "food_value": [
+          {
+            "field": "県内消費額",
+            "value": 1.0,
+            "weight": 1.0,
+            "weighted_value": 1.0
+          },
+          {
+            "field": "訪問目的_地元の美味しいものを食べる",
+            "value": 0.15478841870824053,
+            "weight": 1.0,
+            "weighted_value": 0.15478841870824053
+          },
+          {
+            "field": "訪問目的_買い物、アウトレット",
+            "value": 0.030066815144766147,
+            "weight": 1.0,
+            "weighted_value": 0.030066815144766147
+          }
+        ],
+        "nature": [
+          {
+            "field": "訪問目的_アウトドア（海水浴、釣り、登山など）",
+            "value": 0.014476614699331848,
+            "weight": 1.0,
+            "weighted_value": 0.014476614699331848
+          },
+          {
+            "field": "訪問目的_花見や紅葉などの自然鑑賞",
+            "value": 0.011135857461024499,
+            "weight": 1.0,
+            "weighted_value": 0.011135857461024499
+          }
+        ],
+        "efficiency_touring": [
+          {
+            "field": "訪問目的_ドライブ・ツーリング",
+            "value": 0.014476614699331848,
+            "weight": 1.0,
+            "weighted_value": 0.014476614699331848
+          },
+          {
+            "field": "交通手段_自家用車",
+            "value": 0.0077951002227171495,
+            "weight": 1.0,
+            "weighted_value": 0.0077951002227171495
+          },
+          {
+            "field": "エリア訪問回数",
+            "value": 0.0,
+            "weight": 1.0,
+            "weighted_value": 0.0
+          }
+        ]
+      },
+      "top_behavior_features": [
+        {
+          "field": "NPS",
+          "value": 8.105790645879733
+        },
+        {
+          "field": "満足度",
+          "value": 4.332962138084633
+        },
+        {
+          "field": "満足度(商品・サービス)",
+          "value": 4.301781737193764
+        },
+        {
+          "field": "今後の来訪意向",
+          "value": 3.0
+        },
+        {
+          "field": "年代",
+          "value": 2.0
+        },
+        {
+          "field": "同行者",
+          "value": 2.0
+        },
+        {
+          "field": "満足度(商品・サービス)の理由",
+          "value": 1.0
+        },
+        {
+          "field": "満足度の理由",
+          "value": 1.0
+        },
+        {
+          "field": "宿泊数（全体）",
+          "value": 1.0
+        },
+        {
+          "field": "県内消費額",
+          "value": 1.0
+        }
+      ],
+      "top_places": [
+        {
+          "rank": 1,
+          "place": "福井駅前 エリア",
+          "users": 130
+        },
+        {
+          "rank": 2,
+          "place": "かつやま恐竜の森 エリア",
+          "users": 129
+        },
+        {
+          "rank": 3,
+          "place": "大本山 永平寺 エリア",
+          "users": 128
+        }
+      ]
+    },
+    {
+      "cluster_id": "cluster_16",
+      "cluster_name": "穏やか探索型家族層",
+      "trait_scores": {
+        "planning": 0.1376,
+        "relaxation": 1.0,
+        "exploration_experience": 0.8591,
+        "food_value": 0.369,
+        "nature": 0.2334,
+        "efficiency_touring": 0.0064
+      },
+      "raw_trait_scores": {
+        "planning": 0.248943,
+        "relaxation": 0.349631,
+        "exploration_experience": 0.214591,
+        "food_value": 0.667831,
+        "nature": 0.062282,
+        "efficiency_touring": 0.011641
+      },
+      "final_raw_trait_scores": {
+        "planning": 0.248943,
+        "relaxation": 1.809631,
+        "exploration_experience": 1.554591,
+        "food_value": 0.667831,
+        "nature": 0.422282,
+        "efficiency_touring": 0.011641
+      },
+      "trait_boosts": {
+        "planning": {
+          "name_boost": 0,
+          "top_place_boost": 0.0,
+          "cap_applied": 0.0
+        },
+        "relaxation": {
+          "name_boost": 1.1,
+          "top_place_boost": 0.36,
+          "cap_applied": 0.0
+        },
+        "exploration_experience": {
+          "name_boost": 0.8,
+          "top_place_boost": 0.54,
+          "cap_applied": 0.0
+        },
+        "food_value": {
+          "name_boost": 0,
+          "top_place_boost": 0.0,
+          "cap_applied": 0.0
+        },
+        "nature": {
+          "name_boost": 0,
+          "top_place_boost": 0.36,
+          "cap_applied": 0.0
+        },
+        "efficiency_touring": {
+          "name_boost": 0,
+          "top_place_boost": 0.0,
+          "cap_applied": 0.0
+        }
+      },
+      "trait_source_fields": {
+        "planning": [
+          {
+            "field": "宿泊数（全体）",
+            "value": 1.0,
+            "weight": 1.0,
+            "weighted_value": 1.0
+          },
+          {
+            "field": "交通手段_新幹線",
+            "value": 0.9150174621653085,
+            "weight": 1.0,
+            "weighted_value": 0.9150174621653085
+          },
+          {
+            "field": "情報収集_インターネット・アプリ",
+            "value": 0.6519208381839348,
+            "weight": 1.0,
+            "weighted_value": 0.6519208381839348
+          },
+          {
+            "field": "情報収集_新聞・雑誌・ガイドブック",
+            "value": 0.3678696158323632,
+            "weight": 1.0,
+            "weighted_value": 0.3678696158323632
+          },
+          {
+            "field": "情報収集_観光パンフレット・ポスター",
+            "value": 0.31548311990686845,
+            "weight": 1.0,
+            "weighted_value": 0.31548311990686845
+          },
+          {
+            "field": "交通手段_在来線",
+            "value": 0.27939464493597205,
+            "weight": 1.0,
+            "weighted_value": 0.27939464493597205
+          },
+          {
+            "field": "交通手段_レンタカー",
+            "value": 0.2421420256111758,
+            "weight": 1.0,
+            "weighted_value": 0.2421420256111758
+          },
+          {
+            "field": "情報収集_観光展・物産展",
+            "value": 0.14435389988358557,
+            "weight": 1.0,
+            "weighted_value": 0.14435389988358557
+          }
+        ],
+        "relaxation": [
+          {
+            "field": "訪問目的_温泉や露天風呂",
+            "value": 0.6903376018626309,
+            "weight": 1.0,
+            "weighted_value": 0.6903376018626309
+          },
+          {
+            "field": "訪問目的_宿でのんびり過ごす",
+            "value": 0.3585564610011641,
+            "weight": 1.0,
+            "weighted_value": 0.3585564610011641
+          },
+          {
+            "field": "施設に求めるもの",
+            "value": 0.0,
+            "weight": 1.0,
+            "weighted_value": 0.0
+          }
+        ],
+        "exploration_experience": [
+          {
+            "field": "訪問目的_名所、旧跡の観光",
+            "value": 0.610011641443539,
+            "weight": 1.0,
+            "weighted_value": 0.610011641443539
+          },
+          {
+            "field": "訪問目的_テーマパーク（遊園地、動物園、博物館など）",
+            "value": 0.3108265424912689,
+            "weight": 1.0,
+            "weighted_value": 0.3108265424912689
+          },
+          {
+            "field": "訪問目的_まちあるき、都市散策",
+            "value": 0.2852153667054715,
+            "weight": 1.0,
+            "weighted_value": 0.2852153667054715
+          },
+          {
+            "field": "訪問目的_お祭りやイベントへの参加・見物",
+            "value": 0.03608847497089639,
+            "weight": 1.0,
+            "weighted_value": 0.03608847497089639
+          },
+          {
+            "field": "訪問目的_各種体験（手作り、果物狩りなど）",
+            "value": 0.030267753201396973,
+            "weight": 1.0,
+            "weighted_value": 0.030267753201396973
+          },
+          {
+            "field": "訪問目的_スポーツ観戦や芸能鑑賞（コンサート等）",
+            "value": 0.015133876600698487,
+            "weight": 1.0,
+            "weighted_value": 0.015133876600698487
+          }
+        ],
+        "food_value": [
+          {
+            "field": "県内消費額",
+            "value": 1.0,
+            "weight": 1.0,
+            "weighted_value": 1.0
+          },
+          {
+            "field": "訪問目的_地元の美味しいものを食べる",
+            "value": 0.89988358556461,
+            "weight": 1.0,
+            "weighted_value": 0.89988358556461
+          },
+          {
+            "field": "訪問目的_買い物、アウトレット",
+            "value": 0.10360884749708964,
+            "weight": 1.0,
+            "weighted_value": 0.10360884749708964
+          }
+        ],
+        "nature": [
+          {
+            "field": "訪問目的_花見や紅葉などの自然鑑賞",
+            "value": 0.10244470314318975,
+            "weight": 1.0,
+            "weighted_value": 0.10244470314318975
+          },
+          {
+            "field": "訪問目的_アウトドア（海水浴、釣り、登山など）",
+            "value": 0.02211874272409779,
+            "weight": 1.0,
+            "weighted_value": 0.02211874272409779
+          }
+        ],
+        "efficiency_touring": [
+          {
+            "field": "訪問目的_ドライブ・ツーリング",
+            "value": 0.020954598370197905,
+            "weight": 1.0,
+            "weighted_value": 0.020954598370197905
+          },
+          {
+            "field": "交通手段_自家用車",
+            "value": 0.013969732246798603,
+            "weight": 1.0,
+            "weighted_value": 0.013969732246798603
+          },
+          {
+            "field": "エリア訪問回数",
+            "value": 0.0,
+            "weight": 1.0,
+            "weighted_value": 0.0
+          }
+        ]
+      },
+      "top_behavior_features": [
+        {
+          "field": "NPS",
+          "value": 8.29685681024447
+        },
+        {
+          "field": "満足度",
+          "value": 4.40279394644936
+        },
+        {
+          "field": "満足度(商品・サービス)",
+          "value": 4.348079161816065
+        },
+        {
+          "field": "今後の来訪意向",
+          "value": 3.0
+        },
+        {
+          "field": "年代",
+          "value": 2.0
+        },
+        {
+          "field": "同行者",
+          "value": 2.0
+        },
+        {
+          "field": "満足度(商品・サービス)の理由",
+          "value": 1.0
+        },
+        {
+          "field": "満足度の理由",
+          "value": 1.0
+        },
+        {
+          "field": "宿泊数（全体）",
+          "value": 1.0
+        },
+        {
+          "field": "県内消費額",
+          "value": 1.0
+        }
+      ],
+      "top_places": [
+        {
+          "rank": 1,
+          "place": "あわら湯のまち エリア",
+          "users": 169
+        },
+        {
+          "rank": 2,
+          "place": "大本山 永平寺 エリア",
+          "users": 152
+        },
+        {
+          "rank": 3,
+          "place": "かつやま恐竜の森 エリア",
+          "users": 123
+        }
+      ]
+    },
+    {
+      "cluster_id": "cluster_17",
+      "cluster_name": "安心滞在重視型家族層",
+      "trait_scores": {
+        "planning": 0.0478,
+        "relaxation": 0.9276,
+        "exploration_experience": 0.0335,
+        "food_value": 0.7929,
+        "nature": 0.7243,
+        "efficiency_touring": 1.0
+      },
+      "raw_trait_scores": {
+        "planning": 0.038211,
+        "relaxation": 0.042088,
+        "exploration_experience": 0.026831,
+        "food_value": 0.454335,
+        "nature": 0.039457,
+        "efficiency_touring": 0.717382
+      },
+      "final_raw_trait_scores": {
+        "planning": 0.038211,
+        "relaxation": 0.742088,
+        "exploration_experience": 0.026831,
+        "food_value": 0.634335,
+        "nature": 0.579457,
+        "efficiency_touring": 0.8
+      },
+      "trait_boosts": {
+        "planning": {
+          "name_boost": 0,
+          "top_place_boost": 0.0,
+          "cap_applied": 0.0
+        },
+        "relaxation": {
+          "name_boost": 0.7,
+          "top_place_boost": 0.0,
+          "cap_applied": 0.0
+        },
+        "exploration_experience": {
+          "name_boost": 0,
+          "top_place_boost": 0.0,
+          "cap_applied": 0.0
+        },
+        "food_value": {
+          "name_boost": 0,
+          "top_place_boost": 0.18,
+          "cap_applied": 0.0
+        },
+        "nature": {
+          "name_boost": 0,
+          "top_place_boost": 0.54,
+          "cap_applied": 0.0
+        },
+        "efficiency_touring": {
+          "name_boost": 0,
+          "top_place_boost": 0.36,
+          "cap_applied": 0.277382
+        }
+      },
+      "trait_source_fields": {
+        "planning": [
+          {
+            "field": "情報収集_新聞・雑誌・ガイドブック",
+            "value": 0.24494949494949494,
+            "weight": 1.0,
+            "weighted_value": 0.24494949494949494
+          },
+          {
+            "field": "情報収集_TV・ラジオ番組やCM",
+            "value": 0.13446969696969696,
+            "weight": 1.0,
+            "weighted_value": 0.13446969696969696
+          },
+          {
+            "field": "情報収集_観光協会等の案内所",
+            "value": 0.0946969696969697,
+            "weight": 1.0,
+            "weighted_value": 0.0946969696969697
+          },
+          {
+            "field": "情報収集_観光連盟やDMOのHP",
+            "value": 0.08143939393939394,
+            "weight": 1.0,
+            "weighted_value": 0.08143939393939394
+          },
+          {
+            "field": "情報収集_宿泊施設",
+            "value": 0.08143939393939394,
+            "weight": 1.0,
+            "weighted_value": 0.08143939393939394
+          },
+          {
+            "field": "情報収集_Twitter",
+            "value": 0.029671717171717172,
+            "weight": 1.0,
+            "weighted_value": 0.029671717171717172
+          },
+          {
+            "field": "情報収集_ブログ",
+            "value": 0.016414141414141416,
+            "weight": 1.0,
+            "weighted_value": 0.016414141414141416
+          },
+          {
+            "field": "交通手段_新幹線",
+            "value": 0.012626262626262626,
+            "weight": 1.0,
+            "weighted_value": 0.012626262626262626
+          }
+        ],
+        "relaxation": [
+          {
+            "field": "訪問目的_温泉や露天風呂",
+            "value": 0.08017676767676768,
+            "weight": 1.0,
+            "weighted_value": 0.08017676767676768
+          },
+          {
+            "field": "訪問目的_宿でのんびり過ごす",
+            "value": 0.046085858585858584,
+            "weight": 1.0,
+            "weighted_value": 0.046085858585858584
+          },
+          {
+            "field": "施設に求めるもの",
+            "value": 0.0,
+            "weight": 1.0,
+            "weighted_value": 0.0
+          }
+        ],
+        "exploration_experience": [
+          {
+            "field": "訪問目的_まちあるき、都市散策",
+            "value": 0.0845959595959596,
+            "weight": 1.0,
+            "weighted_value": 0.0845959595959596
+          },
+          {
+            "field": "訪問目的_お祭りやイベントへの参加・見物",
+            "value": 0.04734848484848485,
+            "weight": 1.0,
+            "weighted_value": 0.04734848484848485
+          },
+          {
+            "field": "訪問目的_各種体験（手作り、果物狩りなど）",
+            "value": 0.016414141414141416,
+            "weight": 1.0,
+            "weighted_value": 0.016414141414141416
+          },
+          {
+            "field": "訪問目的_スポーツ観戦や芸能鑑賞（コンサート等）",
+            "value": 0.011363636363636364,
+            "weight": 1.0,
+            "weighted_value": 0.011363636363636364
+          },
+          {
+            "field": "訪問目的_テーマパーク（遊園地、動物園、博物館など）",
+            "value": 0.0012626262626262627,
+            "weight": 1.0,
+            "weighted_value": 0.0012626262626262627
+          },
+          {
+            "field": "訪問目的_名所、旧跡の観光",
+            "value": 0.0,
+            "weight": 1.0,
+            "weighted_value": 0.0
+          }
+        ],
+        "food_value": [
+          {
+            "field": "県内消費額",
+            "value": 1.0,
+            "weight": 1.0,
+            "weighted_value": 1.0
+          },
+          {
+            "field": "訪問目的_地元の美味しいものを食べる",
+            "value": 0.2582070707070707,
+            "weight": 1.0,
+            "weighted_value": 0.2582070707070707
+          },
+          {
+            "field": "訪問目的_買い物、アウトレット",
+            "value": 0.10479797979797979,
+            "weight": 1.0,
+            "weighted_value": 0.10479797979797979
+          }
+        ],
+        "nature": [
+          {
+            "field": "訪問目的_アウトドア（海水浴、釣り、登山など）",
+            "value": 0.049873737373737376,
+            "weight": 1.0,
+            "weighted_value": 0.049873737373737376
+          },
+          {
+            "field": "訪問目的_花見や紅葉などの自然鑑賞",
+            "value": 0.02904040404040404,
+            "weight": 1.0,
+            "weighted_value": 0.02904040404040404
+          }
+        ],
+        "efficiency_touring": [
+          {
+            "field": "エリア訪問回数",
+            "value": 1.0,
+            "weight": 1.0,
+            "weighted_value": 1.0
+          },
+          {
+            "field": "交通手段_自家用車",
+            "value": 0.9974747474747475,
+            "weight": 1.0,
+            "weighted_value": 0.9974747474747475
+          },
+          {
+            "field": "訪問目的_ドライブ・ツーリング",
+            "value": 0.15467171717171718,
+            "weight": 1.0,
+            "weighted_value": 0.15467171717171718
+          }
+        ]
+      },
+      "top_behavior_features": [
+        {
+          "field": "NPS",
+          "value": 7.799242424242424
+        },
+        {
+          "field": "満足度(商品・サービス)",
+          "value": 4.21969696969697
+        },
+        {
+          "field": "満足度",
+          "value": 4.213383838383838
+        },
+        {
+          "field": "今後の来訪意向",
+          "value": 4.0
+        },
+        {
+          "field": "年代",
+          "value": 2.0
+        },
+        {
+          "field": "同行者",
+          "value": 2.0
+        },
+        {
+          "field": "満足度(商品・サービス)の理由",
+          "value": 1.0
+        },
+        {
+          "field": "満足度の理由",
+          "value": 1.0
+        },
+        {
+          "field": "県内消費額",
+          "value": 1.0
+        },
+        {
+          "field": "エリア訪問回数",
+          "value": 1.0
+        }
+      ],
+      "top_places": [
+        {
+          "rank": 1,
+          "place": "越前そばの里 エリア",
+          "users": 212
+        },
+        {
+          "rank": 2,
+          "place": "道の駅「南えちぜん山海里」 エリア",
+          "users": 83
+        },
+        {
+          "rank": 3,
+          "place": "かずら橋 エリア",
+          "users": 67
+        }
+      ]
+    },
+    {
+      "cluster_id": "cluster_18",
+      "cluster_name": "自然癒し型家族層",
+      "trait_scores": {
+        "planning": 0.089,
+        "relaxation": 1.0,
+        "exploration_experience": 0.1688,
+        "food_value": 0.4139,
+        "nature": 0.8434,
+        "efficiency_touring": 0.5618
+      },
+      "raw_trait_scores": {
+        "planning": 0.115297,
+        "relaxation": 0.085997,
+        "exploration_experience": 0.038718,
+        "food_value": 0.356355,
+        "nature": 0.063071,
+        "efficiency_touring": 0.72812
+      },
+      "final_raw_trait_scores": {
+        "planning": 0.115297,
+        "relaxation": 1.295997,
+        "exploration_experience": 0.218718,
+        "food_value": 0.536355,
+        "nature": 1.093071,
+        "efficiency_touring": 0.72812
+      },
+      "trait_boosts": {
+        "planning": {
+          "name_boost": 0,
+          "top_place_boost": 0.0,
+          "cap_applied": 0.0
+        },
+        "relaxation": {
+          "name_boost": 0.85,
+          "top_place_boost": 0.36,
+          "cap_applied": 0.0
+        },
+        "exploration_experience": {
+          "name_boost": 0,
+          "top_place_boost": 0.18,
+          "cap_applied": 0.0
+        },
+        "food_value": {
+          "name_boost": 0,
+          "top_place_boost": 0.18,
+          "cap_applied": 0.0
+        },
+        "nature": {
+          "name_boost": 0.85,
+          "top_place_boost": 0.18,
+          "cap_applied": 0.0
+        },
+        "efficiency_touring": {
+          "name_boost": 0,
+          "top_place_boost": 0.0,
+          "cap_applied": 0.0
+        }
+      },
+      "trait_source_fields": {
+        "planning": [
+          {
+            "field": "宿泊数（全体）",
+            "value": 1.0,
+            "weight": 1.0,
+            "weighted_value": 1.0
+          },
+          {
+            "field": "情報収集_インターネット・アプリ",
+            "value": 1.0,
+            "weight": 1.0,
+            "weighted_value": 1.0
+          },
+          {
+            "field": "情報収集_観光パンフレット・ポスター",
+            "value": 0.0273972602739726,
+            "weight": 1.0,
+            "weighted_value": 0.0273972602739726
+          },
+          {
+            "field": "情報収集_新聞・雑誌・ガイドブック",
+            "value": 0.026255707762557076,
+            "weight": 1.0,
+            "weighted_value": 0.026255707762557076
+          },
+          {
+            "field": "情報収集_観光展・物産展",
+            "value": 0.02454337899543379,
+            "weight": 1.0,
+            "weighted_value": 0.02454337899543379
+          },
+          {
+            "field": "交通手段_新幹線",
+            "value": 0.02226027397260274,
+            "weight": 1.0,
+            "weighted_value": 0.02226027397260274
+          },
+          {
+            "field": "情報収集_友人・知人",
+            "value": 0.01997716894977169,
+            "weight": 1.0,
+            "weighted_value": 0.01997716894977169
+          },
+          {
+            "field": "情報収集_TV・ラジオ番組やCM",
+            "value": 0.016552511415525113,
+            "weight": 1.0,
+            "weighted_value": 0.016552511415525113
+          }
+        ],
+        "relaxation": [
+          {
+            "field": "訪問目的_温泉や露天風呂",
+            "value": 0.15753424657534246,
+            "weight": 1.0,
+            "weighted_value": 0.15753424657534246
+          },
+          {
+            "field": "訪問目的_宿でのんびり過ごす",
+            "value": 0.1004566210045662,
+            "weight": 1.0,
+            "weighted_value": 0.1004566210045662
+          },
+          {
+            "field": "施設に求めるもの",
+            "value": 0.0,
+            "weight": 1.0,
+            "weighted_value": 0.0
+          }
+        ],
+        "exploration_experience": [
+          {
+            "field": "訪問目的_まちあるき、都市散策",
+            "value": 0.1461187214611872,
+            "weight": 1.0,
+            "weighted_value": 0.1461187214611872
+          },
+          {
+            "field": "訪問目的_お祭りやイベントへの参加・見物",
+            "value": 0.05593607305936073,
+            "weight": 1.0,
+            "weighted_value": 0.05593607305936073
+          },
+          {
+            "field": "訪問目的_スポーツ観戦や芸能鑑賞（コンサート等）",
+            "value": 0.015410958904109588,
+            "weight": 1.0,
+            "weighted_value": 0.015410958904109588
+          },
+          {
+            "field": "訪問目的_各種体験（手作り、果物狩りなど）",
+            "value": 0.0136986301369863,
+            "weight": 1.0,
+            "weighted_value": 0.0136986301369863
+          },
+          {
+            "field": "訪問目的_テーマパーク（遊園地、動物園、博物館など）",
+            "value": 0.001141552511415525,
+            "weight": 1.0,
+            "weighted_value": 0.001141552511415525
+          },
+          {
+            "field": "訪問目的_名所、旧跡の観光",
+            "value": 0.0,
+            "weight": 1.0,
+            "weighted_value": 0.0
+          }
+        ],
+        "food_value": [
+          {
+            "field": "県内消費額",
+            "value": 1.0,
+            "weight": 1.0,
+            "weighted_value": 1.0
+          },
+          {
+            "field": "訪問目的_買い物、アウトレット",
+            "value": 0.06906392694063927,
+            "weight": 1.0,
+            "weighted_value": 0.06906392694063927
+          },
+          {
+            "field": "訪問目的_地元の美味しいものを食べる",
+            "value": 0.0,
+            "weight": 1.0,
+            "weighted_value": 0.0
+          }
+        ],
+        "nature": [
+          {
+            "field": "訪問目的_アウトドア（海水浴、釣り、登山など）",
+            "value": 0.07420091324200913,
+            "weight": 1.0,
+            "weighted_value": 0.07420091324200913
+          },
+          {
+            "field": "訪問目的_花見や紅葉などの自然鑑賞",
+            "value": 0.05194063926940639,
+            "weight": 1.0,
+            "weighted_value": 0.05194063926940639
+          }
+        ],
+        "efficiency_touring": [
+          {
+            "field": "エリア訪問回数",
+            "value": 1.0,
+            "weight": 1.0,
+            "weighted_value": 1.0
+          },
+          {
+            "field": "交通手段_自家用車",
+            "value": 0.9914383561643836,
+            "weight": 1.0,
+            "weighted_value": 0.9914383561643836
+          },
+          {
+            "field": "訪問目的_ドライブ・ツーリング",
+            "value": 0.19292237442922375,
+            "weight": 1.0,
+            "weighted_value": 0.19292237442922375
+          }
+        ]
+      },
+      "top_behavior_features": [
+        {
+          "field": "NPS",
+          "value": 7.762557077625571
+        },
+        {
+          "field": "満足度",
+          "value": 4.226598173515982
+        },
+        {
+          "field": "満足度(商品・サービス)",
+          "value": 4.211187214611872
+        },
+        {
+          "field": "今後の来訪意向",
+          "value": 4.0
+        },
+        {
+          "field": "年代",
+          "value": 2.0
+        },
+        {
+          "field": "同行者",
+          "value": 2.0
+        },
+        {
+          "field": "満足度(商品・サービス)の理由",
+          "value": 1.0
+        },
+        {
+          "field": "満足度の理由",
+          "value": 1.0
+        },
+        {
+          "field": "宿泊数（全体）",
+          "value": 1.0
+        },
+        {
+          "field": "県内消費額",
+          "value": 1.0
+        }
+      ],
+      "top_places": [
+        {
+          "rank": 1,
+          "place": "あわら湯のまち エリア",
+          "users": 111
+        },
+        {
+          "rank": 2,
+          "place": "越前そばの里 エリア",
+          "users": 111
+        },
+        {
+          "rank": 3,
+          "place": "かつやま恐竜の森 エリア",
+          "users": 89
+        }
+      ]
+    },
+    {
+      "cluster_id": "cluster_19",
+      "cluster_name": "老年穏和型家族層",
+      "trait_scores": {
+        "planning": 0.0748,
+        "relaxation": 0.0223,
+        "exploration_experience": 0.2406,
+        "food_value": 0.3908,
+        "nature": 0.0167,
+        "efficiency_touring": 1.0
+      },
+      "raw_trait_scores": {
+        "planning": 0.059832,
+        "relaxation": 0.017866,
+        "exploration_experience": 0.012459,
+        "food_value": 0.312647,
+        "nature": 0.013399,
+        "efficiency_touring": 1.339915
+      },
+      "final_raw_trait_scores": {
+        "planning": 0.059832,
+        "relaxation": 0.017866,
+        "exploration_experience": 0.192459,
+        "food_value": 0.312647,
+        "nature": 0.013399,
+        "efficiency_touring": 0.8
+      },
+      "trait_boosts": {
+        "planning": {
+          "name_boost": 0,
+          "top_place_boost": 0.0,
+          "cap_applied": 0.0
+        },
+        "relaxation": {
+          "name_boost": 0,
+          "top_place_boost": 0.0,
+          "cap_applied": 0.0
+        },
+        "exploration_experience": {
+          "name_boost": 0,
+          "top_place_boost": 0.18,
+          "cap_applied": 0.0
+        },
+        "food_value": {
+          "name_boost": 0,
+          "top_place_boost": 0.0,
+          "cap_applied": 0.0
+        },
+        "nature": {
+          "name_boost": 0,
+          "top_place_boost": 0.0,
+          "cap_applied": 0.0
+        },
+        "efficiency_touring": {
+          "name_boost": 0,
+          "top_place_boost": 0.36,
+          "cap_applied": 0.899915
+        }
+      },
+      "trait_source_fields": {
+        "planning": [
+          {
+            "field": "情報収集_新聞・雑誌・ガイドブック",
+            "value": 1.0,
+            "weight": 1.0,
+            "weighted_value": 1.0
+          },
+          {
+            "field": "情報収集_TV・ラジオ番組やCM",
+            "value": 0.036671368124118475,
+            "weight": 1.0,
+            "weighted_value": 0.036671368124118475
+          },
+          {
+            "field": "情報収集_観光パンフレット・ポスター",
+            "value": 0.031029619181946404,
+            "weight": 1.0,
+            "weighted_value": 0.031029619181946404
+          },
+          {
+            "field": "情報収集_インターネット・アプリ",
+            "value": 0.01692524682651622,
+            "weight": 1.0,
+            "weighted_value": 0.01692524682651622
+          },
+          {
+            "field": "情報収集_観光展・物産展",
+            "value": 0.015514809590973202,
+            "weight": 1.0,
+            "weighted_value": 0.015514809590973202
+          },
+          {
+            "field": "情報収集_Instagram",
+            "value": 0.00846262341325811,
+            "weight": 1.0,
+            "weighted_value": 0.00846262341325811
+          },
+          {
+            "field": "情報収集_友人・知人",
+            "value": 0.007052186177715092,
+            "weight": 1.0,
+            "weighted_value": 0.007052186177715092
+          },
+          {
+            "field": "情報収集_観光連盟やDMOのHP",
+            "value": 0.004231311706629055,
+            "weight": 1.0,
+            "weighted_value": 0.004231311706629055
+          }
+        ],
+        "relaxation": [
+          {
+            "field": "訪問目的_温泉や露天風呂",
+            "value": 0.045133991537376586,
+            "weight": 1.0,
+            "weighted_value": 0.045133991537376586
+          },
+          {
+            "field": "訪問目的_宿でのんびり過ごす",
+            "value": 0.00846262341325811,
+            "weight": 1.0,
+            "weighted_value": 0.00846262341325811
+          },
+          {
+            "field": "施設に求めるもの",
+            "value": 0.0,
+            "weight": 1.0,
+            "weighted_value": 0.0
+          }
+        ],
+        "exploration_experience": [
+          {
+            "field": "訪問目的_まちあるき、都市散策",
+            "value": 0.029619181946403384,
+            "weight": 1.0,
+            "weighted_value": 0.029619181946403384
+          },
+          {
+            "field": "訪問目的_名所、旧跡の観光",
+            "value": 0.018335684062059238,
+            "weight": 1.0,
+            "weighted_value": 0.018335684062059238
+          },
+          {
+            "field": "訪問目的_お祭りやイベントへの参加・見物",
+            "value": 0.018335684062059238,
+            "weight": 1.0,
+            "weighted_value": 0.018335684062059238
+          },
+          {
+            "field": "訪問目的_テーマパーク（遊園地、動物園、博物館など）",
+            "value": 0.005641748942172073,
+            "weight": 1.0,
+            "weighted_value": 0.005641748942172073
+          },
+          {
+            "field": "訪問目的_スポーツ観戦や芸能鑑賞（コンサート等）",
+            "value": 0.0014104372355430183,
+            "weight": 1.0,
+            "weighted_value": 0.0014104372355430183
+          },
+          {
+            "field": "訪問目的_各種体験（手作り、果物狩りなど）",
+            "value": 0.0014104372355430183,
+            "weight": 1.0,
+            "weighted_value": 0.0014104372355430183
+          }
+        ],
+        "food_value": [
+          {
+            "field": "訪問目的_地元の美味しいものを食べる",
+            "value": 0.9026798307475318,
+            "weight": 1.0,
+            "weighted_value": 0.9026798307475318
+          },
+          {
+            "field": "訪問目的_買い物、アウトレット",
+            "value": 0.03526093088857546,
+            "weight": 1.0,
+            "weighted_value": 0.03526093088857546
+          },
+          {
+            "field": "県内消費額",
+            "value": 0.0,
+            "weight": 1.0,
+            "weighted_value": 0.0
+          }
+        ],
+        "nature": [
+          {
+            "field": "訪問目的_花見や紅葉などの自然鑑賞",
+            "value": 0.02538787023977433,
+            "weight": 1.0,
+            "weighted_value": 0.02538787023977433
+          },
+          {
+            "field": "訪問目的_アウトドア（海水浴、釣り、登山など）",
+            "value": 0.0014104372355430183,
+            "weight": 1.0,
+            "weighted_value": 0.0014104372355430183
+          }
+        ],
+        "efficiency_touring": [
+          {
+            "field": "エリア訪問回数",
+            "value": 3.0,
+            "weight": 1.0,
+            "weighted_value": 3.0
+          },
+          {
+            "field": "交通手段_自家用車",
+            "value": 0.9943582510578279,
+            "weight": 1.0,
+            "weighted_value": 0.9943582510578279
+          },
+          {
+            "field": "訪問目的_ドライブ・ツーリング",
+            "value": 0.02538787023977433,
+            "weight": 1.0,
+            "weighted_value": 0.02538787023977433
+          }
+        ]
+      },
+      "top_behavior_features": [
+        {
+          "field": "NPS",
+          "value": 7.8349788434414664
+        },
+        {
+          "field": "満足度(商品・サービス)",
+          "value": 4.052186177715091
+        },
+        {
+          "field": "満足度",
+          "value": 4.043723554301834
+        },
+        {
+          "field": "年代",
+          "value": 3.0
+        },
+        {
+          "field": "エリア訪問回数",
+          "value": 3.0
+        },
+        {
+          "field": "同行者",
+          "value": 2.0
+        },
+        {
+          "field": "満足度(商品・サービス)の理由",
+          "value": 1.0
+        },
+        {
+          "field": "満足度の理由",
+          "value": 1.0
+        },
+        {
+          "field": "情報収集_新聞・雑誌・ガイドブック",
+          "value": 1.0
+        },
+        {
+          "field": "交通手段_自家用車",
+          "value": 0.9943582510578279
+        }
+      ],
+      "top_places": [
+        {
+          "rank": 1,
+          "place": "越前大野城・城下町 エリア",
+          "users": 51
+        },
+        {
+          "rank": 2,
+          "place": "道の駅「禅の里」 エリア",
+          "users": 40
+        },
+        {
+          "rank": 3,
+          "place": "福井駅前 エリア",
+          "users": 40
+        }
+      ]
+    }
+  ]
+}

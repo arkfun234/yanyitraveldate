@@ -10,6 +10,7 @@ let SPOT_WEIGHTS  = {};   // 同行者×季节 → 景点权重
 let SPOT_MASTER   = [];   // data/spot_master.json の具体スポット候補
 let HOTELS        = [];   // 住宿数据
 let DATA_SUMMARY  = null; // 2025年度AI推薦データの要約
+let CLUSTER_TRAIT_PROFILES = null; // 6軸のクラスタートレイト分類補助データ
 
 let answers = {};
 let behaviorVector = [];
@@ -26,8 +27,9 @@ Promise.all([
   fetch("spot_weights_by_companion_season.json").then(r => r.json()),
   fetch("data/spot_master.json").then(r => r.json()),
   fetch("hotels.json").then(r => r.json()),
+  fetch("data/cluster_trait_profiles.json").then(r => r.ok ? r.json() : null).catch(() => null),
   fetch("data_summary_2025.json").then(r => r.ok ? r.json() : null).catch(() => null),
-]).then(([qData, mapData, weightsData, clusters, topPlacesData, spotWeights, spotMaster, hotels, dataSummary]) => {
+]).then(([qData, mapData, weightsData, clusters, topPlacesData, spotWeights, spotMaster, hotels, clusterTraitProfiles, dataSummary]) => {
   QUESTIONS    = qData;
   Q2PSYCH      = mapData;
   TAG_WEIGHTS  = weightsData;
@@ -36,6 +38,7 @@ Promise.all([
   SPOT_WEIGHTS = spotWeights;
   SPOT_MASTER  = Array.isArray(spotMaster?.spots) ? spotMaster.spots : [];
   HOTELS       = hotels;
+  CLUSTER_TRAIT_PROFILES = clusterTraitProfiles;
   DATA_SUMMARY = dataSummary;
   installResearchStyles();
   renderQuestions();
@@ -109,7 +112,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const tagCounts = calcTagCounts();
     lastTagCounts = tagCounts;
     behaviorVector = calcBehaviorVectorFromWeights(tagCounts);
-    const bestCluster = findBestCluster(behaviorVector);
+    const bestCluster = findBestCluster(behaviorVector, tagCounts);
 
     let clusterIndex = null;
     let clusterInfo = null;
@@ -145,6 +148,7 @@ document.addEventListener("DOMContentLoaded", () => {
       visited_before: window.userVisited === 'yes',
       visited_places: window.userVisitedPlaces || null,
       recommended_spots: recommendedSpots,
+      classification_debug: bestCluster?.classificationDebug || null,
     };
 
     showResult(clusterInfo, clusterIndex, recommendedSpots, recommendedHotels);
@@ -1286,6 +1290,78 @@ function spotTextFields(masterSpot) {
   ].filter(Boolean);
 }
 
+function getSpotQualityBoost(masterSpot) {
+  const qualityScore = Number(masterSpot?.quality_score) || 0;
+  const penalty = Number(masterSpot?.main_recommendation_penalty) || 0;
+  const spotType = String(masterSpot?.spot_type || '').toLowerCase();
+  let score = qualityScore * 4;
+
+  if (masterSpot?.is_core_tourism_spot === true) score += 30;
+  score -= penalty * 20;
+
+  if (spotType === 'transport') score -= 45;
+  else if (spotType === 'facility') score -= 35;
+  else if (spotType) score += 8;
+
+  if (masterSpot?.image) score += 8;
+  if (masterSpot?.url || (masterSpot?.website || [])[0]) score += 5;
+  if (masterSpot?.description) score += 4;
+
+  return score;
+}
+
+function scoreSpotCandidate(masterSpot, areaRecommendation, target, targetParts) {
+  const normalizedAreaNames = [masterSpot.primary_area, ...(masterSpot.areas || [])]
+    .filter(Boolean)
+    .map(normalizeSpotName)
+    .filter(Boolean);
+  const normalizedFields = spotTextFields(masterSpot).map(normalizeSpotName).filter(Boolean);
+  const normalizedCategories = (masterSpot.categories || []).map(normalizeSpotName).filter(Boolean);
+  const normalizedPurposeTags = (masterSpot.purpose_tags || []).map(normalizeSpotName).filter(Boolean);
+  const normalizedTraitTags = (masterSpot.trait_tags || []).map(normalizeSpotName).filter(Boolean);
+
+  let areaScore = 0;
+  normalizedAreaNames.forEach(area => {
+    if (!area || !target) return;
+    if (area === target) areaScore = Math.max(areaScore, 60);
+    else if (area.includes(target) || target.includes(area)) areaScore = Math.max(areaScore, 42);
+    targetParts.forEach(part => {
+      if (area.includes(part) || part.includes(area)) areaScore = Math.max(areaScore, 22);
+    });
+  });
+
+  let textScore = 0;
+  normalizedFields.forEach(field => {
+    if (!field || !target) return;
+    if (field === target) textScore += 24;
+    else if (field.includes(target) || target.includes(field)) textScore += 12;
+    targetParts.forEach(part => {
+      if (field.includes(part) || part.includes(field)) textScore += 4;
+    });
+  });
+
+  normalizedCategories.forEach(category => {
+    if (targetParts.some(part => category.includes(part) || part.includes(category))) textScore += 3;
+  });
+  normalizedPurposeTags.forEach(tag => {
+    if (targetParts.some(part => tag.includes(part) || part.includes(tag))) textScore += 4;
+  });
+  normalizedTraitTags.forEach(tag => {
+    if (targetParts.some(part => tag.includes(part) || part.includes(tag))) textScore += 4;
+  });
+
+  const recommendationScore = Number(areaRecommendation?.score) || 0;
+  const score = areaScore + textScore + getSpotQualityBoost(masterSpot) + Math.min(recommendationScore / 10, 8);
+
+  return {
+    spot: masterSpot,
+    score,
+    areaScore,
+    textScore,
+    isTransportOrFacility: ['transport', 'facility'].includes(String(masterSpot?.spot_type || '').toLowerCase())
+  };
+}
+
 function toSelectedSpot(masterSpot) {
   if (!masterSpot) return null;
   const area = masterSpot.primary_area || (masterSpot.areas || []).join('、') || '';
@@ -1299,7 +1375,11 @@ function toSelectedSpot(masterSpot) {
     lat: masterSpot.lat ?? null,
     lng: masterSpot.lng ?? null,
     purpose_tags: masterSpot.purpose_tags || [],
-    trait_tags: masterSpot.trait_tags || []
+    trait_tags: masterSpot.trait_tags || [],
+    spot_type: masterSpot.spot_type || '',
+    quality_score: Number(masterSpot.quality_score) || 0,
+    is_core_tourism_spot: masterSpot.is_core_tourism_spot === true,
+    main_recommendation_penalty: Number(masterSpot.main_recommendation_penalty) || 0
   };
 }
 
@@ -1311,40 +1391,19 @@ function findSpotFromMaster(areaRecommendation, usedSpotNames = new Set()) {
   const target = normalizeSpotName(areaRecommendation.place);
   const availableSpots = SPOT_MASTER.filter(s => s?.name && !usedSpotNames.has(s.name));
 
-  const areaMatch = availableSpots.find(s => {
-    const areaNames = [s.primary_area, ...(s.areas || [])].filter(Boolean).map(normalizeSpotName);
-    return areaNames.some(area => area && target && (area === target || area.includes(target) || target.includes(area)));
-  });
-  if (areaMatch) return areaMatch;
-
   const targetParts = String(areaRecommendation.place || '')
     .split(/[、,・･\s　/]+/)
     .map(normalizeSpotName)
     .filter(part => part.length >= 2);
 
-  let best = null;
-  let bestScore = 0;
-  availableSpots.forEach(s => {
-    const fields = spotTextFields(s);
-    const normalizedFields = fields.map(normalizeSpotName).filter(Boolean);
-    let score = 0;
+  const scoredCandidates = availableSpots
+    .map(s => scoreSpotCandidate(s, areaRecommendation, target, targetParts))
+    .filter(candidate => candidate.areaScore > 0 || candidate.textScore > 0)
+    .sort((a, b) => b.score - a.score);
 
-    normalizedFields.forEach(field => {
-      if (!field || !target) return;
-      if (field === target) score += 10;
-      else if (field.includes(target) || target.includes(field)) score += 5;
-      targetParts.forEach(part => {
-        if (field.includes(part) || part.includes(field)) score += 2;
-      });
-    });
+  if (scoredCandidates.length === 0) return null;
 
-    if (score > bestScore) {
-      bestScore = score;
-      best = s;
-    }
-  });
-
-  return bestScore > 0 ? best : null;
+  return scoredCandidates[0].spot;
 }
 
 function attachSelectedSpots(recommendedSpots) {
@@ -1361,7 +1420,11 @@ function attachSelectedSpots(recommendedSpots) {
       lat: null,
       lng: null,
       purpose_tags: [],
-      trait_tags: []
+      trait_tags: [],
+      spot_type: '',
+      quality_score: 0,
+      is_core_tourism_spot: false,
+      main_recommendation_penalty: 0
     };
 
     if (selectedSpot.name) usedSpotNames.add(selectedSpot.name);
@@ -1371,6 +1434,161 @@ function attachSelectedSpots(recommendedSpots) {
 
 // ===== 6. 景点筛选逻辑 =====
 // 优先级：同行者×季节 > 同行者 > 季节 > Cluster Top3（兜底）
+function normalizePlaceName(value) {
+  return normalizeSpotName(value)
+    .replace(/(駅|空港|バス停|駐車場|案内所|センター|施設|交通)$/g, '')
+    .trim();
+}
+
+function getClusterPlaces(clusterInfo) {
+  if (!clusterInfo || !Array.isArray(clusterInfo.top_places)) return [];
+  return clusterInfo.top_places
+    .filter(p => p?.place)
+    .map((p, index) => ({
+      place: p.place,
+      normalized: normalizePlaceName(p.place),
+      users: Number(p.users) || 0,
+      rank: index + 1
+    }))
+    .filter(p => p.normalized);
+}
+
+function placeSimilarity(placeA, placeB) {
+  const a = normalizePlaceName(placeA);
+  const b = normalizePlaceName(placeB);
+  if (!a || !b) return 0;
+  if (a === b) return 1;
+  if (a.includes(b) || b.includes(a)) return 0.86;
+
+  const splitParts = value => String(value || '')
+    .split(/[、,・･\s　/]+/)
+    .map(normalizePlaceName)
+    .filter(part => part.length >= 2);
+  const partsA = splitParts(placeA);
+  const partsB = splitParts(placeB);
+  if (!partsA.length || !partsB.length) return 0;
+
+  const matches = partsA.filter(aPart =>
+    partsB.some(bPart => aPart === bPart || aPart.includes(bPart) || bPart.includes(aPart))
+  ).length;
+
+  return matches / Math.max(partsA.length, partsB.length);
+}
+
+function getCandidateMasterSpot(candidate) {
+  return findSpotFromMaster(candidate, new Set());
+}
+
+function getPlaceAreaTokens(place) {
+  const normalized = normalizePlaceName(place);
+  const compact = String(normalized || '').replace(/(エリア|地域|方面|周辺)$/g, '');
+  return String(compact || '')
+    .split(/[、,・･\s　/]+/)
+    .map(normalizePlaceName)
+    .filter(part => part.length >= 2);
+}
+
+function getClusterTraitTokens(clusterInfo) {
+  if (!clusterInfo) return [];
+  const values = [
+    clusterInfo.name,
+    clusterInfo.description,
+    ...(clusterInfo.tags || []),
+    ...(clusterInfo.keywords || [])
+  ];
+  return values
+    .flatMap(value => String(value || '').split(/[、,，.。・･\s　/]+/))
+    .map(normalizePlaceName)
+    .filter(token => token.length >= 2);
+}
+
+function scoreRecommendationCandidate(candidate, context) {
+  const clusterPlaces = context.clusterPlaces || [];
+  const normalizedPlace = normalizePlaceName(candidate.place);
+  const masterSpot = candidate.masterSpot || getCandidateMasterSpot(candidate);
+  const selectedSpot = toSelectedSpot(masterSpot);
+  const candidateAreaTokens = [
+    ...getPlaceAreaTokens(candidate.place),
+    ...getPlaceAreaTokens(selectedSpot?.area)
+  ];
+  const clusterAreaTokens = clusterPlaces.flatMap(p => getPlaceAreaTokens(p.place));
+  const clusterTraitTokens = context.clusterTraitTokens || [];
+  const spotTagTokens = [
+    ...(selectedSpot?.purpose_tags || []),
+    ...(selectedSpot?.trait_tags || [])
+  ].map(normalizePlaceName).filter(Boolean);
+
+  let bestClusterSimilarity = 0;
+  clusterPlaces.forEach(clusterPlace => {
+    const similarity = placeSimilarity(candidate.place, clusterPlace.place);
+    if (similarity > bestClusterSimilarity) {
+      bestClusterSimilarity = similarity;
+    }
+  });
+
+  const sameAreaHits = candidateAreaTokens.filter(token =>
+    clusterAreaTokens.some(clusterToken =>
+      token === clusterToken || token.includes(clusterToken) || clusterToken.includes(token)
+    )
+  ).length;
+  const areaScore = Math.min(sameAreaHits * 18, 36);
+
+  const tagMatches = spotTagTokens.filter(tag =>
+    clusterTraitTokens.some(token =>
+      tag === token || tag.includes(token) || token.includes(tag)
+    )
+  ).length;
+  const traitScore = Math.min(tagMatches * 14, 42);
+
+  const qualityRaw = Number(selectedSpot?.quality_score) || 0;
+  const penalty = Number(selectedSpot?.main_recommendation_penalty) || 0;
+  const qualityScore =
+    qualityRaw * 8 +
+    (selectedSpot?.is_core_tourism_spot ? 42 : 0) -
+    penalty * 35 +
+    (selectedSpot?.image ? 7 : 0) +
+    (selectedSpot?.url ? 5 : 0) +
+    (selectedSpot?.description ? 4 : 0);
+
+  const companionSeasonScore = Number(candidate.companionSeasonScore ?? candidate.baseScore ?? candidate.score) || 0;
+  let diversityScore = 24;
+  (context.selectedRecommendations || []).forEach(selected => {
+    const similarity = placeSimilarity(candidate.place, selected.place);
+    if (similarity >= 0.86) diversityScore -= 80;
+    else if (similarity >= 0.5) diversityScore -= 32;
+  });
+  if (selectedSpot?.name && context.usedSpotNames?.has(selectedSpot.name)) diversityScore -= 90;
+  if (context.usedPlaceKeys?.has(normalizedPlace)) diversityScore -= 90;
+
+  const globalCommonScore = candidate.globalRank
+    ? Math.max(0, 28 - candidate.globalRank * 2)
+    : Math.min((Number(candidate.globalCount) || 0) / 6, 22);
+  const nonGlobalDiscoveryBoost = candidate.category === 'discovery' && !context.globalTopFiveKeys?.has(normalizedPlace) ? 24 : 0;
+  const clusterScore = bestClusterSimilarity * 145 + areaScore;
+  const finalScore =
+    clusterScore +
+    Math.min(companionSeasonScore, 80) +
+    qualityScore +
+    traitScore +
+    diversityScore +
+    globalCommonScore +
+    nonGlobalDiscoveryBoost;
+
+  return {
+    ...candidate,
+    masterSpot,
+    selectedSpot,
+    score: Math.round(finalScore),
+    recommendationDebug: {
+      clusterScore: Math.round(clusterScore),
+      companionSeasonScore: Math.round(companionSeasonScore),
+      qualityScore: Math.round(qualityScore + traitScore),
+      diversityScore: Math.round(diversityScore),
+      finalScore: Math.round(finalScore)
+    }
+  };
+}
+
 function getRecommendedSpots(clusterInfo, companion, season, visitedPlaces) {
   const visited = visitedPlaces
     ? visitedPlaces.split(/[、,，\s]+/).map(s => s.trim()).filter(Boolean)
@@ -1382,25 +1600,61 @@ function getRecommendedSpots(clusterInfo, companion, season, visitedPlaces) {
   };
 
   const used = new Set();
+  const usedKey = place => normalizePlaceName(place) || String(place || '').trim();
+  const isUsed = place => used.has(usedKey(place));
+  const markUsed = place => used.add(usedKey(place));
+  const clusterPlaces = getClusterPlaces(clusterInfo);
+  const usedSpotNames = new Set();
+  const selectedRecommendations = [];
+  const selectBestCandidate = (candidates, options = {}) => {
+    const scored = candidates
+      .filter(s => s?.place && !isVisited(s.place))
+      .map(s => scoreRecommendationCandidate(s, {
+        clusterInfo,
+        clusterPlaces,
+        clusterTraitTokens: getClusterTraitTokens(clusterInfo),
+        globalTopFiveKeys,
+        selectedRecommendations,
+        usedPlaceKeys: used,
+        usedSpotNames
+      }))
+      .filter(s => {
+        if (isUsed(s.place)) return false;
+        if (s.selectedSpot?.name && usedSpotNames.has(s.selectedSpot.name)) return false;
+        if (options.requireClusterRelated && s.recommendationDebug.clusterScore < 45) return false;
+        return true;
+      })
+      .sort((a, b) => b.recommendationDebug.finalScore - a.recommendationDebug.finalScore);
+
+    const selected = scored[0] || null;
+    if (selected) {
+      markUsed(selected.place);
+      if (selected.selectedSpot?.name) usedSpotNames.add(selected.selectedSpot.name);
+      selectedRecommendations.push(selected);
+    }
+    return selected;
+  };
 
   // 1. 定番推薦：2025年度推薦ログ全体で高頻度のスポット
   const globalTop = (DATA_SUMMARY?.top_spots || [])
     .filter(s => s && s.place && !isVisited(s.place));
+  const globalTopFiveKeys = new Set(globalTop.slice(0, 5).map(s => usedKey(s.place)));
 
-  let classic = null;
-  for (const s of globalTop) {
-    if (!used.has(s.place)) {
-      classic = {
-        place: s.place,
-        score: s.count || 0,
-        source: 'global',
-        category: 'classic',
-        categoryJa: '定番推薦',
-        categoryZh: '经典推荐'
-      };
-      used.add(s.place);
-      break;
-    }
+  const makeClassicCandidate = (s, index) => ({
+    place: s.place,
+    score: s.count || 0,
+    globalRank: index + 1,
+    source: 'global',
+    category: 'classic',
+    categoryJa: '定番推薦',
+    categoryZh: '经典推荐'
+  });
+
+  const classicGlobalPool = globalTop.slice(0, 18).map(makeClassicCandidate);
+  let classic = selectBestCandidate(classicGlobalPool, { requireClusterRelated: true });
+
+  if (!classic) {
+    classic = selectBestCandidate(globalTop.map(makeClassicCandidate));
   }
 
   // 2. 個性化推薦：同行者×季節、同行者、季節の推薦傾向
@@ -1423,39 +1677,38 @@ function getRecommendedSpots(clusterInfo, companion, season, visitedPlaces) {
     .map(([place, score]) => ({
       place,
       score: Math.round(score),
+      baseScore: Math.round(score),
+      companionSeasonScore: Math.round(score),
       source: 'data',
       category: 'personalized',
       categoryJa: '個性化推薦',
       categoryZh: '个性化推荐'
     }))
-    .sort((a, b) => b.score - a.score);
+    .sort((a, b) => b.companionSeasonScore - a.companionSeasonScore);
 
-  let personalized = null;
-  for (const s of personalizedCandidates) {
-    if (!used.has(s.place)) {
-      personalized = s;
-      used.add(s.place);
-      break;
-    }
-  }
+  const personalized = selectBestCandidate(personalizedCandidates);
 
   // 3. 発見推薦：人気上位に偏りすぎないよう、クラスター候補や中位候補から補完
   const discoveryCandidates = [];
 
   // Cluster由来の候補
-  if (clusterInfo && Array.isArray(clusterInfo.top_places)) {
-    clusterInfo.top_places.forEach(p => {
+  clusterPlaces
+    .filter(p => !globalTopFiveKeys.has(usedKey(p.place)))
+    .concat(clusterPlaces.filter(p => globalTopFiveKeys.has(usedKey(p.place))))
+    .forEach(p => {
       if (!p.place || isVisited(p.place)) return;
       discoveryCandidates.push({
         place: p.place,
         score: p.users || 0,
+        baseScore: p.users || 0,
+        companionSeasonScore: p.users || 0,
+        clusterRank: p.rank,
         source: 'cluster',
         category: 'discovery',
         categoryJa: '発見推薦',
         categoryZh: '发现推荐'
       });
     });
-  }
 
   // 条件別推薦の下位候補も発見候補に使う
   personalizedCandidates.slice(2, 8).forEach(p => {
@@ -1472,6 +1725,9 @@ function getRecommendedSpots(clusterInfo, companion, season, visitedPlaces) {
     discoveryCandidates.push({
       place: s.place,
       score: s.count || 0,
+      baseScore: s.count || 0,
+      companionSeasonScore: 0,
+      globalCount: s.count || 0,
       source: 'global_mid',
       category: 'discovery',
       categoryJa: '発見推薦',
@@ -1479,14 +1735,7 @@ function getRecommendedSpots(clusterInfo, companion, season, visitedPlaces) {
     });
   });
 
-  let discovery = null;
-  for (const s of discoveryCandidates) {
-    if (!used.has(s.place)) {
-      discovery = s;
-      used.add(s.place);
-      break;
-    }
-  }
+  const discovery = selectBestCandidate(discoveryCandidates);
 
   // 兜底：如果某一类缺失，就从已有候选中补齐
   const result = [];
@@ -1497,22 +1746,14 @@ function getRecommendedSpots(clusterInfo, companion, season, visitedPlaces) {
 
   const fallbackCandidates = [
     ...personalizedCandidates,
-    ...globalTop.map(s => ({
-      place: s.place,
-      score: s.count || 0,
-      source: 'global',
-      category: 'classic',
-      categoryJa: '定番推薦',
-      categoryZh: '经典推荐'
-    })),
+    ...globalTop.map(makeClassicCandidate),
     ...discoveryCandidates
   ];
 
-  for (const s of fallbackCandidates) {
-    if (result.length >= 3) break;
-    if (!s.place || used.has(s.place) || isVisited(s.place)) continue;
-    result.push(s);
-    used.add(s.place);
+  while (result.length < 3) {
+    const fallback = selectBestCandidate(fallbackCandidates);
+    if (!fallback) break;
+    result.push(fallback);
   }
 
   return result.slice(0, 3);
@@ -1571,15 +1812,70 @@ function calcTagCounts() {
 }
 
 // ===== 9. 53维行为向量 =====
-function calcBehaviorVectorFromWeights(tagCounts) {
-  const clusterKeys = Object.keys(CLUSTERS);
+function isPostTripEvaluationField(field) {
+  const name = String(field || '');
+  return [
+    'NPS',
+    '満足度',
+    '満足度の理由',
+    '今後の来訪意向',
+    '不便さ',
+    '不便さの内容',
+    'エリア訪問回数',
+    '婧€瓒冲害',
+    '婧€瓒冲害銇悊鐢?',
+    '浠婂緦銇潵瑷剰鍚?',
+    '涓嶄究',
+    '銈ㄣ儶銈㈣í鍟忓洖鏁?'
+  ].some(keyword => name.includes(keyword));
+}
+
+function getNumericClusterFields() {
+  const clusterKeys = Object.keys(CLUSTERS || {});
   if (!clusterKeys.length) return [];
+  const fieldSet = new Set();
+  clusterKeys.forEach(key => {
+    const cluster = CLUSTERS[key];
+    if (!cluster || typeof cluster !== 'object') return;
+    Object.entries(cluster).forEach(([field, value]) => {
+      if (typeof value === "number" && !Number.isNaN(value)) fieldSet.add(field);
+    });
+  });
+  return Array.from(fieldSet);
+}
 
-  const firstCluster = CLUSTERS[clusterKeys[0]];
-  const fields = Object.keys(firstCluster)
-    .filter(k => typeof firstCluster[k] === "number" && !Number.isNaN(firstCluster[k]));
+function getGeneratedBehaviorFields() {
+  const fields = new Set();
+  Object.values(TAG_WEIGHTS || {}).forEach(weightDef => {
+    if (!weightDef || typeof weightDef !== 'object') return;
+    Object.entries(weightDef).forEach(([field, value]) => {
+      if (typeof value === "number" && !Number.isNaN(value)) fields.add(field);
+    });
+  });
+  return Array.from(fields);
+}
 
-  const vec = Array(fields.length).fill(0);
+function getClassificationFeatureKeys() {
+  const clusterFields = new Set(getNumericClusterFields());
+  return getGeneratedBehaviorFields()
+    .filter(field => clusterFields.has(field))
+    .filter(field => !isPostTripEvaluationField(field))
+    .sort();
+}
+
+function getIgnoredClusterFields(classificationFeatureKeys = getClassificationFeatureKeys()) {
+  const valid = new Set(classificationFeatureKeys);
+  return getNumericClusterFields()
+    .filter(field => !valid.has(field))
+    .sort();
+}
+
+function calcBehaviorVectorFromWeights(tagCounts) {
+  const featureKeys = getClassificationFeatureKeys();
+  const vec = {};
+  featureKeys.forEach(field => {
+    vec[field] = 0;
+  });
 
   for (const tag in tagCounts) {
     const count = tagCounts[tag];
@@ -1587,12 +1883,129 @@ function calcBehaviorVectorFromWeights(tagCounts) {
     if (!weightDef) continue;
 
     for (const field in weightDef) {
-      const idx = fields.indexOf(field);
-      if (idx !== -1) vec[idx] += count * weightDef[field];
+      if (Object.prototype.hasOwnProperty.call(vec, field)) {
+        vec[field] += count * weightDef[field];
+      }
     }
   }
 
   return vec;
+}
+
+const TRAVEL_TRAIT_KEYS = [
+  'planning',
+  'relaxation',
+  'exploration_experience',
+  'food_value',
+  'nature',
+  'efficiency_touring'
+];
+
+const TAG_TRAIT_KEYWORDS = {
+  planning: [
+    'planning',
+    'plan_',
+    'preparedness',
+    'structure',
+    'control',
+    'official_info',
+    'information',
+    'validation',
+    'logical',
+    'risk_minimization',
+    'risk_awareness'
+  ],
+  relaxation: [
+    'relaxation',
+    'stress',
+    'slow',
+    'stay_based',
+    'tranquility',
+    'privacy',
+    'quality_priority',
+    'presence_focus',
+    'subjective_satisfaction',
+    'low_control'
+  ],
+  exploration_experience: [
+    'experience',
+    'explor',
+    'novelty',
+    'local_culture',
+    'activity',
+    'spontaneity',
+    'uncertainty',
+    'intuition',
+    'emotion',
+    'opportunistic',
+    'situational'
+  ],
+  food_value: [
+    'consumption',
+    'cost',
+    'value',
+    'budget',
+    'price',
+    'spending',
+    'willingness_to_pay',
+    'cost_benefit'
+  ],
+  nature: [
+    'nature',
+    'outdoor',
+    'tranquility_seeking',
+    'mixed_environment'
+  ],
+  efficiency_touring: [
+    'schedule_density_high',
+    'multi_spot',
+    'pace_fast',
+    'efficiency',
+    'time_optimization',
+    'coverage',
+    'hopping'
+  ]
+};
+
+function computeUserTraitScores(tagCounts) {
+  const rawScores = {};
+  TRAVEL_TRAIT_KEYS.forEach(trait => {
+    rawScores[trait] = 0;
+  });
+
+  Object.entries(tagCounts || {}).forEach(([tag, count]) => {
+    const normalizedTag = String(tag || '').toLowerCase();
+    TRAVEL_TRAIT_KEYS.forEach(trait => {
+      const hitCount = (TAG_TRAIT_KEYWORDS[trait] || [])
+        .filter(keyword => normalizedTag.includes(keyword))
+        .length;
+      if (hitCount > 0) rawScores[trait] += count * hitCount;
+    });
+  });
+
+  const maxScore = Math.max(...TRAVEL_TRAIT_KEYS.map(trait => rawScores[trait]), 0);
+  const traitScores = {};
+  TRAVEL_TRAIT_KEYS.forEach(trait => {
+    traitScores[trait] = maxScore > 0 ? rawScores[trait] / maxScore : 0;
+  });
+  return traitScores;
+}
+
+function getClusterTraitProfileMap() {
+  const map = {};
+  const profiles = Array.isArray(CLUSTER_TRAIT_PROFILES?.clusters)
+    ? CLUSTER_TRAIT_PROFILES.clusters
+    : [];
+  profiles.forEach(profile => {
+    if (profile?.cluster_id) map[profile.cluster_id] = profile;
+  });
+  return map;
+}
+
+function traitSimilarity(userTraitScores, clusterTraitScores) {
+  const userVals = TRAVEL_TRAIT_KEYS.map(trait => userTraitScores?.[trait] || 0);
+  const clusterVals = TRAVEL_TRAIT_KEYS.map(trait => clusterTraitScores?.[trait] || 0);
+  return cosineSimilarity(userVals, clusterVals);
 }
 
 // ===== 10. 余弦相似度 =====
@@ -1610,22 +2023,63 @@ function cosineSimilarity(a, b) {
 }
 
 // ===== 11. 找最近Cluster =====
-function findBestCluster(realVec) {
-  if (!CLUSTERS || !realVec.length) return null;
+function findBestCluster(realVec, tagCounts = lastTagCounts) {
+  const featureKeys = getClassificationFeatureKeys();
+  if (!CLUSTERS || !featureKeys.length || !realVec) return null;
 
   let best = null;
   let bestScore = -Infinity;
+  const similarities = [];
+  const realVals = featureKeys.map(field => realVec[field] || 0);
+  const userTraitScores = computeUserTraitScores(tagCounts || {});
+  const traitProfilesByCluster = getClusterTraitProfileMap();
+  const hasTraitProfiles = Object.keys(traitProfilesByCluster).length > 0;
 
   Object.entries(CLUSTERS).forEach(([key, obj]) => {
-    const vals = Object.values(obj).filter(v => typeof v === "number" && !Number.isNaN(v));
-    if (vals.length !== realVec.length) return;
+    const vals = featureKeys.map(field => {
+      const value = obj?.[field];
+      return typeof value === "number" && !Number.isNaN(value) ? value : 0;
+    });
+    const behaviorSimilarity = cosineSimilarity(realVals, vals);
+    const clusterTraitScores = traitProfilesByCluster[key]?.trait_scores || null;
+    const clusterTraitSimilarity = clusterTraitScores
+      ? traitSimilarity(userTraitScores, clusterTraitScores)
+      : behaviorSimilarity;
+    const finalScore = hasTraitProfiles
+      ? behaviorSimilarity * 0.55 + clusterTraitSimilarity * 0.45
+      : behaviorSimilarity;
 
-    const score = cosineSimilarity(realVec, vals);
-    if (score > bestScore) {
-      bestScore = score;
-      best = { id: key, score, raw: obj };
+    similarities.push({
+      id: key,
+      behaviorSimilarity,
+      traitSimilarity: clusterTraitSimilarity,
+      finalScore,
+      score: finalScore
+    });
+    if (finalScore > bestScore) {
+      bestScore = finalScore;
+      best = {
+        id: key,
+        score: finalScore,
+        behaviorSimilarity,
+        traitSimilarity: clusterTraitSimilarity,
+        raw: obj
+      };
     }
   });
+
+  if (best) {
+    similarities.sort((a, b) => b.finalScore - a.finalScore);
+    best.classificationDebug = {
+      top5ClusterSimilarities: similarities.slice(0, 5),
+      classificationFeatureCount: featureKeys.length,
+      ignoredClusterFields: getIgnoredClusterFields(featureKeys),
+      userTraitScores,
+      behaviorSimilarity: best.behaviorSimilarity,
+      traitSimilarity: best.traitSimilarity,
+      finalScore: best.score
+    };
+  }
 
   return best;
 }
