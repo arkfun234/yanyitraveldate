@@ -1,0 +1,21 @@
+﻿cluster_id,selected_count,selected_share,avg_final_score,avg_behavior_similarity,avg_trait_similarity,cluster_trait_top3
+cluster_0,63,0.063,0.746572,0.791504,0.691655,relaxation | efficiency_touring | food_value
+cluster_1,10,0.01,0.686201,0.815322,0.528387,nature | exploration_experience | food_value
+cluster_2,366,0.366,0.744789,0.707416,0.790469,exploration_experience | food_value | relaxation
+cluster_3,9,0.009,0.806247,0.829865,0.77738,relaxation | food_value | efficiency_touring
+cluster_4,27,0.027,0.744039,0.803406,0.671479,food_value | exploration_experience | relaxation
+cluster_5,94,0.094,0.779106,0.761457,0.800678,relaxation | exploration_experience | food_value
+cluster_6,0,0.0,0.0,0.0,0.0,relaxation | efficiency_touring | nature
+cluster_7,40,0.04,0.738255,0.763846,0.706979,efficiency_touring | relaxation | exploration_experience
+cluster_8,0,0.0,0.0,0.0,0.0,relaxation | exploration_experience | efficiency_touring
+cluster_9,16,0.016,0.692952,0.81898,0.538916,nature | exploration_experience | food_value
+cluster_10,16,0.016,0.696905,0.807692,0.561499,food_value | relaxation | exploration_experience
+cluster_11,0,0.0,0.0,0.0,0.0,relaxation | food_value | exploration_experience
+cluster_12,8,0.008,0.790399,0.817522,0.757249,relaxation | efficiency_touring | food_value
+cluster_13,0,0.0,0.0,0.0,0.0,relaxation | food_value | exploration_experience
+cluster_14,2,0.002,0.738248,0.893033,0.549066,food_value | relaxation | efficiency_touring
+cluster_15,212,0.212,0.735929,0.749472,0.719377,relaxation | exploration_experience | food_value
+cluster_16,134,0.134,0.749467,0.771292,0.722793,relaxation | exploration_experience | food_value
+cluster_17,0,0.0,0.0,0.0,0.0,efficiency_touring | relaxation | food_value
+cluster_18,2,0.002,0.700316,0.772355,0.612268,relaxation | nature | efficiency_touring
+cluster_19,1,0.001,0.679974,0.564424,0.821202,efficiency_touring | food_value | exploration_experience
