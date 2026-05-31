@@ -1,0 +1,847 @@
+[
+  {
+    "auto_cluster_id": "teacher_auto_cluster_17",
+    "source_cluster_id": 17,
+    "sample_count": 859,
+    "summary": "恐竜や自然を満喫し、清潔な施設や無料スポットを賢く活用しながら、家族で地元の食や景観をのんびり楽しむ癒やしの旅。",
+    "trait_scores": {
+      "planning": 0.0,
+      "relaxation": 1.0,
+      "exploration_experience": 0.5,
+      "food_value": 1.0,
+      "nature": 0.5,
+      "efficiency_touring": 0.0
+    },
+    "top_traits": [
+      "relaxation",
+      "food_value",
+      "exploration_experience"
+    ],
+    "purpose_tags": [
+      "宿でのんびり過ごす",
+      "地元の美味しいものを食べる",
+      "花見や紅葉などの自然鑑賞",
+      "各種体験"
+    ],
+    "matched_keywords": {
+      "planning": [],
+      "relaxation": [
+        "癒やし",
+        "のんびり"
+      ],
+      "exploration_experience": [
+        "恐竜"
+      ],
+      "food_value": [
+        "食",
+        "地元"
+      ],
+      "nature": [
+        "自然"
+      ],
+      "efficiency_touring": []
+    },
+    "source": "teacher_auto_clustering_baseline"
+  },
+  {
+    "auto_cluster_id": "teacher_auto_cluster_9",
+    "source_cluster_id": 9,
+    "sample_count": 850,
+    "summary": "清潔な街並みや景色を愛で、博物館や駅前での買い物を家族や団体で気軽に楽しむ、利便性と快適さを重視した観光スタイル。（58文字）",
+    "trait_scores": {
+      "planning": 1.0,
+      "relaxation": 0.0,
+      "exploration_experience": 0.5,
+      "food_value": 0.5,
+      "nature": 0.5,
+      "efficiency_touring": 0.5
+    },
+    "top_traits": [
+      "planning",
+      "exploration_experience",
+      "food_value"
+    ],
+    "purpose_tags": [
+      "花見や紅葉などの自然鑑賞",
+      "各種体験",
+      "ドライブ・ツーリング"
+    ],
+    "matched_keywords": {
+      "planning": [
+        "利便性",
+        "快適"
+      ],
+      "relaxation": [],
+      "exploration_experience": [
+        "博物館"
+      ],
+      "food_value": [
+        "買い物"
+      ],
+      "nature": [
+        "景色"
+      ],
+      "efficiency_touring": [
+        "駅"
+      ]
+    },
+    "source": "teacher_auto_clustering_baseline"
+  },
+  {
+    "auto_cluster_id": "teacher_auto_cluster_0",
+    "source_cluster_id": 0,
+    "sample_count": 802,
+    "summary": "恐竜や歴史、体験を目的とした家族連れやリピーター。新施設や道の駅を巡り、地元の食や人との交流を楽しむアクティブな旅。（59文字）",
+    "trait_scores": {
+      "planning": 0.0,
+      "relaxation": 0.0,
+      "exploration_experience": 1.0,
+      "food_value": 0.6667,
+      "nature": 0.0,
+      "efficiency_touring": 0.6667
+    },
+    "top_traits": [
+      "exploration_experience",
+      "food_value",
+      "efficiency_touring"
+    ],
+    "purpose_tags": [
+      "地元の美味しいものを食べる",
+      "名所、旧跡の観光",
+      "各種体験",
+      "ドライブ・ツーリング"
+    ],
+    "matched_keywords": {
+      "planning": [],
+      "relaxation": [],
+      "exploration_experience": [
+        "体験",
+        "恐竜",
+        "歴史"
+      ],
+      "food_value": [
+        "食",
+        "地元"
+      ],
+      "nature": [],
+      "efficiency_touring": [
+        "道の駅",
+        "駅"
+      ]
+    },
+    "source": "teacher_auto_clustering_baseline"
+  },
+  {
+    "auto_cluster_id": "teacher_auto_cluster_7",
+    "source_cluster_id": 7,
+    "sample_count": 791,
+    "summary": "清潔な施設や混雑の少なさを重視し、博物館や温泉、自然の景色を楽しみながら、のどかな雰囲気の中でゆったりと過ごす快適な旅。",
+    "trait_scores": {
+      "planning": 0.5,
+      "relaxation": 1.0,
+      "exploration_experience": 0.5,
+      "food_value": 0.0,
+      "nature": 1.0,
+      "efficiency_touring": 0.0
+    },
+    "top_traits": [
+      "relaxation",
+      "nature",
+      "planning"
+    ],
+    "purpose_tags": [
+      "温泉や露天風呂",
+      "宿でのんびり過ごす",
+      "花見や紅葉などの自然鑑賞",
+      "各種体験"
+    ],
+    "matched_keywords": {
+      "planning": [
+        "快適"
+      ],
+      "relaxation": [
+        "温泉",
+        "ゆったり"
+      ],
+      "exploration_experience": [
+        "博物館"
+      ],
+      "food_value": [],
+      "nature": [
+        "自然",
+        "景色"
+      ],
+      "efficiency_touring": []
+    },
+    "source": "teacher_auto_clustering_baseline"
+  },
+  {
+    "auto_cluster_id": "teacher_auto_cluster_11",
+    "source_cluster_id": 11,
+    "sample_count": 681,
+    "summary": "子連れ家族やリピーターが、名所や美食を楽しみ、施設の清潔さや接客の質を重視して快適に福井を満喫する、体験・交流型の旅行。",
+    "trait_scores": {
+      "planning": 0.5,
+      "relaxation": 0.0,
+      "exploration_experience": 1.0,
+      "food_value": 0.5,
+      "nature": 0.0,
+      "efficiency_touring": 0.0
+    },
+    "top_traits": [
+      "exploration_experience",
+      "planning",
+      "food_value"
+    ],
+    "purpose_tags": [
+      "地元の美味しいものを食べる",
+      "名所、旧跡の観光",
+      "各種体験"
+    ],
+    "matched_keywords": {
+      "planning": [
+        "快適"
+      ],
+      "relaxation": [],
+      "exploration_experience": [
+        "体験",
+        "名所"
+      ],
+      "food_value": [
+        "食"
+      ],
+      "nature": [],
+      "efficiency_touring": []
+    },
+    "source": "teacher_auto_clustering_baseline"
+  },
+  {
+    "auto_cluster_id": "teacher_auto_cluster_3",
+    "source_cluster_id": 3,
+    "sample_count": 677,
+    "summary": "街並みや景色の美しさ、施設の清潔感に満足し、混雑のない快適な環境で心穏やかに景色や食を楽しむ、質を重視した旅行スタイル。",
+    "trait_scores": {
+      "planning": 1.0,
+      "relaxation": 0.0,
+      "exploration_experience": 0.0,
+      "food_value": 1.0,
+      "nature": 1.0,
+      "efficiency_touring": 0.0
+    },
+    "top_traits": [
+      "planning",
+      "food_value",
+      "nature"
+    ],
+    "purpose_tags": [
+      "地元の美味しいものを食べる",
+      "花見や紅葉などの自然鑑賞"
+    ],
+    "matched_keywords": {
+      "planning": [
+        "快適"
+      ],
+      "relaxation": [],
+      "exploration_experience": [],
+      "food_value": [
+        "食"
+      ],
+      "nature": [
+        "景色"
+      ],
+      "efficiency_touring": []
+    },
+    "source": "teacher_auto_clustering_baseline"
+  },
+  {
+    "auto_cluster_id": "teacher_auto_cluster_4",
+    "source_cluster_id": 4,
+    "sample_count": 593,
+    "summary": "混雑を避け、歴史や自然をのんびり堪能。便利な設備や親切な接客を重視し、地元の食や買い物を効率よく楽しむ快適な個人旅行。",
+    "trait_scores": {
+      "planning": 0.6667,
+      "relaxation": 0.3333,
+      "exploration_experience": 0.3333,
+      "food_value": 1.0,
+      "nature": 0.3333,
+      "efficiency_touring": 0.0
+    },
+    "top_traits": [
+      "food_value",
+      "planning",
+      "relaxation"
+    ],
+    "purpose_tags": [
+      "宿でのんびり過ごす",
+      "地元の美味しいものを食べる",
+      "花見や紅葉などの自然鑑賞",
+      "名所、旧跡の観光"
+    ],
+    "matched_keywords": {
+      "planning": [
+        "便利",
+        "快適"
+      ],
+      "relaxation": [
+        "のんびり"
+      ],
+      "exploration_experience": [
+        "歴史"
+      ],
+      "food_value": [
+        "食",
+        "地元",
+        "買い物"
+      ],
+      "nature": [
+        "自然"
+      ],
+      "efficiency_touring": []
+    },
+    "source": "teacher_auto_clustering_baseline"
+  },
+  {
+    "auto_cluster_id": "teacher_auto_cluster_2",
+    "source_cluster_id": 2,
+    "sample_count": 584,
+    "summary": "恐竜や歴史の展示を楽しみ、清潔な施設での買い物やサービスを快適に堪能する、利便性と見応えを重視した満足度の高い旅行スタイル。",
+    "trait_scores": {
+      "planning": 1.0,
+      "relaxation": 0.0,
+      "exploration_experience": 1.0,
+      "food_value": 0.5,
+      "nature": 0.0,
+      "efficiency_touring": 0.0
+    },
+    "top_traits": [
+      "planning",
+      "exploration_experience",
+      "food_value"
+    ],
+    "purpose_tags": [
+      "名所、旧跡の観光",
+      "各種体験"
+    ],
+    "matched_keywords": {
+      "planning": [
+        "利便性",
+        "快適"
+      ],
+      "relaxation": [],
+      "exploration_experience": [
+        "恐竜",
+        "歴史"
+      ],
+      "food_value": [
+        "買い物"
+      ],
+      "nature": [],
+      "efficiency_touring": []
+    },
+    "source": "teacher_auto_clustering_baseline"
+  },
+  {
+    "auto_cluster_id": "teacher_auto_cluster_15",
+    "source_cluster_id": 15,
+    "sample_count": 544,
+    "summary": "恐竜や歴史、美食を求め、整備された駅や道の駅を巡る。地元の温かなもてなしや体験を楽しみ、快適さを重視する幅広い世代の旅。",
+    "trait_scores": {
+      "planning": 0.3333,
+      "relaxation": 0.0,
+      "exploration_experience": 1.0,
+      "food_value": 0.6667,
+      "nature": 0.0,
+      "efficiency_touring": 0.6667
+    },
+    "top_traits": [
+      "exploration_experience",
+      "food_value",
+      "efficiency_touring"
+    ],
+    "purpose_tags": [
+      "地元の美味しいものを食べる",
+      "名所、旧跡の観光",
+      "各種体験",
+      "ドライブ・ツーリング"
+    ],
+    "matched_keywords": {
+      "planning": [
+        "快適"
+      ],
+      "relaxation": [],
+      "exploration_experience": [
+        "体験",
+        "恐竜",
+        "歴史"
+      ],
+      "food_value": [
+        "食",
+        "地元"
+      ],
+      "nature": [],
+      "efficiency_touring": [
+        "道の駅",
+        "駅"
+      ]
+    },
+    "source": "teacher_auto_clustering_baseline"
+  },
+  {
+    "auto_cluster_id": "teacher_auto_cluster_12",
+    "source_cluster_id": 12,
+    "sample_count": 507,
+    "summary": "温泉と海鮮グルメを軸に、恐竜博物館や買い物、自然体験を家族でゆったり満喫する、清潔感と利便性を重視したリフレッシュ旅。（60文字）",
+    "trait_scores": {
+      "planning": 0.3333,
+      "relaxation": 1.0,
+      "exploration_experience": 1.0,
+      "food_value": 1.0,
+      "nature": 0.6667,
+      "efficiency_touring": 0.0
+    },
+    "top_traits": [
+      "relaxation",
+      "exploration_experience",
+      "food_value"
+    ],
+    "purpose_tags": [
+      "温泉や露天風呂",
+      "宿でのんびり過ごす",
+      "地元の美味しいものを食べる",
+      "花見や紅葉などの自然鑑賞",
+      "各種体験"
+    ],
+    "matched_keywords": {
+      "planning": [
+        "利便性"
+      ],
+      "relaxation": [
+        "温泉",
+        "ゆったり",
+        "リフレッシュ"
+      ],
+      "exploration_experience": [
+        "体験",
+        "博物館",
+        "恐竜"
+      ],
+      "food_value": [
+        "グルメ",
+        "海鮮",
+        "買い物"
+      ],
+      "nature": [
+        "自然",
+        "海"
+      ],
+      "efficiency_touring": []
+    },
+    "source": "teacher_auto_clustering_baseline"
+  },
+  {
+    "auto_cluster_id": "teacher_auto_cluster_19",
+    "source_cluster_id": 19,
+    "sample_count": 475,
+    "summary": "質の高い温泉と景色に癒やされ、美食や動物、歴史スポットを混雑を避けてのんびり満喫する、落ち着いた雰囲気の癒やしの旅。（58文字）",
+    "trait_scores": {
+      "planning": 0.0,
+      "relaxation": 1.0,
+      "exploration_experience": 0.6667,
+      "food_value": 0.3333,
+      "nature": 0.3333,
+      "efficiency_touring": 0.0
+    },
+    "top_traits": [
+      "relaxation",
+      "exploration_experience",
+      "food_value"
+    ],
+    "purpose_tags": [
+      "温泉や露天風呂",
+      "宿でのんびり過ごす",
+      "地元の美味しいものを食べる",
+      "花見や紅葉などの自然鑑賞",
+      "名所、旧跡の観光",
+      "各種体験"
+    ],
+    "matched_keywords": {
+      "planning": [],
+      "relaxation": [
+        "温泉",
+        "癒やし",
+        "のんびり"
+      ],
+      "exploration_experience": [
+        "歴史",
+        "動物"
+      ],
+      "food_value": [
+        "食"
+      ],
+      "nature": [
+        "景色"
+      ],
+      "efficiency_touring": []
+    },
+    "source": "teacher_auto_clustering_baseline"
+  },
+  {
+    "auto_cluster_id": "teacher_auto_cluster_13",
+    "source_cluster_id": 13,
+    "sample_count": 439,
+    "summary": "絶品グルメと美しい景色を楽しみ、歴史や文化に触れながら、清潔な施設でゆったりと羽を伸ばす、心身ともに満たされるリラックス旅（60文字）",
+    "trait_scores": {
+      "planning": 0.0,
+      "relaxation": 0.5,
+      "exploration_experience": 1.0,
+      "food_value": 0.5,
+      "nature": 1.0,
+      "efficiency_touring": 0.0
+    },
+    "top_traits": [
+      "exploration_experience",
+      "nature",
+      "relaxation"
+    ],
+    "purpose_tags": [
+      "宿でのんびり過ごす",
+      "地元の美味しいものを食べる",
+      "花見や紅葉などの自然鑑賞",
+      "名所、旧跡の観光"
+    ],
+    "matched_keywords": {
+      "planning": [],
+      "relaxation": [
+        "ゆったり"
+      ],
+      "exploration_experience": [
+        "歴史",
+        "文化"
+      ],
+      "food_value": [
+        "グルメ"
+      ],
+      "nature": [
+        "景色",
+        "美しい"
+      ],
+      "efficiency_touring": []
+    },
+    "source": "teacher_auto_clustering_baseline"
+  },
+  {
+    "auto_cluster_id": "teacher_auto_cluster_1",
+    "source_cluster_id": 1,
+    "sample_count": 432,
+    "summary": "越前そばや海鮮等の地元グルメを堪能し、新しく綺麗な施設や駅を巡りながら、快適に観光や学びを楽しむ旅行スタイル。",
+    "trait_scores": {
+      "planning": 0.25,
+      "relaxation": 0.0,
+      "exploration_experience": 0.0,
+      "food_value": 1.0,
+      "nature": 0.25,
+      "efficiency_touring": 0.25
+    },
+    "top_traits": [
+      "food_value",
+      "planning",
+      "nature"
+    ],
+    "purpose_tags": [
+      "地元の美味しいものを食べる",
+      "花見や紅葉などの自然鑑賞",
+      "ドライブ・ツーリング"
+    ],
+    "matched_keywords": {
+      "planning": [
+        "快適"
+      ],
+      "relaxation": [],
+      "exploration_experience": [],
+      "food_value": [
+        "グルメ",
+        "そば",
+        "海鮮",
+        "地元"
+      ],
+      "nature": [
+        "海"
+      ],
+      "efficiency_touring": [
+        "駅"
+      ]
+    },
+    "source": "teacher_auto_clustering_baseline"
+  },
+  {
+    "auto_cluster_id": "teacher_auto_cluster_14",
+    "source_cluster_id": 14,
+    "sample_count": 428,
+    "summary": "混雑を避け、静かな環境で地元の美食や歴史・自然を家族や友人と「ゆっくり」楽しみ、日常を忘れて心身を癒やすリラックス旅。",
+    "trait_scores": {
+      "planning": 0.0,
+      "relaxation": 1.0,
+      "exploration_experience": 0.5,
+      "food_value": 1.0,
+      "nature": 0.5,
+      "efficiency_touring": 0.0
+    },
+    "top_traits": [
+      "relaxation",
+      "food_value",
+      "exploration_experience"
+    ],
+    "purpose_tags": [
+      "宿でのんびり過ごす",
+      "地元の美味しいものを食べる",
+      "花見や紅葉などの自然鑑賞",
+      "名所、旧跡の観光"
+    ],
+    "matched_keywords": {
+      "planning": [],
+      "relaxation": [
+        "ゆっくり",
+        "静か"
+      ],
+      "exploration_experience": [
+        "歴史"
+      ],
+      "food_value": [
+        "食",
+        "地元"
+      ],
+      "nature": [
+        "自然"
+      ],
+      "efficiency_touring": []
+    },
+    "source": "teacher_auto_clustering_baseline"
+  },
+  {
+    "auto_cluster_id": "teacher_auto_cluster_6",
+    "source_cluster_id": 6,
+    "sample_count": 415,
+    "summary": "施設やトイレの清潔感と景色の美しさを重視し、道の駅や展示を巡り快適に過ごす、利便性と安心感を求めるファミリーや観光客。",
+    "trait_scores": {
+      "planning": 1.0,
+      "relaxation": 0.0,
+      "exploration_experience": 0.0,
+      "food_value": 0.0,
+      "nature": 0.3333,
+      "efficiency_touring": 0.6667
+    },
+    "top_traits": [
+      "planning",
+      "efficiency_touring",
+      "nature"
+    ],
+    "purpose_tags": [
+      "花見や紅葉などの自然鑑賞",
+      "ドライブ・ツーリング"
+    ],
+    "matched_keywords": {
+      "planning": [
+        "利便性",
+        "快適",
+        "安心"
+      ],
+      "relaxation": [],
+      "exploration_experience": [],
+      "food_value": [],
+      "nature": [
+        "景色"
+      ],
+      "efficiency_touring": [
+        "道の駅",
+        "駅"
+      ]
+    },
+    "source": "teacher_auto_clustering_baseline"
+  },
+  {
+    "auto_cluster_id": "teacher_auto_cluster_5",
+    "source_cluster_id": 5,
+    "sample_count": 393,
+    "summary": "施設の清潔感や新しさを重視し、快適な環境で買い物や体験を気軽に楽しむ、利便性と居心地の良さを大切にする旅行スタイル。",
+    "trait_scores": {
+      "planning": 1.0,
+      "relaxation": 0.0,
+      "exploration_experience": 0.5,
+      "food_value": 0.5,
+      "nature": 0.0,
+      "efficiency_touring": 0.0
+    },
+    "top_traits": [
+      "planning",
+      "exploration_experience",
+      "food_value"
+    ],
+    "purpose_tags": [
+      "各種体験"
+    ],
+    "matched_keywords": {
+      "planning": [
+        "利便性",
+        "快適"
+      ],
+      "relaxation": [],
+      "exploration_experience": [
+        "体験"
+      ],
+      "food_value": [
+        "買い物"
+      ],
+      "nature": [],
+      "efficiency_touring": []
+    },
+    "source": "teacher_auto_clustering_baseline"
+  },
+  {
+    "auto_cluster_id": "teacher_auto_cluster_18",
+    "source_cluster_id": 18,
+    "sample_count": 370,
+    "summary": "混雑を避け、歴史や自然、児童施設を家族で満喫。期待以上の静けさや宿の質に満足し、ゆったりリラックスして過ごす穴場志向の旅。",
+    "trait_scores": {
+      "planning": 0.0,
+      "relaxation": 1.0,
+      "exploration_experience": 0.5,
+      "food_value": 0.0,
+      "nature": 0.5,
+      "efficiency_touring": 0.0
+    },
+    "top_traits": [
+      "relaxation",
+      "exploration_experience",
+      "nature"
+    ],
+    "purpose_tags": [
+      "宿でのんびり過ごす",
+      "花見や紅葉などの自然鑑賞",
+      "名所、旧跡の観光"
+    ],
+    "matched_keywords": {
+      "planning": [],
+      "relaxation": [
+        "宿",
+        "ゆったり"
+      ],
+      "exploration_experience": [
+        "歴史"
+      ],
+      "food_value": [],
+      "nature": [
+        "自然"
+      ],
+      "efficiency_touring": []
+    },
+    "source": "teacher_auto_clustering_baseline"
+  },
+  {
+    "auto_cluster_id": "teacher_auto_cluster_16",
+    "source_cluster_id": 16,
+    "sample_count": 352,
+    "summary": "施設の清潔さやトイレの綺麗さ、スタッフの親切な対応を高く評価し、家族で安心して心地よく過ごすことを重視した快適な旅行スタイル。（60文字）",
+    "trait_scores": {
+      "planning": 1.0,
+      "relaxation": 0.0,
+      "exploration_experience": 0.0,
+      "food_value": 0.0,
+      "nature": 0.0,
+      "efficiency_touring": 0.0
+    },
+    "top_traits": [
+      "planning",
+      "relaxation",
+      "exploration_experience"
+    ],
+    "purpose_tags": [],
+    "matched_keywords": {
+      "planning": [
+        "快適",
+        "安心"
+      ],
+      "relaxation": [],
+      "exploration_experience": [],
+      "food_value": [],
+      "nature": [],
+      "efficiency_touring": []
+    },
+    "source": "teacher_auto_clustering_baseline"
+  },
+  {
+    "auto_cluster_id": "teacher_auto_cluster_10",
+    "source_cluster_id": 10,
+    "sample_count": 280,
+    "summary": "施設の清潔感や展示の質を重視し、家族や個人で地元の食や温泉を楽しみながら、静かな環境で快適に過ごす堅実な旅行スタイル。（59文字）",
+    "trait_scores": {
+      "planning": 0.5,
+      "relaxation": 1.0,
+      "exploration_experience": 0.0,
+      "food_value": 1.0,
+      "nature": 0.0,
+      "efficiency_touring": 0.0
+    },
+    "top_traits": [
+      "relaxation",
+      "food_value",
+      "planning"
+    ],
+    "purpose_tags": [
+      "温泉や露天風呂",
+      "宿でのんびり過ごす",
+      "地元の美味しいものを食べる"
+    ],
+    "matched_keywords": {
+      "planning": [
+        "快適"
+      ],
+      "relaxation": [
+        "温泉",
+        "静か"
+      ],
+      "exploration_experience": [],
+      "food_value": [
+        "食",
+        "地元"
+      ],
+      "nature": [],
+      "efficiency_touring": []
+    },
+    "source": "teacher_auto_clustering_baseline"
+  },
+  {
+    "auto_cluster_id": "teacher_auto_cluster_8",
+    "source_cluster_id": 8,
+    "sample_count": 276,
+    "summary": "地元の人の温かなもてなしと安くて美味しい食事に満足し、素朴な環境で楽しさを満喫する、コスパ重視のカジュアルな旅行スタイル。",
+    "trait_scores": {
+      "planning": 0.0,
+      "relaxation": 0.0,
+      "exploration_experience": 0.0,
+      "food_value": 1.0,
+      "nature": 0.0,
+      "efficiency_touring": 0.0
+    },
+    "top_traits": [
+      "food_value",
+      "planning",
+      "relaxation"
+    ],
+    "purpose_tags": [
+      "地元の美味しいものを食べる"
+    ],
+    "matched_keywords": {
+      "planning": [],
+      "relaxation": [],
+      "exploration_experience": [],
+      "food_value": [
+        "食",
+        "地元",
+        "美味しい"
+      ],
+      "nature": [],
+      "efficiency_touring": []
+    },
+    "source": "teacher_auto_clustering_baseline"
+  }
+]
