@@ -11,6 +11,7 @@ let SPOT_MASTER   = [];   // data/spot_master.json の具体スポット候補
 let HOTELS        = [];   // 住宿数据
 let DATA_SUMMARY  = null; // 2025年度AI推薦データの要約
 let CLUSTER_TRAIT_PROFILES = null; // 6軸のクラスタートレイト分類補助データ
+let AUTO_CLUSTER_PROFILES = []; // B方案 automatic clustering baseline profiles
 
 let answers = {};
 let behaviorVector = [];
@@ -29,7 +30,8 @@ Promise.all([
   fetch("hotels.json").then(r => r.json()),
   fetch("data/cluster_trait_profiles.json").then(r => r.ok ? r.json() : null).catch(() => null),
   fetch("data_summary_2025.json").then(r => r.ok ? r.json() : null).catch(() => null),
-]).then(([qData, mapData, weightsData, clusters, topPlacesData, spotWeights, spotMaster, hotels, clusterTraitProfiles, dataSummary]) => {
+  fetch("data/auto_clustering_baseline/auto_cluster_profiles_from_teacher.json").then(r => r.ok ? r.json() : []).catch(() => []),
+]).then(([qData, mapData, weightsData, clusters, topPlacesData, spotWeights, spotMaster, hotels, clusterTraitProfiles, dataSummary, autoClusterProfiles]) => {
   QUESTIONS    = qData;
   Q2PSYCH      = mapData;
   TAG_WEIGHTS  = weightsData;
@@ -40,6 +42,7 @@ Promise.all([
   HOTELS       = hotels;
   CLUSTER_TRAIT_PROFILES = clusterTraitProfiles;
   DATA_SUMMARY = dataSummary;
+  AUTO_CLUSTER_PROFILES = Array.isArray(autoClusterProfiles) ? autoClusterProfiles : [];
   installResearchStyles();
   renderQuestions();
   setTimeout(updateProgress, 100);
@@ -138,6 +141,10 @@ document.addEventListener("DOMContentLoaded", () => {
     ));
 
     const recommendedHotels = getRecommendedHotels(recommendedSpots);
+    const baselineDebug = buildAutoBaselineRecommendation(
+      computeUserTraitScores(tagCounts),
+      window.userVisitedPlaces
+    );
 
     lastSummaryPayload = {
       cluster: clusterInfo
@@ -149,7 +156,9 @@ document.addEventListener("DOMContentLoaded", () => {
       visited_places: window.userVisitedPlaces || null,
       recommended_spots: recommendedSpots,
       classification_debug: bestCluster?.classificationDebug || null,
+      baseline_debug: baselineDebug,
     };
+    window.__AB_BASELINE_RECOMMENDATION__ = baselineDebug;
 
     showResult(clusterInfo, clusterIndex, recommendedSpots, recommendedHotels);
   });
@@ -209,6 +218,8 @@ function showResult(clusterInfo, clusterIndex, recommendedSpots, recommendedHote
       <div class="spot-users">📊 ${sourceLabel}</div>
     </div>`;
 });
+
+  renderABTestComparisonSection(recommendedSpots);
 
   const hotelGrid = document.getElementById("hotelGrid");
   hotelGrid.innerHTML = "";
@@ -847,8 +858,226 @@ function installResearchStyles() {
       font-size: 12px;
       color: var(--text);
     }
+
+    .ab-comparison-section .section-body {
+      display: grid;
+      gap: 22px;
+    }
+
+    .ab-plan-grid,
+    .ab-form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .ab-plan-block,
+    .ab-form-block,
+    .ab-comparison-question {
+      border: 1px solid #e8edf5;
+      border-radius: 12px;
+      background: #f8fafc;
+      padding: 16px;
+    }
+
+    .ab-plan-block h3,
+    .ab-form-block h3,
+    .ab-comparison-question h3 {
+      font-size: 14px;
+      color: var(--text);
+      margin-bottom: 12px;
+      font-weight: 800;
+    }
+
+    .ab-spots-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .ab-spot-card {
+      display: grid;
+      grid-template-columns: 34px minmax(0, 1fr) 112px;
+      align-items: start;
+      gap: 12px;
+      background: #fff;
+      box-shadow: none;
+      margin: 0;
+      padding: 12px;
+      border: 1px solid #e8edf5;
+      border-radius: 12px;
+    }
+
+    .ab-spot-rank {
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      background: #eff6ff;
+      color: #1d4ed8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 900;
+      flex-shrink: 0;
+    }
+
+    .ab-spot-main {
+      min-width: 0;
+      display: grid;
+      gap: 7px;
+    }
+
+    .ab-spot-name {
+      font-size: 14px;
+      line-height: 1.35;
+      font-weight: 850;
+      color: var(--text);
+      overflow-wrap: anywhere;
+    }
+
+    .ab-spot-reason {
+      font-size: 12.5px;
+      line-height: 1.55;
+      color: var(--text-sub);
+      overflow-wrap: anywhere;
+    }
+
+    .ab-spot-link {
+      width: fit-content;
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .ab-spot-link:hover {
+      text-decoration: underline;
+    }
+
+    .ab-spot-thumb {
+      width: 112px;
+      height: 84px;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 1px solid #e8edf5;
+      background: #f1f5f9;
+      justify-self: end;
+    }
+
+    .ab-evaluation-form {
+      display: grid;
+      gap: 18px;
+    }
+
+    .ab-score-row {
+      display: grid;
+      gap: 8px;
+      padding: 10px 0;
+      border-top: 1px solid #e8edf5;
+    }
+
+    .ab-score-row:first-of-type {
+      border-top: 0;
+      padding-top: 0;
+    }
+
+    .ab-score-label {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .ab-score-options,
+    .ab-choice-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .ab-score-options label,
+    .ab-choice-options label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border: 1px solid #dbe3ef;
+      background: #fff;
+      border-radius: 999px;
+      padding: 7px 10px;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    .ab-score-options input,
+    .ab-choice-options input {
+      accent-color: var(--primary);
+    }
+
+    .ab-comment-label {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .ab-comment {
+      width: 100%;
+      resize: vertical;
+      border: 1px solid #dbe3ef;
+      border-radius: 12px;
+      padding: 12px;
+      font: inherit;
+      line-height: 1.5;
+      color: var(--text);
+      background: #fff;
+    }
+
+    .ab-save-btn {
+      width: fit-content;
+      border: none;
+      border-radius: 999px;
+      background: var(--primary);
+      color: #fff;
+      padding: 11px 18px;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(37, 99, 235, 0.22);
+    }
+
+    .ab-save-btn:hover {
+      background: var(--primary-dark);
+      transform: translateY(-1px);
+    }
+
+    .ab-empty {
+      border: 1px dashed #cbd5e1;
+      border-radius: 12px;
+      padding: 14px;
+      font-size: 13px;
+      color: var(--text-sub);
+      background: #fff;
+    }
+
     @media (max-width: 600px) {
-      .profile-grid, .data-kpis, .process-flow { grid-template-columns: 1fr; }
+      .profile-grid,
+      .data-kpis,
+      .process-flow,
+      .ab-plan-grid,
+      .ab-form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .ab-spot-card {
+        grid-template-columns: 30px minmax(0, 1fr);
+      }
+
+      .ab-spot-thumb {
+        grid-column: 2;
+        justify-self: start;
+        width: 96px;
+        height: 72px;
+      }
     }
   `;
   document.head.appendChild(style);
@@ -885,6 +1114,443 @@ function getSpotReason(spot) {
     '推荐理由：基于推荐数据与旅行者类型作为候选抽出。'
   );
 }
+const AB_EVALUATION_ITEMS = [
+  { key: "answer_fit", label: "自分の回答に合っている" },
+  { key: "visit_interest", label: "行ってみたいと思う" },
+  { key: "reason_clarity", label: "推薦理由が分かりやすい" },
+  { key: "personalized_feeling", label: "個人化されていると感じる" },
+  { key: "overall_satisfaction", label: "全体的に満足できる" }
+];
+
+function getSpotNameForAB(spot) {
+  const selectedSpot = spot?.selectedSpot || spot?.spot || null;
+  return selectedSpot?.name || spot?.name || spot?.spot_name || spot?.title || spot?.place || spot?.area || "名称未設定";
+}
+
+function truncateJapaneseText(text, maxLength = 82) {
+  const cleaned = String(text || "").replace(/\s+/g, " ").trim();
+  if (cleaned.length <= maxLength) return cleaned;
+  return `${cleaned.slice(0, maxLength - 1)}…`;
+}
+
+function uniqueCompactItems(values, limit = 3) {
+  return [...new Set((values || [])
+    .map(value => String(value || "").trim())
+    .filter(Boolean))]
+    .slice(0, limit);
+}
+
+function getSpotReasonForAB(spot, planLabel = "") {
+  if (spot?.ab_reason) return truncateJapaneseText(spot.ab_reason);
+
+  if (spot?.source === "auto_clustering_baseline" || spot?.baseline_cluster_id || planLabel === "推薦案2") {
+    return buildBaselineABReason(spot);
+  }
+
+  return buildHandcraftedABReason(spot);
+}
+
+function buildHandcraftedABReason(spot) {
+  const selectedSpot = spot?.selectedSpot || spot?.spot || {};
+  const category = spot?.category;
+  const area = spot?.place || selectedSpot?.area || "";
+  const tags = uniqueCompactItems([
+    ...(selectedSpot?.purpose_tags || []),
+    ...(selectedSpot?.trait_tags || [])
+  ], 2);
+
+  let reason = "";
+  if (category === "classic") {
+    reason = "過去データで安定して推薦される定番候補として、回答傾向と合わせて抽出しました。";
+  } else if (category === "personalized") {
+    reason = "同行者や時期の傾向に合い、回答から見える旅行スタイルにも近いため抽出しました。";
+  } else if (category === "discovery") {
+    reason = "人気だけに偏らず、回答傾向と関連する発見型スポットとして抽出しました。";
+  } else {
+    reason = "回答から推定した旅行スタイルと推薦データの近さをもとに抽出しました。";
+  }
+
+  if (tags.length) {
+    reason = `${tags.join("・")}との関連があり、${reason}`;
+  } else if (area) {
+    reason = `${area}周辺の候補として、${reason}`;
+  }
+  return truncateJapaneseText(reason);
+}
+
+function buildBaselineABReason(spot) {
+  const clusterTraits = uniqueCompactItems(spot?.baseline_top_traits, 3);
+  const purposeTags = uniqueCompactItems(spot?.baseline_purpose_tags, 3);
+  const keywords = uniqueCompactItems(spot?.baseline_matched_keywords, 3);
+  const selectedSpot = spot?.selectedSpot || {};
+  const spotTags = uniqueCompactItems([
+    ...(selectedSpot?.purpose_tags || []),
+    ...(selectedSpot?.trait_tags || [])
+  ], 2);
+  const summaryHint = truncateJapaneseText(spot?.baseline_summary || "", 28);
+
+  const tendency = purposeTags.length
+    ? purposeTags.join("・")
+    : keywords.length
+      ? keywords.join("・")
+      : clusterTraits.length
+        ? clusterTraits.join("・")
+        : summaryHint || "自由記述クラスタの傾向";
+  const spotFit = spotTags.length ? `このスポットは${spotTags.join("・")}に合うため` : "このスポットがその傾向に合うため";
+  return truncateJapaneseText(`自由記述クラスタでは${tendency}への関心が高く、${spotFit}抽出しました。`);
+}
+
+function getSpotImageForAB(spot) {
+  const selectedSpot = spot?.selectedSpot || spot?.spot || null;
+  return selectedSpot?.image || selectedSpot?.image_url || spot?.image || spot?.image_url || spot?.thumbnail || "";
+}
+
+function getSpotLinkForAB(spot) {
+  const selectedSpot = spot?.selectedSpot || spot?.spot || null;
+  const selectedWebsite = Array.isArray(selectedSpot?.website) ? selectedSpot.website[0] : selectedSpot?.website;
+  const spotWebsite = Array.isArray(spot?.website) ? spot.website[0] : spot?.website;
+  return selectedSpot?.url || selectedWebsite || spot?.url || spot?.detail_url || spot?.link || spotWebsite || "";
+}
+
+function normalizeABSpotForExport(spot) {
+  return {
+    name: getSpotNameForAB(spot),
+    reason: getSpotReasonForAB(spot),
+    image: getSpotImageForAB(spot) || null,
+    detail_link: getSpotLinkForAB(spot) || null,
+    source_place: spot?.place || spot?.area || spot?.primary_area || null
+  };
+}
+
+function isSpotLikeArray(value) {
+  return Array.isArray(value) && value.some(item =>
+    item && typeof item === "object" && (
+      item.selectedSpot || item.spot || item.name || item.spot_name || item.place || item.reason || item.recommendation_reason
+    )
+  );
+}
+
+function extractRecommendationArray(candidate, depth = 0) {
+  if (!candidate || depth > 3) return [];
+  if (isSpotLikeArray(candidate)) return candidate;
+  if (typeof candidate !== "object") return [];
+
+  const preferredKeys = [
+    "recommended_spots",
+    "recommendation_spots",
+    "baseline_recommended_spots",
+    "baseline_spots",
+    "spots",
+    "recommendations",
+    "items",
+    "cards"
+  ];
+
+  for (const key of preferredKeys) {
+    const found = extractRecommendationArray(candidate[key], depth + 1);
+    if (found.length) return found;
+  }
+
+  for (const value of Object.values(candidate)) {
+    const found = extractRecommendationArray(value, depth + 1);
+    if (found.length) return found;
+  }
+
+  return [];
+}
+
+function buildAutoBaselineRecommendation(userTraitScores, visitedPlaces) {
+  const profiles = Array.isArray(AUTO_CLUSTER_PROFILES) ? AUTO_CLUSTER_PROFILES : [];
+  if (!profiles.length) {
+    console.warn("[AB Test] missing B baseline source path: data/auto_clustering_baseline/auto_cluster_profiles_from_teacher.json");
+    return {
+      source: "auto_clustering_baseline",
+      recommendations: [],
+      missing_path: "data/auto_clustering_baseline/auto_cluster_profiles_from_teacher.json"
+    };
+  }
+
+  const scoredProfiles = profiles
+    .filter(profile => profile?.trait_scores)
+    .map(profile => ({
+      profile,
+      score: traitSimilarity(userTraitScores, profile.trait_scores)
+    }))
+    .sort((a, b) => b.score - a.score);
+
+  const best = scoredProfiles[0];
+  if (!best) {
+    console.warn("[AB Test] missing baseline_debug.recommendations: no usable auto cluster profile trait_scores");
+    return {
+      source: "auto_clustering_baseline",
+      recommendations: [],
+      missing_path: "AUTO_CLUSTER_PROFILES[*].trait_scores"
+    };
+  }
+
+  const recommendations = buildAutoBaselineSpotRecommendations(best.profile, visitedPlaces);
+  return {
+    source: "auto_clustering_baseline",
+    baseline_cluster_id: best.profile.auto_cluster_id || best.profile.source_cluster_id || null,
+    baseline_summary: best.profile.summary || "",
+    baseline_top_traits: best.profile.top_traits || [],
+    similarity_score: best.score,
+    recommendations,
+    recommended_spots: recommendations
+  };
+}
+
+function buildAutoBaselineSpotRecommendations(profile, visitedPlaces) {
+  const visited = visitedPlaces
+    ? String(visitedPlaces).split(/[、，,\s]+/).map(s => s.trim()).filter(Boolean)
+    : [];
+  const isVisited = (spot) => {
+    const haystack = [
+      spot?.name,
+      spot?.primary_area,
+      ...(spot?.areas || [])
+    ].join(" ");
+    return visited.some(place => place && haystack.includes(place));
+  };
+
+  const purposeTags = Array.isArray(profile?.purpose_tags) ? profile.purpose_tags : [];
+  const topTraits = Array.isArray(profile?.top_traits) ? profile.top_traits : [];
+  const keywordGroups = profile?.matched_keywords && typeof profile.matched_keywords === "object"
+    ? Object.values(profile.matched_keywords).flat()
+    : [];
+  const matchedKeywords = uniqueCompactItems(keywordGroups, 8);
+  const keywords = [...new Set([...purposeTags, ...keywordGroups].map(value => String(value || "").trim()).filter(Boolean))];
+  const summary = String(profile?.summary || "");
+
+  const scoredSpots = (SPOT_MASTER || [])
+    .filter(spot => spot?.name && !isVisited(spot))
+    .map(spot => {
+      const selectedSpot = toSelectedSpot(spot);
+      const text = [
+        spot.name,
+        spot.primary_area,
+        ...(spot.areas || []),
+        ...(spot.categories || []),
+        ...(spot.purpose_tags || []),
+        ...(spot.trait_tags || []),
+        spot.description
+      ].join(" ").toLowerCase();
+
+      const purposeHits = purposeTags.filter(tag => tag && text.includes(String(tag).toLowerCase())).length;
+      const keywordHits = keywords.filter(keyword => keyword && text.includes(String(keyword).toLowerCase())).length;
+      const traitHits = topTraits.filter(trait => {
+        const normalizedTrait = String(trait || "").toLowerCase();
+        return normalizedTrait && text.includes(normalizedTrait);
+      }).length;
+      const summaryHits = keywords.filter(keyword => keyword && summary.includes(keyword)).length;
+      const qualityScore = getSpotQualityBoost(spot);
+      const score = purposeHits * 42 + keywordHits * 24 + traitHits * 12 + Math.min(summaryHits * 4, 20) + qualityScore;
+
+      return {
+        place: selectedSpot?.area || spot.primary_area || spot.name,
+        score,
+        source: "auto_clustering_baseline",
+        category: "baseline",
+        categoryJa: "推薦案2",
+        categoryZh: "推薦案2",
+        selectedSpot,
+        baseline_cluster_id: profile?.auto_cluster_id || profile?.source_cluster_id || null,
+        baseline_summary: profile?.summary || "",
+        baseline_top_traits: topTraits,
+        baseline_purpose_tags: purposeTags,
+        baseline_matched_keywords: matchedKeywords,
+        recommendationDebug: {
+          purposeHits,
+          keywordHits,
+          traitHits,
+          finalScore: Math.round(score)
+        }
+      };
+    })
+    .sort((a, b) => b.score - a.score);
+
+  const selected = [];
+  const usedNames = new Set();
+  scoredSpots.forEach(candidate => {
+    const name = candidate.selectedSpot?.name || candidate.place;
+    if (!name || usedNames.has(name) || selected.length >= 3) return;
+    usedNames.add(name);
+    selected.push(candidate);
+  });
+
+  if (selected.length < 3) {
+    console.warn("[AB Test] baseline_debug.recommendations has fewer than 3 spots", selected);
+  }
+  return selected.slice(0, 3);
+}
+
+function getBaselineRecommendationSpots() {
+  const sources = [
+    { path: "lastSummaryPayload.baseline_debug.recommendations", value: lastSummaryPayload?.baseline_debug?.recommendations },
+    { path: "lastSummaryPayload.baseline_debug.recommended_spots", value: lastSummaryPayload?.baseline_debug?.recommended_spots },
+    { path: "lastSummaryPayload.baseline_debug.baseline_recommendation.recommendations", value: lastSummaryPayload?.baseline_debug?.baseline_recommendation?.recommendations },
+    { path: "lastSummaryPayload.baseline_debug.baseline_recommendation.recommended_spots", value: lastSummaryPayload?.baseline_debug?.baseline_recommendation?.recommended_spots },
+    { path: "lastSummaryPayload.baseline_debug.recommendation", value: lastSummaryPayload?.baseline_debug?.recommendation },
+    { path: "lastSummaryPayload.baseline_debug.result", value: lastSummaryPayload?.baseline_debug?.result },
+    { path: "window.__AB_BASELINE_RECOMMENDATION__.recommendations", value: window.__AB_BASELINE_RECOMMENDATION__?.recommendations },
+    { path: "window.__AB_BASELINE_RECOMMENDATION__.recommended_spots", value: window.__AB_BASELINE_RECOMMENDATION__?.recommended_spots },
+    { path: "window.__AB_BASELINE_RECOMMENDATION__", value: window.__AB_BASELINE_RECOMMENDATION__ }
+  ];
+
+  for (const source of sources) {
+    const spots = extractRecommendationArray(source.value);
+    if (spots.length) return spots.slice(0, 3);
+  }
+
+  console.warn(
+    "[AB Test] missing baseline recommendations at paths:",
+    sources.map(source => source.path).join(", ")
+  );
+  return [];
+}
+
+function renderRecommendationPlanCards(planRecommendations, planLabel) {
+  const displaySpots = (planRecommendations || []).slice(0, 3);
+  if (!displaySpots.length) {
+    return `<div class="ab-empty">推薦案を表示するデータがまだありません。</div>`;
+  }
+
+  return displaySpots.map((spot, index) => {
+    const name = getSpotNameForAB(spot);
+    const reason = getSpotReasonForAB(spot, planLabel);
+    const image = getSpotImageForAB(spot);
+    const link = getSpotLinkForAB(spot);
+    return `
+      <div class="ab-spot-card" aria-label="${escapeHtml(planLabel)} ${index + 1}">
+        <div class="ab-spot-rank">${index + 1}</div>
+        <div class="ab-spot-main">
+          <div class="ab-spot-name">${escapeHtml(name)}</div>
+          <div class="ab-spot-reason">${escapeHtml(reason)}</div>
+          ${link ? `<a class="ab-spot-link" href="${escapeHtml(link)}" target="_blank" rel="noopener noreferrer">詳細を見る</a>` : ""}
+        </div>
+        ${image ? `<img class="ab-spot-thumb" src="${escapeHtml(image)}" alt="${escapeHtml(name)}" loading="lazy">` : ""}
+      </div>
+    `;
+  }).join("");
+}
+
+function renderABScoreRows(planKey) {
+  return AB_EVALUATION_ITEMS.map(item => `
+    <div class="ab-score-row">
+      <div class="ab-score-label">${escapeHtml(item.label)}</div>
+      <div class="ab-score-options" role="radiogroup" aria-label="${escapeHtml(item.label)}">
+        ${[1, 2, 3, 4, 5].map(score => `
+          <label>
+            <input type="radio" name="ab_${planKey}_${item.key}" value="${score}">
+            <span>${score}</span>
+          </label>
+        `).join("")}
+      </div>
+    </div>
+  `).join("");
+}
+
+function renderABTestComparisonSection(recommendedSpots) {
+  const spotsSection = document.getElementById("spotsList")?.closest(".section-card");
+  if (!spotsSection) return;
+
+  const plan1Spots = (recommendedSpots || []).slice(0, 3);
+  const plan2Spots = getBaselineRecommendationSpots();
+  console.log("[AB Test] plan1", plan1Spots);
+  console.log("[AB Test] plan2", plan2Spots);
+  window.__AB_TEST_PLAN1_SPOTS__ = plan1Spots;
+  window.__AB_TEST_PLAN2_SPOTS__ = plan2Spots;
+
+  const section = document.createElement("div");
+  section.id = "abComparisonSection";
+  section.className = "section-card ab-comparison-section";
+  section.innerHTML = `
+    <div class="section-header">
+      <div class="section-icon blue">比</div>
+      <div>
+        <h2>推薦結果の比較テスト</h2>
+        <p>2つの推薦案を見比べて評価してください。</p>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="ab-plan-grid">
+        <div class="ab-plan-block">
+          <h3>推薦案1</h3>
+          <div class="spots-list ab-spots-list">${renderRecommendationPlanCards(plan1Spots, "推薦案1")}</div>
+        </div>
+        <div class="ab-plan-block">
+          <h3>推薦案2</h3>
+          <div class="spots-list ab-spots-list">${renderRecommendationPlanCards(plan2Spots, "推薦案2")}</div>
+        </div>
+      </div>
+
+      <div class="ab-evaluation-form">
+        <div class="ab-form-grid">
+          <div class="ab-form-block">
+            <h3>推薦案1の評価</h3>
+            ${renderABScoreRows("plan1")}
+          </div>
+          <div class="ab-form-block">
+            <h3>推薦案2の評価</h3>
+            ${renderABScoreRows("plan2")}
+          </div>
+        </div>
+
+        <div class="ab-comparison-question">
+          <h3>どちらの推薦案をより参考にしたいですか？</h3>
+          <div class="ab-choice-options">
+            <label><input type="radio" name="ab_comparison_choice" value="推薦案1"> 推薦案1</label>
+            <label><input type="radio" name="ab_comparison_choice" value="推薦案2"> 推薦案2</label>
+            <label><input type="radio" name="ab_comparison_choice" value="どちらとも言えない"> どちらとも言えない</label>
+          </div>
+        </div>
+
+        <label class="ab-comment-label" for="abComment">コメント・気づいた点</label>
+        <textarea id="abComment" class="ab-comment" rows="4"></textarea>
+        <button type="button" class="ab-save-btn" id="abSaveBtn">評価結果を保存</button>
+      </div>
+    </div>
+  `;
+
+  insertSectionAfter(section, spotsSection);
+  document.getElementById("abSaveBtn")?.addEventListener("click", saveABEvaluationResult);
+}
+
+function collectABScores(planKey) {
+  const scores = {};
+  AB_EVALUATION_ITEMS.forEach(item => {
+    const checked = document.querySelector(`input[name="ab_${planKey}_${item.key}"]:checked`);
+    scores[item.key] = checked ? Number(checked.value) : null;
+  });
+  return scores;
+}
+
+function saveABEvaluationResult() {
+  const comparisonChoice = document.querySelector('input[name="ab_comparison_choice"]:checked');
+  const payload = {
+    timestamp: new Date().toISOString(),
+    recommendation_plan_1_spots: (window.__AB_TEST_PLAN1_SPOTS__ || []).slice(0, 3).map(normalizeABSpotForExport),
+    recommendation_plan_2_spots: (window.__AB_TEST_PLAN2_SPOTS__ || []).slice(0, 3).map(normalizeABSpotForExport),
+    plan1_scores: collectABScores("plan1"),
+    plan2_scores: collectABScores("plan2"),
+    comparison_choice: comparisonChoice ? comparisonChoice.value : null,
+    comment: document.getElementById("abComment")?.value || "",
+    plan1_method: "A_handcrafted_matrix",
+    plan2_method: "B_auto_clustering_baseline"
+  };
+
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  const stamp = new Date().toISOString().replace(/[:.]/g, "-");
+  link.href = url;
+  link.download = `ab_recommendation_evaluation_${stamp}.json`;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
+}
+
 function getHotelReason(hotel, recommendedSpots) {
   return langText(
     '宿泊理由：推薦エリアと同一または関連するQR設置エリアに登録された宿泊施設から抽出しました。',
@@ -1223,7 +1889,7 @@ function setupResultDashboardUI() {
 
 function setResultTab(tab) {
   const sectionGroups = {
-    overview: ["spotsSection", "hotelSection"],
+    overview: ["spotsSection", "abComparisonSection", "hotelSection"],
     profile: ["profileAnalysisSection", "processVisualizationSection"],
     data: ["dataBasisSection"],
     ai: ["aiPlanSection"]
@@ -1231,6 +1897,7 @@ function setResultTab(tab) {
 
   const allSectionIds = [
     "spotsSection",
+    "abComparisonSection",
     "hotelSection",
     "profileAnalysisSection",
     "processVisualizationSection",
@@ -2169,6 +2836,8 @@ function restartQuiz() {
   behaviorVector = [];
   lastSummaryPayload = null;
   lastTagCounts = {};
+  window.__AB_TEST_PLAN1_SPOTS__ = [];
+  window.__AB_TEST_PLAN2_SPOTS__ = [];
 
   document.querySelectorAll('#questions input[type="radio"]').forEach(input => {
     input.checked = false;
@@ -2186,6 +2855,7 @@ function restartQuiz() {
   document.getElementById('profileAnalysisSection')?.remove();
   document.getElementById('processVisualizationSection')?.remove();
   document.getElementById('dataBasisSection')?.remove();
+  document.getElementById('abComparisonSection')?.remove();
   document.getElementById('resultTabs')?.remove();
   document.body.classList.remove("result-mode");
 
