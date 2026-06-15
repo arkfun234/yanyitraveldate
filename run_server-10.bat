@@ -1,4 +1,5 @@
 @echo off
+cd /d "%~dp0"
 echo =====================================================
 echo   🚀  正在启动本地旅行推荐Web服务...
 echo   打开浏览器访问:  http://localhost:5500
@@ -12,5 +13,5 @@ IF %ERRORLEVEL% NEQ 0 (
     exit
 )
 
-python -m http.server 5500
+python scripts\local_web_server.py
 pause

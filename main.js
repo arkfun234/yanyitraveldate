@@ -1050,6 +1050,57 @@ function installResearchStyles() {
       transform: translateY(-1px);
     }
 
+    .ab-local-ai-btn {
+      background: #0f766e;
+      box-shadow: 0 8px 20px rgba(15, 118, 110, 0.22);
+    }
+
+    .ab-local-ai-btn:hover {
+      background: #115e59;
+    }
+
+    .ab-local-ai-btn:disabled {
+      cursor: wait;
+      opacity: 0.65;
+      transform: none;
+    }
+
+    .ab-local-ai-section {
+      display: grid;
+      gap: 12px;
+      border: 1px solid #99f6e4;
+      border-radius: 16px;
+      padding: 18px;
+      background: #f0fdfa;
+    }
+
+    .ab-local-ai-section h3 {
+      margin: 0;
+      color: #115e59;
+    }
+
+    .ab-local-ai-section p {
+      margin: 0;
+      color: var(--text-sub);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .ab-local-ai-result {
+      min-height: 54px;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      max-height: 720px;
+      overflow-y: auto;
+      border: 1px solid #dbe3ef;
+      border-radius: 12px;
+      padding: 14px;
+      background: #f8fafc;
+      color: var(--text);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
     .ab-empty {
       border: 1px dashed #cbd5e1;
       border-radius: 12px;
@@ -1508,12 +1559,20 @@ function renderABTestComparisonSection(recommendedSpots) {
         <label class="ab-comment-label" for="abComment">コメント・気づいた点</label>
         <textarea id="abComment" class="ab-comment" rows="4"></textarea>
         <button type="button" class="ab-save-btn" id="abSaveBtn">評価結果を保存</button>
+
+        <div class="ab-local-ai-section">
+          <h3>ローカルAI旅行プラン生成</h3>
+          <p>この機能は、ローカルAIサーバーが起動している場合のみ利用できます。</p>
+          <button type="button" class="ab-save-btn ab-local-ai-btn" id="abLocalAIBtn">AI旅行プランを生成（ローカルAPI）</button>
+          <div class="ab-local-ai-result" id="abLocalAIResult" aria-live="polite">生成結果がここに表示されます。</div>
+        </div>
       </div>
     </div>
   `;
 
   insertSectionAfter(section, spotsSection);
   document.getElementById("abSaveBtn")?.addEventListener("click", saveABEvaluationResult);
+  document.getElementById("abLocalAIBtn")?.addEventListener("click", generateLocalAITravelPlan);
 }
 
 function collectABScores(planKey) {
@@ -1525,9 +1584,9 @@ function collectABScores(planKey) {
   return scores;
 }
 
-function saveABEvaluationResult() {
+function collectABEvaluationResult() {
   const comparisonChoice = document.querySelector('input[name="ab_comparison_choice"]:checked');
-  const payload = {
+  return {
     timestamp: new Date().toISOString(),
     recommendation_plan_1_spots: (window.__AB_TEST_PLAN1_SPOTS__ || []).slice(0, 3).map(normalizeABSpotForExport),
     recommendation_plan_2_spots: (window.__AB_TEST_PLAN2_SPOTS__ || []).slice(0, 3).map(normalizeABSpotForExport),
@@ -1538,6 +1597,10 @@ function saveABEvaluationResult() {
     plan1_method: "A_handcrafted_matrix",
     plan2_method: "B_auto_clustering_baseline"
   };
+}
+
+function saveABEvaluationResult() {
+  const payload = collectABEvaluationResult();
 
   const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
   const url = URL.createObjectURL(blob);
@@ -1549,6 +1612,40 @@ function saveABEvaluationResult() {
   link.click();
   link.remove();
   URL.revokeObjectURL(url);
+}
+
+async function generateLocalAITravelPlan() {
+  const button = document.getElementById("abLocalAIBtn");
+  const resultBox = document.getElementById("abLocalAIResult");
+  if (!button || !resultBox) return;
+
+  const payload = {
+    ...collectABEvaluationResult(),
+    user_answers: { ...answers },
+    research_context: lastSummaryPayload
+  };
+  button.disabled = true;
+  resultBox.textContent = "AI旅行プランを生成しています…";
+
+  try {
+    const response = await fetch("http://localhost:8000/generate-plan", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+    const data = await response.json().catch(() => null);
+    if (!response.ok || !data?.ok) {
+      throw new Error(data?.error || `ローカルAI APIエラー (${response.status})`);
+    }
+    resultBox.textContent = data.plan_markdown || "旅行プラン本文が返されませんでした。";
+  } catch (error) {
+    const isConnectionError = error instanceof TypeError;
+    resultBox.textContent = isConnectionError
+      ? "ローカルAIサーバーが起動していません"
+      : `AI旅行プランの生成に失敗しました: ${error.message}`;
+  } finally {
+    button.disabled = false;
+  }
 }
 
 function getHotelReason(hotel, recommendedSpots) {

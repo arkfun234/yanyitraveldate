@@ -129,3 +129,41 @@ http://localhost:5500
 - 旅行者タイプと推薦多様性に基づく福井県観光推薦システムの提案
 - 推薦根拠の提示と推薦多様性を重視した観光AI推薦システムの研究
 - 説明可能性を考慮した福井県観光AI推薦システムの開発
+
+## 12. ローカルAzure OpenAI旅行プラン生成
+
+この機能はローカル開発・デモ専用です。Azure OpenAIの設定はプロジェクトルートの
+`.env`だけに保存し、フロントエンドやGitHub Pagesでは使用しません。
+
+Step 1:
+
+```powershell
+py -m pip install -r requirements-local-ai.txt
+```
+
+Step 2:
+
+プロジェクトルートにAzure OpenAI設定を含む`.env`を作成する。
+
+Step 3:
+
+```powershell
+py scripts\local_ai_server.py
+```
+
+Step 4:
+
+```powershell
+py -m http.server 5500
+```
+
+Step 5:
+
+ブラウザで以下を開く。
+
+```text
+http://localhost:5500
+```
+
+アンケートに回答し、推薦結果の比較テストで
+「AI旅行プランを生成（ローカルAPI）」をクリックする。
