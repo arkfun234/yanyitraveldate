@@ -17,6 +17,7 @@ let answers = {};
 let behaviorVector = [];
 let lastSummaryPayload = null;  // 用于重试
 let lastTagCounts = {};          // 旅行者画像分析用
+let lastLocalAIPlan = null;      // ABテスト結果と一緒に保存するローカルAI旅行プラン
 
 // ===== 1. 加载所有数据 =====
 Promise.all([
@@ -244,24 +245,11 @@ function showResult(clusterInfo, clusterIndex, recommendedSpots, recommendedHote
   setupResultDashboardUI();
 
   const aiResult = document.getElementById("aiResult");
-  aiResult.innerHTML = `<div class="ai-loading"><div class="spinner"></div><span>${
-    window.currentLang === "zh" ? "AI 正在生成你的旅行方案…" : "AI が旅行プランを作成しています…"
-  }</span></div>`;
-
+  const aiSection = aiResult?.closest(".section-card");
+  if (aiResult) aiResult.textContent = "";
+  if (aiSection) aiSection.style.display = "none";
   const retryBtn = document.getElementById("retryBtn");
   if (retryBtn) retryBtn.classList.remove("show");
-
-  callGeminiAI(lastSummaryPayload)
-    .then(text => {
-      aiResult.style.whiteSpace = "pre-wrap";
-      aiResult.textContent = text;
-    })
-    .catch(err => {
-      aiResult.innerHTML = `<span style="color:#ef4444">${
-        window.currentLang === "zh" ? "生成失败，请稍后重试" : "生成に失敗しました。しばらく後にお試しください"
-      }</span><br><small style="color:#94a3b8">${err.message}</small>`;
-      if (retryBtn) retryBtn.classList.add("show");
-    });
 }
 
 // ===== 5. 重试AI =====
@@ -1065,6 +1053,13 @@ function installResearchStyles() {
       transform: none;
     }
 
+    .ab-save-btn:disabled {
+      cursor: not-allowed;
+      opacity: 0.55;
+      transform: none;
+      box-shadow: none;
+    }
+
     .ab-local-ai-section {
       display: grid;
       gap: 12px;
@@ -1079,11 +1074,22 @@ function installResearchStyles() {
       color: #115e59;
     }
 
+    .ab-save-explanation {
+      margin: 0;
+      color: #334155;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
     .ab-local-ai-section p {
       margin: 0;
       color: var(--text-sub);
       font-size: 13px;
       line-height: 1.6;
+    }
+
+    .ab-local-ai-section .ab-save-explanation {
+      color: #334155;
     }
 
     .ab-local-ai-result {
@@ -1502,6 +1508,7 @@ function renderABScoreRows(planKey) {
 }
 
 function renderABTestComparisonSection(recommendedSpots) {
+  lastLocalAIPlan = null;
   const spotsSection = document.getElementById("spotsList")?.closest(".section-card");
   if (!spotsSection) return;
 
@@ -1558,12 +1565,13 @@ function renderABTestComparisonSection(recommendedSpots) {
 
         <label class="ab-comment-label" for="abComment">コメント・気づいた点</label>
         <textarea id="abComment" class="ab-comment" rows="4"></textarea>
-        <button type="button" class="ab-save-btn" id="abSaveBtn">評価結果を保存</button>
 
         <div class="ab-local-ai-section">
           <h3>ローカルAI旅行プラン生成</h3>
           <p>この機能は、ローカルAIサーバーが起動している場合のみ利用できます。</p>
           <button type="button" class="ab-save-btn ab-local-ai-btn" id="abLocalAIBtn">AI旅行プランを生成（ローカルAPI）</button>
+          <p class="ab-save-explanation">推薦案1・推薦案2の評価結果と、生成されたAI旅行プランをまとめて保存します。</p>
+          <button type="button" class="ab-save-btn" id="abSaveWithAIPlanBtn" disabled>評価結果とAI旅行プランを保存</button>
           <div class="ab-local-ai-result" id="abLocalAIResult" aria-live="polite">生成結果がここに表示されます。</div>
         </div>
       </div>
@@ -1571,8 +1579,8 @@ function renderABTestComparisonSection(recommendedSpots) {
   `;
 
   insertSectionAfter(section, spotsSection);
-  document.getElementById("abSaveBtn")?.addEventListener("click", saveABEvaluationResult);
   document.getElementById("abLocalAIBtn")?.addEventListener("click", generateLocalAITravelPlan);
+  document.getElementById("abSaveWithAIPlanBtn")?.addEventListener("click", saveABEvaluationResultWithAIPlan);
 }
 
 function collectABScores(planKey) {
@@ -1599,6 +1607,55 @@ function collectABEvaluationResult() {
   };
 }
 
+function collectQuestionnaireProfileContext() {
+  return {
+    questionnaire_answers: { ...answers },
+    user_profile: lastSummaryPayload
+      ? {
+          cluster: lastSummaryPayload.cluster || null,
+          companion: lastSummaryPayload.companion || window.userCompanion || null,
+          season: lastSummaryPayload.season || window.userSeason || null,
+          visited_before: lastSummaryPayload.visited_before ?? (window.userVisited === "yes"),
+          visited_places: lastSummaryPayload.visited_places || window.userVisitedPlaces || null,
+          tag_counts: { ...lastTagCounts },
+          behavior_vector: Array.isArray(behaviorVector) ? [...behaviorVector] : [],
+          trait_scores: computeUserTraitScores(lastTagCounts || {})
+        }
+      : null
+  };
+}
+
+function collectABEvaluationWithAIPlanResult() {
+  const abEvaluation = collectABEvaluationResult();
+  const savedAt = new Date().toISOString();
+  return {
+    original_ab_evaluation_payload: abEvaluation,
+    ...collectQuestionnaireProfileContext(),
+    plan1_recommendations: abEvaluation.recommendation_plan_1_spots,
+    plan2_recommendations: abEvaluation.recommendation_plan_2_spots,
+    plan1_scores: abEvaluation.plan1_scores,
+    plan2_scores: abEvaluation.plan2_scores,
+    comparison_choice: abEvaluation.comparison_choice,
+    free_comment: abEvaluation.comment,
+    local_ai_plan: lastLocalAIPlan
+      ? {
+          ok: lastLocalAIPlan.ok === true,
+          plan_markdown: lastLocalAIPlan.plan_markdown || "",
+          model: lastLocalAIPlan.model || null,
+          generated_at: lastLocalAIPlan.generated_at || null,
+          source: "local_azure_openai"
+        }
+      : {
+          ok: false,
+          plan_markdown: "",
+          model: null,
+          generated_at: null,
+          source: "local_azure_openai"
+        },
+    saved_at: savedAt
+  };
+}
+
 function saveABEvaluationResult() {
   const payload = collectABEvaluationResult();
 
@@ -1614,9 +1671,26 @@ function saveABEvaluationResult() {
   URL.revokeObjectURL(url);
 }
 
+function saveABEvaluationResultWithAIPlan() {
+  if (!lastLocalAIPlan?.ok) return;
+
+  const payload = collectABEvaluationWithAIPlanResult();
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  const stamp = new Date().toISOString().replace(/[:.]/g, "-");
+  link.href = url;
+  link.download = `ab_recommendation_with_ai_plan_${stamp}.json`;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
+}
+
 async function generateLocalAITravelPlan() {
   const button = document.getElementById("abLocalAIBtn");
   const resultBox = document.getElementById("abLocalAIResult");
+  const saveWithAIPlanButton = document.getElementById("abSaveWithAIPlanBtn");
   if (!button || !resultBox) return;
 
   const payload = {
@@ -1625,6 +1699,8 @@ async function generateLocalAITravelPlan() {
     research_context: lastSummaryPayload
   };
   button.disabled = true;
+  if (saveWithAIPlanButton) saveWithAIPlanButton.disabled = true;
+  lastLocalAIPlan = null;
   resultBox.textContent = "AI旅行プランを生成しています…";
 
   try {
@@ -1637,6 +1713,13 @@ async function generateLocalAITravelPlan() {
     if (!response.ok || !data?.ok) {
       throw new Error(data?.error || `ローカルAI APIエラー (${response.status})`);
     }
+    lastLocalAIPlan = {
+      ok: true,
+      plan_markdown: data.plan_markdown || "",
+      model: data.model || null,
+      generated_at: data.generated_at || null
+    };
+    if (saveWithAIPlanButton) saveWithAIPlanButton.disabled = false;
     resultBox.textContent = data.plan_markdown || "旅行プラン本文が返されませんでした。";
   } catch (error) {
     const isConnectionError = error instanceof TypeError;
@@ -1962,10 +2045,6 @@ function setupResultDashboardUI() {
       <span class="tab-icon">📊</span>
       <span>${langText("データ根拠", "数据依据")}</span>
     </button>
-    <button class="result-tab" data-tab="ai">
-      <span class="tab-icon">✨</span>
-      <span>${langText("AIプラン", "AI行程")}</span>
-    </button>
   `;
 
   if (clusterBadge && clusterBadge.parentNode) {
@@ -1988,8 +2067,7 @@ function setResultTab(tab) {
   const sectionGroups = {
     overview: ["spotsSection", "abComparisonSection", "hotelSection"],
     profile: ["profileAnalysisSection", "processVisualizationSection"],
-    data: ["dataBasisSection"],
-    ai: ["aiPlanSection"]
+    data: ["dataBasisSection"]
   };
 
   const allSectionIds = [
@@ -2848,58 +2926,9 @@ function findBestCluster(realVec, tagCounts = lastTagCounts) {
   return best;
 }
 
-// ===== 12. 调用 Gemini AI =====
-async function callGeminiAI(payload) {
-  const apiKey = "AIzaSyB0tLavtrAxgZ_c5PmBgRBNNVK0HRwhBio";
-  const model  = "gemini-2.0-flash";
-  const url    = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
-
-  const lang = window.currentLang === "zh" ? "中国語（簡体字）" : "日本語";
-
-  const systemPrompt =
-    `あなたは福井県専門のプロ旅行プランナーです。必ず${lang}で回答してください。` +
-    `ユーザーの旅行タイプ診断結果と「推薦スポットリスト」をもとに、具体的で実用的な旅行プランを提案してください。` +
-    `重要：推薦スポットは必ずrecommended_spotsに含まれる場所のみを使ってください。AIが独自に場所を追加・変更しないでください。` +
-    `営業時間・交通状況・料金などの変動情報は断定しないでください。`;
-
-  const visitedNote = payload.visited_before && payload.visited_places
-    ? `\n※ ユーザーはすでに「${payload.visited_places}」を訪れたことがあります。これらは推薦から除外済みです。`
-    : payload.visited_before
-      ? "\n※ ユーザーは福井を訪れたことがあります。定番スポット以外の提案も歓迎します。"
-      : "";
-
-  const userPrompt =
-    `以下は旅行タイプ診断の結果です。${visitedNote}\n\n` +
-    `■ 旅行者タイプ: ${payload.cluster?.name || ''}\n` +
-    `■ 同行者: ${payload.companion || '未回答'}\n` +
-    `■ 旅行時期: ${payload.season || '未定'}\n` +
-    `■ recommended_spots（このリストの場所のみ使用すること）:\n` +
-    payload.recommended_spots.map((s, i) => {
-      const selectedName = s.selectedSpot?.name || s.place;
-      return `  ${i + 1}. ${selectedName}（所属エリア: ${s.place}）`;
-    }).join('\n') +
-    `\n\n【提案フォーマット】\n` +
-    `1) 2〜3文でユーザーの旅行スタイルを要約（タイプ名を含める）\n` +
-    `2) recommended_spotsのTop3を使って、具体的な過ごし方を3つ箇条書きで提案\n` +
-    `   各提案に「おすすめ内容」「理由」「ヒント」を2〜3行で記載\n` +
-    `3) 最後に「実際の営業時間・交通情報は事前確認が必要です」と自然に付記する\n`;
-
-  const resp = await fetch(url, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      system_instruction: { parts: [{ text: systemPrompt }] },
-      contents: [{ role: "user", parts: [{ text: userPrompt }] }],
-      generationConfig: { temperature: 0.7, maxOutputTokens: 900, topP: 0.9 }
-    })
-  });
-
-  if (!resp.ok) {
-    throw new Error(`Gemini API エラー: ${resp.status}`);
-  }
-
-  const data = await resp.json();
-  return data?.candidates?.[0]?.content?.parts?.[0]?.text || "（AIからの返答がありません）";
+// ===== 12. Legacy browser AI plan is disabled for participant data collection =====
+async function callGeminiAI() {
+  throw new Error("Legacy browser AI plan generation is disabled. Use the local AI travel plan section.");
 }
 
 // ===== 13. 选项高亮与进度 =====
@@ -2933,6 +2962,7 @@ function restartQuiz() {
   behaviorVector = [];
   lastSummaryPayload = null;
   lastTagCounts = {};
+  lastLocalAIPlan = null;
   window.__AB_TEST_PLAN1_SPOTS__ = [];
   window.__AB_TEST_PLAN2_SPOTS__ = [];
 
