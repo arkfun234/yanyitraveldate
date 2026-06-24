@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
-"""Compare A-plan hand-designed clusters against B-plan automatic clusters."""
+"""Compare A-plan hand-designed clusters against B-plan automatic clusters.
+
+This comparison is retained for the preliminary A/B Test stage.
+The current research direction uses B as a free-text clustering baseline
+to support explanation, reproducibility, and diversity in A+B integration.
+"""
 
 from __future__ import annotations
 

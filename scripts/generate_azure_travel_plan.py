@@ -105,6 +105,12 @@ AB_FIELD_GROUPS = {
         "感想",
     ),
     "baseline_debug": ("baseline_debug", "baselinedebug"),
+    "integrated_recommendations": (
+        "integrated_recommendations",
+        "integratedrecommendations",
+        "統合推薦",
+    ),
+    "integration_debug": ("integration_debug", "integrationdebug"),
 }
 
 
@@ -206,6 +212,114 @@ def extract_ab_test_context(ab_result: Any) -> dict[str, Any]:
 def build_prompt(
     ab_result: Any, extracted: dict[str, Any], project_data: dict[str, str]
 ) -> str:
+    extracted_sections_new = "\n\n".join(
+        f"### {name}\n{json_text(value, MAX_AB_SECTION_CHARS)}"
+        for name, value in extracted.items()
+    )
+    if not extracted_sections_new:
+        extracted_sections_new = "抽出対象フィールドは見つかりませんでした。元データを参照してください。"
+
+    project_sections_new = "\n\n".join(
+        f"### {name}\n{content}" for name, content in project_data.items()
+    )
+    if not project_sections_new:
+        project_sections_new = "利用可能なプロジェクト補助データはありません。"
+
+    return f"""あなたは福井県観光に詳しい旅行プランナーであり、説明可能な観光推薦システムの支援者です。
+本システムでは、A案の旅行者タイプ推定を基盤とし、B案の自由記述クラスタリング結果を補助情報として用いて、統合推薦候補を再ランキングしています。
+
+以下のデータを根拠として、対象ユーザー専用の福井県内1日旅行プランを日本語Markdownで作成してください。
+
+## 推薦情報の使い方
+- integrated_recommendations を最優先で使ってください。
+- plan1_recommendations / plan2_recommendations / internal_reference は内部参考情報です。推薦案1と推薦案2の比較として出力しないでください。
+- integrated_recommendations に含まれない観光スポットを、主な訪問先として勝手に追加しないでください。
+- integrated candidates に道の駅、観光案内所、ターミナル、駅などが含まれる場合、それらは休憩・交通・補助点としてのみ扱い、主要目的地にしないでください。
+- 交通、飲食、休憩地点を追加する必要がある場合は、必ず「補助点」と明記してください。
+- 候補から3〜4か所を選び、現実的な1日旅行ルートにしてください。
+- 各地点がユーザーに合う理由を説明してください。
+- A cluster の旅行者タイプ、特徴、上位傾向のどこを参考にしたか説明してください。
+- B cluster summary / purpose_tags / top_traits / matched_keywords から、どの旅行ニーズを参考にしたか説明してください。
+- 移動距離と時間配分が現実的になるようにしてください。位置関係を断定できない場合は「要確認」としてください。
+
+## 出力形式
+# 福井県1日旅行プラン
+
+## 利用した推薦情報
+- A案で推定された旅行者タイプ：
+- B案から補助的に参照した旅行ニーズ：
+- 統合推薦で重視した点：
+
+## 1日の流れ
+09:30 ...
+11:00 ...
+12:30 ...
+14:00 ...
+16:00 ...
+
+## このプランを推薦する理由
+...
+
+## 注意点
+...
+
+## 抽出された推薦情報
+{extracted_sections_new}
+
+## 元データ（長い場合は省略）
+{json_text(ab_result, MAX_SOURCE_CHARS)}
+
+## 利用可能なプロジェクトデータ
+{project_sections_new}
+"""
+
+    return f"""あなたは福井県観光に詳しい旅行プランナーであり、説明可能な観光推薦システムの支援者です。
+本システムでは、A案の旅行者タイプ推定を基盤とし、B案の自由記述クラスタリング結果を補助情報として用いて、推薦候補を再ランキングしています。
+
+以下のデータを根拠として、対象ユーザー専用の福井県内1日旅行プランを日本語Markdownで作成してください。
+
+## 推薦情報の使い方
+- integrated_recommendations を最優先で使ってください。
+- integrated_recommendations に含まれない観光スポットを、主な訪問先として勝手に追加しないでください。
+- 交通、飲食、休憩地点を追加する必要がある場合は、必ず「補助点」と明記してください。
+- 候補から3〜4か所を選び、現実的な1日旅行ルートにしてください。
+- 各地点がユーザーに合う理由を説明してください。
+- A cluster の旅行者タイプ、特徴、上位傾向のどこを参考にしたか説明してください。
+- B cluster summary / purpose_tags / top_traits / matched_keywords から、どの旅行ニーズを参考にしたか説明してください。
+- 移動距離と時間配分が現実的になるようにしてください。位置関係を断定できない場合は「要確認」としてください。
+- A/B Test の評価情報は予備評価として参照してよいですが、最終判断は A+B integrated recommendation を中心にしてください。
+
+## 出力形式
+# 福井県1日旅行プラン
+
+## 利用した推薦情報
+- A案で推定された旅行者タイプ：
+- B案から補助的に参照した旅行ニーズ：
+- 統合推薦で重視した点：
+
+## 1日の流れ
+09:30 ...
+11:00 ...
+12:30 ...
+14:00 ...
+16:00 ...
+
+## このプランを推薦する理由
+...
+
+## 注意点
+...
+
+## 抽出された推薦・評価情報
+{extracted_sections_new}
+
+## 元データ（長い場合は省略）
+{json_text(ab_result, MAX_SOURCE_CHARS)}
+
+## 利用可能なプロジェクトデータ
+{project_sections_new}
+"""
+
     extracted_sections = "\n\n".join(
         f"### {name}\n{json_text(value, MAX_AB_SECTION_CHARS)}"
         for name, value in extracted.items()
@@ -219,7 +333,7 @@ def build_prompt(
     if not project_sections:
         project_sections = "利用可能なプロジェクト補助データはありません。"
 
-    return f"""あなたは福井県観光の旅行プランナー兼、観光推薦ABテストの分析者です。
+    return f"""あなたは福井県観光に詳しい旅行プランナーであり、説明可能な観光推薦システムの支援者です。
 以下のABテスト結果とクラスター情報を根拠として、対象ユーザー専用の福井県内1日旅行プランを
 日本語のMarkdownで作成してください。一般的な観光ガイドではなく、入力データのどの証拠を
 どう旅程へ反映したかが読み手に明確に伝わる内容にしてください。
