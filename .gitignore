@@ -2,3 +2,9 @@
 *.env
 abtest_results/
 generated_plans/
+# Python cache
+__pycache__/
+*.pyc
+
+# Local analysis outputs
+data/real_abtest_analysis/
