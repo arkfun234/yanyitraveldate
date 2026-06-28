@@ -2056,11 +2056,6 @@ function buildIntegratedRecommendation({
     ...baselineNeeds.matchedKeywords,
     ...baselineNeeds.themeTags
   ], 50);
-  const userTraitTokens = Object.entries(userTraitScores || {})
-    .sort((a, b) => Math.abs(b[1]) - Math.abs(a[1]))
-    .slice(0, 8)
-    .map(([key]) => key);
-
   const rawCandidates = (SPOT_MASTER || [])
     .filter(spot => spot?.name && !isVisited(spot))
     .map(spot => {
@@ -2071,7 +2066,7 @@ function buildIntegratedRecommendation({
       const aTokenHits = countSpotMatches(spot, aTokens);
       const bKeywordHits = countSpotMatches(spot, baselineNeeds.matchedKeywords);
       const bPurposeHits = countSpotMatches(spot, baselineNeeds.purposeTags);
-      const bTraitHits = countSpotMatches(spot, [...baselineNeeds.topTraits, ...userTraitTokens]);
+      const bTraitMatch = getBClusterTraitSpotMatch(spot, baselineNeeds.traitScores);
       const bThemeHits = countSpotThemeMatches(spot, baselineNeeds.themeTags);
       const qualityRaw = Number(spot.quality_score) || 0;
       const penaltyRaw = Number(spot.main_recommendation_penalty) || 0;
@@ -2079,7 +2074,7 @@ function buildIntegratedRecommendation({
       const conditionScore = getConditionScoreForSpot(spot, companion, season);
       const bKeywordMatchScore = Math.min(bKeywordHits * 18, 54);
       const bPurposeTagScore = Math.min(bPurposeHits * 24, 60);
-      const bTraitSimilarityScore = Math.min(bTraitHits * 14, 42);
+      const bTraitSimilarityScore = bTraitMatch.score;
       const bThemeTagScore = Math.min(bThemeHits * 18, 54);
       const representativeBonus = getRepresentativeBonus(spot, spotType);
       const minorSpotPenalty = getMinorSpotPenalty(spot, spotType);
@@ -2149,6 +2144,8 @@ function buildIntegratedRecommendation({
           b_purpose_tag_score: Math.round(bPurposeTagScore),
           b_trait_similarity_score: Math.round(bTraitSimilarityScore),
           b_trait_tag_score: Math.round(bTraitSimilarityScore),
+          b_trait_matched_traits: bTraitMatch.matchedTraits,
+          b_trait_matched_terms: bTraitMatch.matchedTerms,
           b_theme_tag_score: Math.round(bThemeTagScore),
           spot_quality_score: Math.round(spotQualityScore),
           representative_bonus: Math.round(representativeBonus),
@@ -3850,6 +3847,54 @@ function traitSimilarity(userTraitScores, clusterTraitScores) {
   const userVals = TRAVEL_TRAIT_KEYS.map(trait => userTraitScores?.[trait] || 0);
   const clusterVals = TRAVEL_TRAIT_KEYS.map(trait => clusterTraitScores?.[trait] || 0);
   return cosineSimilarity(userVals, clusterVals);
+}
+
+const SPOT_TRAIT_MATCH_KEYWORDS = {
+  planning: ["計画", "情報", "案内", "安心", "分かりやすさ", "旅行計画"],
+  relaxation: ["リラックス志向", "温泉", "露天風呂", "宿", "のんびり", "癒し"],
+  food_value: ["美食・価値志向", "地元の美味しいものを食べる", "そば", "蕎麦", "海鮮", "カニ", "料理"],
+  nature: ["自然志向", "自然鑑賞", "海", "山", "湖", "景色", "公園", "滝"],
+  exploration_experience: ["探索・体験志向", "各種体験", "テーマパーク", "博物館", "資料館", "体験", "歴史", "文化"],
+  efficiency_touring: ["効率・周遊志向", "ドライブ", "ツーリング", "アクセス", "駐車場", "移動", "交通"]
+};
+
+function getHighBClusterTraits(traitScores, limit = 3, threshold = 0.15) {
+  const sortedTraits = TRAVEL_TRAIT_KEYS
+    .map(trait => ({ trait, score: Number(traitScores?.[trait]) || 0 }))
+    .filter(item => item.score > 0)
+    .sort((a, b) => b.score - a.score);
+  const highTraits = sortedTraits.filter(item => item.score > threshold);
+  return (highTraits.length ? highTraits : sortedTraits)
+    .slice(0, limit)
+    .map(item => item.trait);
+}
+
+function getBClusterTraitSpotMatch(masterSpot, traitScores) {
+  const targetTraits = getHighBClusterTraits(traitScores);
+  const haystack = [
+    ...spotTextFields(masterSpot),
+    masterSpot?.spot_type || inferSpotType(masterSpot)
+  ].join(" ").toLowerCase();
+  const matchedTraits = [];
+  const matchedTerms = [];
+
+  targetTraits.forEach(trait => {
+    const terms = (SPOT_TRAIT_MATCH_KEYWORDS[trait] || [])
+      .filter(term => {
+        const needle = String(term || "").trim().toLowerCase();
+        return needle && haystack.includes(needle);
+      });
+    if (terms.length) {
+      matchedTraits.push(trait);
+      matchedTerms.push(...terms);
+    }
+  });
+
+  return {
+    score: Math.min(matchedTraits.length * 14, 42),
+    matchedTraits: uniqueCompactItems(matchedTraits, 6),
+    matchedTerms: uniqueCompactItems(matchedTerms, 12)
+  };
 }
 
 // ===== 10. 余弦相似度 =====
