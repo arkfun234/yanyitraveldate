@@ -112,6 +112,12 @@ AB_FIELD_GROUPS = {
         "統合推薦",
     ),
     "integration_debug": ("integration_debug", "integrationdebug"),
+    "psychological_profile": (
+        "psychological_profile",
+        "psychologicalprofile",
+        "心理",
+        "旅行傾向",
+    ),
 }
 
 
@@ -213,6 +219,15 @@ def extract_ab_test_context(ab_result: Any) -> dict[str, Any]:
 def build_prompt(
     ab_result: Any, extracted: dict[str, Any], project_data: dict[str, str]
 ) -> str:
+    psychological_profile = ab_result.get("psychological_profile")
+    if not psychological_profile and isinstance(ab_result.get("user_profile"), dict):
+        psychological_profile = ab_result["user_profile"].get("psychological_profile")
+    if not psychological_profile and isinstance(ab_result.get("research_context"), dict):
+        psychological_profile = ab_result["research_context"].get("psychological_profile")
+    psychological_profile = psychological_profile if isinstance(psychological_profile, dict) else {}
+    psychological_profile_text = psychological_profile.get("profile_text") or "心理・旅行傾向は保存データから明確に取得できませんでした。"
+    psychological_plan_instruction = psychological_profile.get("plan_instruction") or "心理・旅行傾向が取得できない場合も、既存の統合推薦候補を尊重して自然な旅行プランを作成してください。"
+
     extracted_sections = "\n\n".join(
         f"### {name}\n{json_text(value, MAX_AB_SECTION_CHARS)}"
         for name, value in extracted.items()
@@ -229,6 +244,16 @@ def build_prompt(
     return f"""あなたは福井県観光に詳しい旅行プランナーであり、説明可能な観光推薦システムの支援者です。
 この入力は A/B 比較ではなく、すでに統合推薦として再ランキングされた結果です。日本語Markdownで、対象ユーザー専用の福井県内1日旅行プランを作成してください。
 B案は、13か月分の原始アンケート自由記述から自動生成した旅行ニーズクラスタです。
+
+【ユーザーの心理・旅行傾向】
+{psychological_profile_text}
+
+【心理傾向に基づく旅行プラン生成方針】
+{psychological_plan_instruction}
+
+注意：
+心理傾向は推薦候補を完全に置き換えるためではなく、既存の推薦候補をもとに、行程順序、滞在時間、推薦理由、旅行プランの雰囲気を調整するために使用してください。
+生成文の中では、「リラックス志向が高いため」「美食・価値志向が高いため」など、心理・旅行傾向が行程にどのように反映されたかを自然に説明してください。
 
 ## 推薦情報の使い方
 - integrated_recommendations を最優先で使ってください。

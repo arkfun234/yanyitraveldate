@@ -156,6 +156,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const recommendedHotels = getRecommendedHotels(recommendedSpots);
     const userTraitScores = computeUserTraitScores(tagCounts);
+    const psychologicalProfile = buildPsychologicalProfile(userTraitScores);
     const legacyBaselineDebug = buildAutoBaselineRecommendation(
       userTraitScores,
       window.userVisitedPlaces
@@ -195,6 +196,7 @@ document.addEventListener("DOMContentLoaded", () => {
       matched_a_cluster: integratedBundle.matched_a_cluster || null,
       matched_b_cluster: integratedBundle.matched_b_cluster || null,
       integration_debug: integratedBundle.integration_debug || null,
+      psychological_profile: psychologicalProfile,
     };
     window.__AB_BASELINE_RECOMMENDATION__ = legacyBaselineDebug;
     window.__INTEGRATED_RECOMMENDATIONS__ = integratedRecommendations;
@@ -2569,6 +2571,7 @@ function collectABEvaluationResult() {
   const payload = {
     questionnaire_answers: { ...answers },
     user_profile: profileContext.user_profile,
+    psychological_profile: profileContext.psychological_profile,
     integrated_recommendations: integratedRecommendations.map(normalizeIntegratedRecommendationForExport),
     matched_a_cluster: lastSummaryPayload?.matched_a_cluster || lastSummaryPayload?.cluster || null,
     matched_b_cluster: lastSummaryPayload?.matched_b_cluster || lastSummaryPayload?.baseline_debug || null,
@@ -2596,8 +2599,11 @@ function collectABEvaluationResult() {
 }
 
 function collectQuestionnaireProfileContext() {
+  const traitScores = computeUserTraitScores(lastTagCounts || {});
+  const psychologicalProfile = lastSummaryPayload?.psychological_profile || buildPsychologicalProfile(traitScores);
   return {
     questionnaire_answers: { ...answers },
+    psychological_profile: psychologicalProfile,
     user_profile: lastSummaryPayload
       ? {
           cluster: lastSummaryPayload.cluster || null,
@@ -2607,7 +2613,8 @@ function collectQuestionnaireProfileContext() {
           visited_places: lastSummaryPayload.visited_places || window.userVisitedPlaces || null,
           tag_counts: { ...lastTagCounts },
           behavior_vector: Array.isArray(behaviorVector) ? [...behaviorVector] : [],
-          trait_scores: computeUserTraitScores(lastTagCounts || {})
+          trait_scores: traitScores,
+          psychological_profile: psychologicalProfile
         }
       : null
   };
@@ -2618,6 +2625,7 @@ function collectABEvaluationWithAIPlanResult() {
   return {
     questionnaire_answers: integratedPayload.questionnaire_answers || {},
     user_profile: integratedPayload.user_profile || null,
+    psychological_profile: integratedPayload.psychological_profile || null,
     integrated_recommendations: integratedPayload.integrated_recommendations || [],
     matched_a_cluster: integratedPayload.matched_a_cluster || null,
     matched_b_cluster: integratedPayload.matched_b_cluster || null,
@@ -2692,7 +2700,8 @@ async function generateLocalAITravelPlan() {
       cluster: lastSummaryPayload?.cluster || null,
       matched_a_cluster: lastSummaryPayload?.matched_a_cluster || null,
       matched_b_cluster: lastSummaryPayload?.matched_b_cluster || null,
-      integration_debug: lastSummaryPayload?.integration_debug || null
+      integration_debug: lastSummaryPayload?.integration_debug || null,
+      psychological_profile: lastSummaryPayload?.psychological_profile || null
     }
   };
   button.disabled = true;
@@ -3830,6 +3839,93 @@ function computeUserTraitScores(tagCounts) {
     traitScores[trait] = maxScore > 0 ? rawScores[trait] / maxScore : 0;
   });
   return traitScores;
+}
+
+function normalizeTraitScoreValue(value) {
+  const n = Number(value);
+  if (!Number.isFinite(n)) return 0;
+  return Math.max(0, Math.min(1, n));
+}
+
+function getPsychologicalTraitLabelJa(key) {
+  const labels = {
+    planning: "計画性",
+    relaxation: "リラックス志向",
+    food_value: "美食・価値志向",
+    nature: "自然志向",
+    exploration_experience: "探索・体験志向",
+    efficiency_touring: "効率・周遊志向"
+  };
+  return labels[key] || key;
+}
+
+function getPsychologicalTraitLevelJa(score) {
+  const value = normalizeTraitScoreValue(score);
+  if (value >= 0.7) return "高い";
+  if (value >= 0.4) return "中程度";
+  return "低い";
+}
+
+function buildPsychologicalProfileText(userTraitScores = {}) {
+  return TRAVEL_TRAIT_KEYS
+    .map(key => ({
+      key,
+      label: getPsychologicalTraitLabelJa(key),
+      score: normalizeTraitScoreValue(userTraitScores[key])
+    }))
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 3)
+    .map(item => `${item.label}が${getPsychologicalTraitLevelJa(item.score)}（${item.score.toFixed(2)}）`)
+    .join("、");
+}
+
+function buildPsychologicalPlanInstruction(userTraitScores = {}) {
+  const instructions = [];
+
+  const planning = normalizeTraitScoreValue(userTraitScores.planning);
+  const relaxation = normalizeTraitScoreValue(userTraitScores.relaxation);
+  const foodValue = normalizeTraitScoreValue(userTraitScores.food_value);
+  const nature = normalizeTraitScoreValue(userTraitScores.nature);
+  const exploration = normalizeTraitScoreValue(userTraitScores.exploration_experience);
+  const efficiency = normalizeTraitScoreValue(userTraitScores.efficiency_touring);
+
+  if (planning >= 0.6) {
+    instructions.push("計画性が高いため、時間配分、移動順序、滞在時間を明確にしてください。");
+  }
+
+  if (relaxation >= 0.6) {
+    instructions.push("リラックス志向が高いため、移動を詰め込みすぎず、温泉・休憩・ゆったりした滞在を重視してください。");
+  }
+
+  if (foodValue >= 0.6) {
+    instructions.push("美食・価値志向が高いため、越前そば、海鮮、地元名物、食事体験を重視してください。");
+  }
+
+  if (nature >= 0.6) {
+    instructions.push("自然志向が高いため、海・山・湖・景色など自然を楽しめる場所を優先してください。");
+  }
+
+  if (exploration >= 0.6) {
+    instructions.push("探索・体験志向が高いため、博物館、体験施設、まち歩き、学びの要素を含めてください。");
+  }
+
+  if (efficiency >= 0.6) {
+    instructions.push("効率・周遊志向が高いため、移動効率を考慮し、複数スポットを無理なく回れる順序にしてください。");
+  }
+
+  if (!instructions.length) {
+    instructions.push("ユーザーの心理・旅行傾向を参考にし、推薦理由と行程順序に自然に反映してください。");
+  }
+
+  return instructions.join("\n");
+}
+
+function buildPsychologicalProfile(userTraitScores = {}) {
+  return {
+    trait_scores: { ...(userTraitScores || {}) },
+    profile_text: buildPsychologicalProfileText(userTraitScores),
+    plan_instruction: buildPsychologicalPlanInstruction(userTraitScores)
+  };
 }
 
 function getClusterTraitProfileMap() {
