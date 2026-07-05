@@ -1080,18 +1080,63 @@ function installResearchStyles() {
       box-shadow: 0 8px 20px rgba(37, 99, 235, 0.22);
     }
 
+    .result-hero-summary {
+      position: relative;
+      overflow: hidden;
+      margin: 0 0 18px;
+      padding: 28px;
+      border-radius: 24px;
+      color: #fff;
+      background:
+        radial-gradient(circle at 88% 16%, rgba(255,255,255,0.24), transparent 26%),
+        radial-gradient(circle at 10% 90%, rgba(125,211,252,0.28), transparent 32%),
+        linear-gradient(135deg, #1d4ed8 0%, #2563eb 48%, #0ea5e9 100%);
+      box-shadow: 0 18px 44px rgba(37, 99, 235, 0.24);
+    }
+
+    .result-hero-summary::after {
+      content: "";
+      position: absolute;
+      inset: auto -40px -80px auto;
+      width: 220px;
+      height: 220px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.10);
+    }
+
+    .result-hero-summary h2 {
+      position: relative;
+      z-index: 1;
+      margin: 0 0 8px;
+      font-size: 24px;
+      line-height: 1.25;
+      letter-spacing: -0.02em;
+    }
+
+    .result-hero-summary p {
+      position: relative;
+      z-index: 1;
+      max-width: 620px;
+      margin: 0;
+      color: rgba(255,255,255,0.88);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
     .ab-save-btn:hover {
       background: var(--primary-dark);
       transform: translateY(-1px);
     }
 
     .ab-local-ai-btn {
-      background: #0f766e;
-      box-shadow: 0 8px 20px rgba(15, 118, 110, 0.22);
+      background: linear-gradient(135deg, #2563eb, #0ea5e9);
+      padding: 13px 22px;
+      font-size: 14px;
+      box-shadow: 0 14px 30px rgba(37, 99, 235, 0.26);
     }
 
     .ab-local-ai-btn:hover {
-      background: #115e59;
+      background: linear-gradient(135deg, #1d4ed8, #0284c7);
     }
 
     .ab-local-ai-btn:disabled {
@@ -1135,9 +1180,176 @@ function installResearchStyles() {
       line-height: 1.6;
     }
 
-    .integrated-recommendation-section .section-body {
+    .ai-travel-conditions {
       display: grid;
       gap: 14px;
+      border: 1px solid #dbeafe;
+      border-radius: 18px;
+      padding: 16px;
+      background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+    }
+
+    .ai-travel-conditions h4 {
+      margin: 0;
+      color: #115e59;
+      font-size: 15px;
+    }
+
+    .ai-condition-field {
+      display: grid;
+      gap: 6px;
+    }
+
+    .ai-condition-field label {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .ai-condition-field textarea,
+    .ai-condition-field select {
+      width: 100%;
+      border: 1px solid #bfdbfe;
+      border-radius: 14px;
+      padding: 11px 13px;
+      font: inherit;
+      color: var(--text);
+      background: #fff;
+      box-shadow: 0 6px 16px rgba(37, 99, 235, 0.06);
+    }
+
+    .ai-condition-field textarea {
+      resize: vertical;
+      line-height: 1.5;
+    }
+
+    .ai-condition-field select {
+      min-height: 44px;
+      cursor: pointer;
+      font-weight: 750;
+      color: #1d4ed8;
+      background:
+        linear-gradient(180deg, #ffffff, #eff6ff);
+    }
+
+    .integrated-recommendation-section .section-body {
+      display: grid;
+      gap: 16px;
+    }
+
+    .integrated-workflow-card {
+      display: grid;
+      gap: 14px;
+      border: 1px solid #e8edf5;
+      border-radius: 22px;
+      padding: 20px;
+      background:
+        linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+      box-shadow: 0 14px 34px rgba(37, 99, 235, 0.09);
+    }
+
+    .integrated-workflow-card h3 {
+      margin: 0;
+      color: var(--text);
+      font-size: 17px;
+    }
+
+    .integrated-workflow-card p {
+      margin: 0;
+      color: var(--text-sub);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .diagnosis-summary-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .diagnosis-summary-item {
+      display: grid;
+      gap: 8px;
+      border: 1px solid #dbeafe;
+      border-radius: 18px;
+      padding: 16px;
+      background:
+        radial-gradient(circle at 90% 12%, rgba(59,130,246,0.12), transparent 30%),
+        #f8fbff;
+      box-shadow: 0 8px 22px rgba(37, 99, 235, 0.08);
+    }
+
+    .diagnosis-summary-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #dbeafe, #e0f2fe);
+      color: #1d4ed8;
+      font-size: 16px;
+    }
+
+    .diagnosis-summary-label {
+      font-size: 12px;
+      font-weight: 850;
+      color: #0f766e;
+    }
+
+    .diagnosis-summary-value {
+      font-size: 13px;
+      line-height: 1.55;
+      color: var(--text);
+      overflow-wrap: anywhere;
+    }
+
+    .integrated-save-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .save-primary-btn {
+      background: linear-gradient(135deg, #2563eb, #0ea5e9);
+      box-shadow: 0 12px 28px rgba(37, 99, 235, 0.24);
+    }
+
+    .save-secondary-btn {
+      background: #fff;
+      color: #1d4ed8;
+      border: 1px solid #bfdbfe;
+      box-shadow: 0 8px 20px rgba(37, 99, 235, 0.10);
+    }
+
+    .save-secondary-btn:hover {
+      color: #fff;
+    }
+
+    .research-toggle-btn {
+      width: fit-content;
+      border: 1px solid #cbd5e1;
+      border-radius: 999px;
+      background: #fff;
+      color: var(--text);
+      padding: 10px 16px;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .research-toggle-btn:hover {
+      background: #f8fafc;
+      transform: translateY(-1px);
+    }
+
+    .research-evaluation-panel {
+      display: none;
+    }
+
+    .research-evaluation-panel.show {
+      display: block;
     }
 
     .integrated-spot-list {
@@ -1147,34 +1359,43 @@ function installResearchStyles() {
 
     .integrated-spot-card {
       display: grid;
-      grid-template-columns: 34px 132px minmax(0, 1fr);
-      gap: 14px;
+      grid-template-columns: 150px minmax(0, 1fr);
+      gap: 16px;
       align-items: start;
-      border: 1px solid #e8edf5;
-      border-radius: 12px;
+      border: 1px solid #dbeafe;
+      border-radius: 20px;
       padding: 14px;
-      background: #fff;
+      background:
+        linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+      box-shadow: 0 10px 26px rgba(15, 23, 42, 0.07);
+      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+    }
+
+    .integrated-spot-card:hover {
+      transform: translateY(-3px);
+      border-color: #93c5fd;
+      box-shadow: 0 18px 38px rgba(37, 99, 235, 0.14);
     }
 
     .integrated-spot-rank {
-      width: 30px;
-      height: 30px;
+      width: fit-content;
+      height: auto;
       border-radius: 999px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: inline-flex;
       font-size: 13px;
       font-weight: 900;
-      color: #0f766e;
-      background: #ccfbf1;
+      color: #fff;
+      background: linear-gradient(135deg, #2563eb, #0ea5e9);
+      padding: 5px 10px;
+      box-shadow: 0 8px 18px rgba(37, 99, 235, 0.20);
     }
 
     .integrated-spot-image {
-      width: 132px;
-      height: 96px;
+      width: 150px;
+      height: 120px;
       object-fit: cover;
-      border-radius: 8px;
-      border: 1px solid #e8edf5;
+      border-radius: 16px;
+      border: 1px solid #dbeafe;
       background: #f1f5f9;
     }
 
@@ -1185,11 +1406,31 @@ function installResearchStyles() {
     }
 
     .integrated-spot-name {
-      font-size: 15px;
+      font-size: 17px;
       line-height: 1.35;
       font-weight: 850;
       color: var(--text);
       overflow-wrap: anywhere;
+    }
+
+    .integrated-spot-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      align-items: center;
+    }
+
+    .integrated-spot-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      border-radius: 999px;
+      padding: 5px 9px;
+      background: #eff6ff;
+      color: #1d4ed8;
+      font-size: 11.5px;
+      font-weight: 800;
+      border: 1px solid #dbeafe;
     }
 
     .integrated-spot-area,
@@ -1199,6 +1440,13 @@ function installResearchStyles() {
       line-height: 1.55;
       color: var(--text-sub);
       overflow-wrap: anywhere;
+    }
+
+    .integrated-spot-reason {
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
 
     .integrated-spot-note strong {
@@ -1211,17 +1459,70 @@ function installResearchStyles() {
 
     .ab-local-ai-result {
       min-height: 54px;
-      white-space: pre-wrap;
+      white-space: normal;
       overflow-wrap: anywhere;
       max-height: 720px;
       overflow-y: auto;
-      border: 1px solid #dbe3ef;
-      border-radius: 12px;
-      padding: 14px;
-      background: #f8fafc;
+      border: 1px solid #dbeafe;
+      border-radius: 18px;
+      padding: 16px;
+      background: #ffffff;
       color: var(--text);
       font-size: 13px;
       line-height: 1.7;
+      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+    }
+
+    .ai-plan-empty,
+    .ai-plan-loading,
+    .ai-plan-output,
+    .ai-plan-error {
+      display: grid;
+      gap: 8px;
+    }
+
+    .ai-plan-output pre,
+    .ai-plan-loading pre,
+    .ai-plan-error pre {
+      margin: 0;
+      white-space: pre-wrap;
+      font: inherit;
+    }
+
+    .ai-plan-card-title {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      font-size: 15px;
+      font-weight: 900;
+      color: var(--text);
+    }
+
+    .ai-plan-reflected-badge {
+      width: fit-content;
+      border-radius: 999px;
+      padding: 5px 10px;
+      background: #ecfeff;
+      color: #0369a1;
+      font-size: 11.5px;
+      font-weight: 850;
+      border: 1px solid #bae6fd;
+    }
+
+    .ai-plan-empty {
+      color: var(--text-sub);
+      background: linear-gradient(180deg, #f8fbff, #ffffff);
+      border-style: dashed;
+    }
+
+    .ai-plan-loading {
+      color: #1d4ed8;
+      font-weight: 800;
+    }
+
+    .ai-plan-error {
+      color: #b91c1c;
     }
 
     .ab-empty {
@@ -1238,7 +1539,8 @@ function installResearchStyles() {
       .data-kpis,
       .process-flow,
       .ab-plan-grid,
-      .ab-form-grid {
+      .ab-form-grid,
+      .diagnosis-summary-grid {
         grid-template-columns: 1fr;
       }
 
@@ -1247,7 +1549,7 @@ function installResearchStyles() {
       }
 
       .integrated-spot-card {
-        grid-template-columns: 30px minmax(0, 1fr);
+        grid-template-columns: 1fr;
       }
 
       .ab-spot-thumb {
@@ -1258,9 +1560,8 @@ function installResearchStyles() {
       }
 
       .integrated-spot-image {
-        grid-column: 2;
-        width: 112px;
-        height: 82px;
+        width: 100%;
+        height: 180px;
       }
     }
   `;
@@ -2372,17 +2673,21 @@ function renderIntegratedRecommendationCards(recommendations) {
     const name = spot?.name || spot?.selectedSpot?.name || "名称未設定";
     const image = spot?.image || spot?.selectedSpot?.image || "";
     const area = spot?.area || spot?.selectedSpot?.area || "";
+    const spotType = spot?.spot_type || spot?.selectedSpot?.spot_type || "観光スポット";
     const link = spot?.url || spot?.selectedSpot?.url || "";
     const reason = spot?.recommendation_reason || "A案とB案の補助情報を統合して抽出した候補です。";
     const aRelation = spot?.a_relationship || "A案の旅行者タイプと関連する候補です。";
     const bMatch = spot?.b_need_match || "Bクラスタの自由記述ニーズを補助的に参照しています。";
     return `
       <div class="integrated-spot-card">
-        <div class="integrated-spot-rank">${index + 1}</div>
         ${image ? `<img class="integrated-spot-image" src="${escapeHtml(image)}" alt="${escapeHtml(name)}" loading="lazy">` : ""}
         <div class="integrated-spot-main">
+          <div class="integrated-spot-tags">
+            <span class="integrated-spot-rank">Rank ${index + 1}</span>
+            <span class="integrated-spot-tag">📍 ${escapeHtml(area || "不明")}</span>
+            <span class="integrated-spot-tag">🏷 ${escapeHtml(spotType)}</span>
+          </div>
           <div class="integrated-spot-name">${escapeHtml(name)}</div>
-          <div class="integrated-spot-area">所属区域：${escapeHtml(area || "不明")}</div>
           <div class="integrated-spot-reason">${escapeHtml(reason)}</div>
           <div class="integrated-spot-note"><strong>A案との関係：</strong>${escapeHtml(aRelation)}</div>
           <div class="integrated-spot-note"><strong>Bクラスタ対応：</strong>${escapeHtml(bMatch)}</div>
@@ -2391,6 +2696,48 @@ function renderIntegratedRecommendationCards(recommendations) {
       </div>
     `;
   }).join("");
+}
+
+function renderDiagnosisSummaryCard() {
+  const matchedA = lastSummaryPayload?.matched_a_cluster || lastSummaryPayload?.cluster || {};
+  const psychologicalProfile = lastSummaryPayload?.psychological_profile || {};
+  const matchedB = lastSummaryPayload?.matched_b_cluster || {};
+  const aType = matchedA.name || matchedA.description || "診断結果から取得できませんでした。";
+  const profileText = psychologicalProfile.profile_text || "心理傾向の要約を取得できませんでした。";
+  const bClusterName = matchedB.name || matchedB.summary || "自由記述クラスタを取得できませんでした。";
+
+  return `
+    <div class="integrated-workflow-card diagnosis-summary-card">
+      <h3>① 診断結果サマリー</h3>
+      <div class="diagnosis-summary-grid">
+        <div class="diagnosis-summary-item">
+          <div class="diagnosis-summary-icon">🧭</div>
+          <div class="diagnosis-summary-label">A案旅行者タイプ</div>
+          <div class="diagnosis-summary-value">${escapeHtml(aType)}</div>
+        </div>
+        <div class="diagnosis-summary-item">
+          <div class="diagnosis-summary-icon">✨</div>
+          <div class="diagnosis-summary-label">心理傾向</div>
+          <div class="diagnosis-summary-value">${escapeHtml(profileText)}</div>
+        </div>
+        <div class="diagnosis-summary-item">
+          <div class="diagnosis-summary-icon">📝</div>
+          <div class="diagnosis-summary-label">補助ニーズクラスタ</div>
+          <div class="diagnosis-summary-value">${escapeHtml(bClusterName)}</div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderIntegratedSpotsCard(recommendations) {
+  return `
+    <div class="integrated-workflow-card integrated-spots-card">
+      <h3>② 統合推薦スポット</h3>
+      <p>A案で推定した旅行者タイプと、B案の自由記述クラスタリング結果を統合して再ランキングした候補です。</p>
+      <div class="integrated-spot-list">${renderIntegratedRecommendationCards(recommendations)}</div>
+    </div>
+  `;
 }
 
 function renderIntegratedRecommendationSection(recommendations) {
@@ -2402,24 +2749,38 @@ function renderIntegratedRecommendationSection(recommendations) {
   section.id = "integratedRecommendationSection";
   section.className = "section-card integrated-recommendation-section";
   section.innerHTML = `
-    <div class="section-header">
-      <div class="section-icon blue">統</div>
-      <div>
-        <h2>統合推薦（A案＋自由記述クラスタリング）</h2>
-        <p>A案で推定した旅行者タイプを基盤とし、B案の自由記述クラスタリング結果に含まれる旅行ニーズを用いて推薦候補を再ランキングした結果です。</p>
-      </div>
+    <div class="result-hero-summary">
+      <h2>あなたに合った福井の旅プラン</h2>
+      <p>診断結果と今回の旅行条件をもとに、おすすめスポットとAI旅行プランをまとめました。</p>
     </div>
     <div class="section-body">
-      <div class="integrated-spot-list">${renderIntegratedRecommendationCards(recommendations)}</div>
-      ${renderIntegratedEvaluationForm()}
-      <div class="ab-local-ai-section integrated-ai-section">
-        <h3>AI旅行プラン生成</h3>
-        <p>統合推薦の候補をもとに、福井県内の現実的な1日旅行プランを生成します。</p>
+      ${renderDiagnosisSummaryCard()}
+      ${renderIntegratedSpotsCard(recommendations)}
+      <div class="integrated-workflow-card ai-conditions-card">
+        <h3>③ AI旅行プラン用の追加条件</h3>
+        <p>12問の診断結果に加えて、今回の旅行で重視したいことをAI旅行プランに反映します。</p>
+        ${renderAITravelConditionsForm()}
+      </div>
+      <div class="integrated-workflow-card ai-plan-card">
+        <h3>④ AI旅行プラン生成</h3>
+        <p>統合推薦と追加条件をもとに、ローカルAIサーバーで旅行プランを生成します。</p>
         <button type="button" class="ab-save-btn ab-local-ai-btn" id="abLocalAIBtn">AI旅行プランを生成（ローカルAPI）</button>
-        <p class="ab-save-explanation">生成されたAI旅行プランと統合推薦結果をまとめて保存できます。</p>
-        <button type="button" class="ab-save-btn integrated-save-btn" id="integratedSaveBtn">統合推薦結果を保存</button>
-        <button type="button" class="ab-save-btn" id="abSaveWithAIPlanBtn" disabled>統合推薦とAI旅行プランを保存</button>
-        <div class="ab-local-ai-result" id="abLocalAIResult" aria-live="polite">生成結果がここに表示されます。</div>
+        <div class="ab-local-ai-result ai-plan-empty" id="abLocalAIResult" aria-live="polite">
+          <div class="ai-plan-card-title">AI旅行プランはまだ生成されていません</div>
+          <div>追加条件を確認してから、上のボタンで旅行プランを生成してください。</div>
+        </div>
+      </div>
+      <div class="integrated-workflow-card save-research-card">
+        <h3>⑤ 保存・研究用データ</h3>
+        <p>統合推薦、追加条件、生成済みAI旅行プランを研究・確認用データとして保存できます。</p>
+        <div class="integrated-save-actions">
+          <button type="button" class="ab-save-btn save-primary-btn" id="abSaveWithAIPlanBtn" disabled>統合推薦とAI旅行プランを保存</button>
+          <button type="button" class="ab-save-btn save-secondary-btn integrated-save-btn" id="integratedSaveBtn">統合推薦結果を保存</button>
+        </div>
+        <button type="button" class="research-toggle-btn" id="researchEvaluationToggle" aria-expanded="false" aria-controls="researchEvaluationPanel">研究用評価フォームを表示</button>
+        <div class="research-evaluation-panel" id="researchEvaluationPanel">
+          ${renderIntegratedEvaluationForm()}
+        </div>
       </div>
     </div>
   `;
@@ -2428,6 +2789,46 @@ function renderIntegratedRecommendationSection(recommendations) {
   document.getElementById("abLocalAIBtn")?.addEventListener("click", generateLocalAITravelPlan);
   document.getElementById("integratedSaveBtn")?.addEventListener("click", saveABEvaluationResult);
   document.getElementById("abSaveWithAIPlanBtn")?.addEventListener("click", saveABEvaluationResultWithAIPlan);
+  document.getElementById("researchEvaluationToggle")?.addEventListener("click", toggleResearchEvaluationForm);
+}
+
+function renderAITravelConditionsForm() {
+  return `
+    <div class="ai-travel-conditions">
+      <div class="ai-condition-field">
+        <label for="aiTravelRequest">今回の旅行で重視したいこと・行きたい場所・避けたいこと</label>
+        <textarea id="aiTravelRequest" rows="3" placeholder="例：温泉に入りたい、海を見たい、あまり歩きたくない、地元グルメを重視したい"></textarea>
+      </div>
+      <div class="ai-condition-field">
+        <label for="aiTransport">交通手段</label>
+        <select id="aiTransport">
+          <option value="未定">未定</option>
+          <option value="車">車</option>
+          <option value="公共交通機関">公共交通機関</option>
+          <option value="徒歩中心">徒歩中心</option>
+          <option value="レンタカー">レンタカー</option>
+        </select>
+      </div>
+      <div class="ai-condition-field">
+        <label for="aiTripDuration">旅行時間</label>
+        <select id="aiTripDuration">
+          <option value="半日">半日</option>
+          <option value="1日" selected>1日</option>
+          <option value="1泊2日">1泊2日</option>
+          <option value="2泊3日">2泊3日</option>
+        </select>
+      </div>
+      <div class="ai-condition-field">
+        <label for="aiSpendingStyle">旅行中のお金の使い方</label>
+        <select id="aiSpendingStyle">
+          <option value="特にこだわらない">特にこだわらない</option>
+          <option value="できるだけ費用を抑えたい">できるだけ費用を抑えたい</option>
+          <option value="必要な体験にはお金をかけてもよい">必要な体験にはお金をかけてもよい</option>
+          <option value="せっかくなので少し贅沢したい">せっかくなので少し贅沢したい</option>
+        </select>
+      </div>
+    </div>
+  `;
 }
 
 function renderABScoreRows(planKey) {
@@ -2457,6 +2858,17 @@ function renderIntegratedEvaluationForm() {
       <textarea id="integratedComment" class="ab-comment" rows="4"></textarea>
     </div>
   `;
+}
+
+function toggleResearchEvaluationForm() {
+  const panel = document.getElementById("researchEvaluationPanel");
+  const button = document.getElementById("researchEvaluationToggle");
+  if (!panel || !button) return;
+
+  const willShow = !panel.classList.contains("show");
+  panel.classList.toggle("show", willShow);
+  button.setAttribute("aria-expanded", String(willShow));
+  button.textContent = willShow ? "研究用評価フォームを隠す" : "研究用評価フォームを表示";
 }
 
 function renderABTestComparisonSection(recommendedSpots) {
@@ -2552,6 +2964,15 @@ function collectIntegratedEvaluationScores() {
   };
 }
 
+function collectAITravelConditions() {
+  return {
+    travel_request: document.getElementById("aiTravelRequest")?.value?.trim() || "",
+    transport: document.getElementById("aiTransport")?.value || "未定",
+    trip_duration: document.getElementById("aiTripDuration")?.value || "1日",
+    spending_style: document.getElementById("aiSpendingStyle")?.value || "特にこだわらない"
+  };
+}
+
 function mirrorIntegratedSavePayloadForTesting(payload) {
   let el = document.getElementById("__integratedSavePayloadDebug");
   if (!el) {
@@ -2572,6 +2993,7 @@ function collectABEvaluationResult() {
     questionnaire_answers: { ...answers },
     user_profile: profileContext.user_profile,
     psychological_profile: profileContext.psychological_profile,
+    ai_travel_conditions: collectAITravelConditions(),
     integrated_recommendations: integratedRecommendations.map(normalizeIntegratedRecommendationForExport),
     matched_a_cluster: lastSummaryPayload?.matched_a_cluster || lastSummaryPayload?.cluster || null,
     matched_b_cluster: lastSummaryPayload?.matched_b_cluster || lastSummaryPayload?.baseline_debug || null,
@@ -2626,6 +3048,7 @@ function collectABEvaluationWithAIPlanResult() {
     questionnaire_answers: integratedPayload.questionnaire_answers || {},
     user_profile: integratedPayload.user_profile || null,
     psychological_profile: integratedPayload.psychological_profile || null,
+    ai_travel_conditions: integratedPayload.ai_travel_conditions || collectAITravelConditions(),
     integrated_recommendations: integratedPayload.integrated_recommendations || [],
     matched_a_cluster: integratedPayload.matched_a_cluster || null,
     matched_b_cluster: integratedPayload.matched_b_cluster || null,
@@ -2694,7 +3117,8 @@ function buildLightweightAIPlanPayload() {
       companion: userProfile.companion || lastSummaryPayload?.companion || window.userCompanion || null,
       season: userProfile.season || lastSummaryPayload?.season || window.userSeason || null,
       visited_before: userProfile.visited_before ?? lastSummaryPayload?.visited_before ?? (window.userVisited === "yes"),
-      visited_places: userProfile.visited_places || lastSummaryPayload?.visited_places || window.userVisitedPlaces || null
+      visited_places: userProfile.visited_places || lastSummaryPayload?.visited_places || window.userVisitedPlaces || null,
+      ...collectAITravelConditions()
     }
   };
 }
@@ -2740,7 +3164,11 @@ async function generateLocalAITravelPlan() {
   button.disabled = true;
   if (saveWithAIPlanButton) saveWithAIPlanButton.disabled = true;
   lastLocalAIPlan = null;
-  resultBox.textContent = "AI旅行プランを生成しています…";
+  resultBox.className = "ab-local-ai-result ai-plan-loading";
+  resultBox.innerHTML = `
+    <div class="ai-plan-card-title">AI旅行プランを生成しています…</div>
+    <div>心理傾向と今回の旅行条件を照合しながら、行程を組み立てています。</div>
+  `;
 
   try {
     const response = await fetch("http://localhost:8000/generate-plan", {
@@ -2759,12 +3187,24 @@ async function generateLocalAITravelPlan() {
       generated_at: data.generated_at || null
     };
     if (saveWithAIPlanButton) saveWithAIPlanButton.disabled = false;
-    resultBox.textContent = data.plan_markdown || "旅行プラン本文が返されませんでした。";
+    resultBox.className = "ab-local-ai-result ai-plan-output";
+    resultBox.innerHTML = `
+      <div class="ai-plan-card-title">
+        AIが作成した旅行プラン
+        <span class="ai-plan-reflected-badge">心理傾向・旅行条件を反映済み</span>
+      </div>
+      <pre>${escapeHtml(data.plan_markdown || "旅行プラン本文が返されませんでした。")}</pre>
+    `;
   } catch (error) {
     const isConnectionError = error instanceof TypeError;
-    resultBox.textContent = isConnectionError
+    const message = isConnectionError
       ? "ローカルAIサーバーが起動していません"
       : `AI旅行プランの生成に失敗しました: ${error.message}`;
+    resultBox.className = "ab-local-ai-result ai-plan-error";
+    resultBox.innerHTML = `
+      <div class="ai-plan-card-title">AI旅行プランを生成できませんでした</div>
+      <pre>${escapeHtml(message)}</pre>
+    `;
   } finally {
     button.disabled = false;
   }
@@ -4124,12 +4564,22 @@ function attachOptionHighlight() {
 function updateProgress() {
   const answered = document.querySelectorAll('#questions input[type="radio"]:checked').length;
   const total = QUESTIONS.length || 12;
+  const remaining = Math.max(total - answered, 0);
 
   const label = document.getElementById('progressLabel');
   const fill = document.getElementById('progressFill');
+  const hint = document.getElementById('submitHint');
+  const submitBtn = document.getElementById('submitBtn');
 
   if (label) label.textContent = `${answered} / ${total}`;
-  if (fill) fill.style.width = `${Math.round((answered / total) * 100)}%`;
+  if (fill) fill.style.width = `${total ? Math.round((answered / total) * 100) : 0}%`;
+  if (hint) {
+    hint.textContent = remaining === 0
+      ? "すべて回答済みです。診断結果を表示できます。"
+      : `あと${remaining}問で診断できます`;
+    hint.classList.toggle("ready", remaining === 0);
+  }
+  if (submitBtn) submitBtn.classList.toggle("ready", remaining === 0);
 }
 
 // ===== 14. 重开问卷 =====

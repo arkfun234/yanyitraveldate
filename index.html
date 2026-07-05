@@ -25,19 +25,25 @@
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, "Noto Sans JP", sans-serif;
-      background: var(--bg);
+      background:
+        radial-gradient(circle at 12% 0%, rgba(59,130,246,0.12), transparent 28%),
+        linear-gradient(180deg, #eef5ff 0%, #f8fbff 42%, #f0f4ff 100%);
       color: var(--text);
       min-height: 100vh;
     }
 
     /* ===== HERO HEADER ===== */
     .hero {
-      background: linear-gradient(135deg, #1d4ed8 0%, #0ea5e9 100%);
+      background:
+        radial-gradient(circle at 88% 16%, rgba(255,255,255,0.24), transparent 26%),
+        radial-gradient(circle at 10% 90%, rgba(125,211,252,0.24), transparent 32%),
+        linear-gradient(135deg, #1d4ed8 0%, #2563eb 48%, #0ea5e9 100%);
       color: white;
-      padding: 32px 24px 28px;
+      padding: 24px 24px 22px;
       text-align: center;
       position: relative;
       overflow: hidden;
+      box-shadow: 0 18px 44px rgba(37,99,235,0.22);
     }
     .hero::before {
       content: '';
@@ -56,7 +62,7 @@
       border-radius: 50%;
     }
     .hero-inner {
-      max-width: 700px;
+      max-width: 920px;
       margin: 0 auto;
       position: relative;
       z-index: 1;
@@ -81,17 +87,17 @@
       text-transform: uppercase;
     }
     .hero h1 {
-      font-size: 26px;
+      font-size: 27px;
       font-weight: 800;
       line-height: 1.2;
       margin-bottom: 6px;
       letter-spacing: -0.01em;
     }
     .hero p {
-      font-size: 13.5px;
-      opacity: 0.85;
+      font-size: 14px;
+      opacity: 0.9;
       line-height: 1.6;
-      max-width: 420px;
+      max-width: 560px;
     }
     .lang-btn {
       background: rgba(255,255,255,0.18);
@@ -113,28 +119,47 @@
 
     /* ===== PROGRESS BAR ===== */
     .progress-wrap {
-      background: white;
-      border-bottom: 1px solid var(--border);
-      padding: 10px 24px;
+      background: rgba(255,255,255,0.88);
+      border-bottom: 1px solid rgba(191,219,254,0.95);
+      padding: 12px 24px;
       position: sticky;
       top: 0;
       z-index: 100;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      backdrop-filter: blur(14px);
+      box-shadow: 0 8px 24px rgba(37,99,235,0.10);
     }
     .progress-inner {
-      max-width: 700px;
+      max-width: 920px;
       margin: 0 auto;
-      display: flex;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
       align-items: center;
       gap: 12px;
     }
-    .progress-label { font-size: 12px; color: var(--text-sub); white-space: nowrap; font-weight: 600; }
+    .progress-title {
+      font-size: 12px;
+      color: var(--text);
+      white-space: nowrap;
+      font-weight: 800;
+    }
+    .progress-label {
+      min-width: 58px;
+      text-align: center;
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: #eff6ff;
+      color: #1d4ed8;
+      border: 1px solid #bfdbfe;
+      white-space: nowrap;
+      font-size: 13px;
+      font-weight: 900;
+    }
     .progress-bar-bg {
-      flex: 1;
-      height: 6px;
-      background: #e2e8f0;
+      height: 11px;
+      background: #dbeafe;
       border-radius: 99px;
       overflow: hidden;
+      box-shadow: inset 0 1px 2px rgba(15,23,42,0.08);
     }
     .progress-bar-fill {
       height: 100%;
@@ -145,27 +170,27 @@
     }
 
     /* ===== MAIN LAYOUT ===== */
-    main { max-width: 700px; margin: 0 auto; padding: 28px 16px 60px; }
+    main { max-width: 920px; margin: 0 auto; padding: 28px 16px 60px; }
 
     /* ===== SECTION CARD ===== */
     .section-card {
-      background: var(--card-bg);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
+      background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+      border-radius: 22px;
+      box-shadow: 0 14px 34px rgba(37,99,235,0.09);
       margin-bottom: 20px;
       overflow: hidden;
-      border: 1px solid #e8edf5;
+      border: 1px solid #dbeafe;
     }
     .section-header {
-      padding: 18px 24px 14px;
-      border-bottom: 1px solid var(--border);
+      padding: 20px 24px 16px;
+      border-bottom: 1px solid #dbeafe;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
     }
     .section-icon {
       width: 34px; height: 34px;
-      border-radius: 10px;
+      border-radius: 12px;
       display: flex; align-items: center; justify-content: center;
       font-size: 16px;
       flex-shrink: 0;
@@ -174,20 +199,26 @@
     .section-icon.green { background: #f0fdf4; }
     .section-icon.orange { background: #fff7ed; }
     .section-header h2 {
-      font-size: 15px;
-      font-weight: 700;
+      font-size: 17px;
+      font-weight: 850;
       color: var(--text);
       letter-spacing: 0.01em;
     }
     .section-header p {
-      font-size: 12px;
+      font-size: 13px;
       color: var(--text-sub);
       margin-top: 2px;
     }
     .section-body { padding: 20px 24px; }
 
     /* ===== PRE-QUESTIONS (同行者・月份・訪問歴) ===== */
-    .pre-q { margin-bottom: 18px; }
+    .pre-q {
+      margin-bottom: 18px;
+      padding: 16px;
+      border-radius: 18px;
+      border: 1px solid #e0edff;
+      background: rgba(255,255,255,0.75);
+    }
     .pre-q:last-child { margin-bottom: 0; }
     .pre-q-label {
       font-size: 13.5px;
@@ -202,34 +233,41 @@
       gap: 8px;
     }
     .chip {
-      padding: 7px 16px;
+      padding: 9px 16px;
       border-radius: 30px;
-      border: 1.5px solid var(--border);
-      background: #f8fafc;
+      border: 1.5px solid #dbeafe;
+      background: #f8fbff;
       font-size: 13px;
       cursor: pointer;
       transition: all 0.18s;
       color: var(--text-sub);
-      font-weight: 500;
+      font-weight: 750;
       user-select: none;
+      box-shadow: 0 4px 12px rgba(37,99,235,0.05);
     }
-    .chip:hover { border-color: var(--primary-light); color: var(--primary); background: #eff6ff; }
+    .chip:hover {
+      border-color: var(--primary-light);
+      color: var(--primary);
+      background: #eff6ff;
+      transform: translateY(-1px);
+      box-shadow: 0 8px 18px rgba(37,99,235,0.10);
+    }
     .chip.active {
-      background: #2563eb;
+      background: linear-gradient(135deg, #2563eb, #0ea5e9);
       border-color: #2563eb;
       color: white;
       font-weight: 700;
-      box-shadow: 0 2px 8px rgba(37,99,235,0.25);
+      box-shadow: 0 10px 24px rgba(37,99,235,0.24);
     }
     .visited-input {
       width: 100%;
       margin-top: 10px;
       padding: 10px 14px;
-      border: 1.5px solid var(--border);
-      border-radius: 10px;
+      border: 1.5px solid #bfdbfe;
+      border-radius: 14px;
       font-size: 13.5px;
       color: var(--text);
-      background: #f8fafc;
+      background: #fff;
       outline: none;
       transition: border 0.2s;
       display: none;
@@ -239,10 +277,14 @@
 
     /* ===== QUIZ QUESTIONS ===== */
     .question {
-      padding: 18px 0;
-      border-bottom: 1px solid #f1f5f9;
+      padding: 18px;
+      margin-bottom: 16px;
+      border: 1px solid #dbeafe;
+      border-radius: 20px;
+      background: #ffffff;
+      box-shadow: 0 10px 24px rgba(37,99,235,0.07);
     }
-    .question:last-child { border-bottom: none; padding-bottom: 0; }
+    .question:last-child { margin-bottom: 0; }
     .question-header {
       display: flex;
       align-items: flex-start;
@@ -250,19 +292,20 @@
       margin-bottom: 12px;
     }
     .q-num {
-      width: 26px; height: 26px;
-      border-radius: 8px;
+      min-width: 42px; height: 30px;
+      padding: 0 10px;
+      border-radius: 999px;
       background: linear-gradient(135deg, #2563eb, #0ea5e9);
       color: white;
-      font-size: 12px;
+      font-size: 12.5px;
       font-weight: 800;
       display: flex; align-items: center; justify-content: center;
       flex-shrink: 0;
       margin-top: 1px;
     }
     .question h3 {
-      font-size: 14.5px;
-      font-weight: 700;
+      font-size: 15px;
+      font-weight: 800;
       color: var(--text);
       line-height: 1.5;
       flex: 1;
@@ -270,30 +313,38 @@
     .options-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      padding-left: 36px;
+      gap: 10px;
+      padding-left: 0;
     }
     .option-label {
       display: flex;
       align-items: center;
       gap: 8px;
-      padding: 9px 13px;
-      border-radius: 10px;
-      border: 1.5px solid var(--border);
+      padding: 12px 14px;
+      border-radius: 15px;
+      border: 1.5px solid #dbeafe;
       cursor: pointer;
       transition: all 0.18s;
-      font-size: 13px;
-      color: var(--text-sub);
-      background: #f8fafc;
+      font-size: 13.5px;
+      color: var(--text);
+      background: #f8fbff;
       line-height: 1.4;
       user-select: none;
+      box-shadow: 0 4px 12px rgba(37,99,235,0.04);
     }
-    .option-label:hover { border-color: var(--primary-light); color: var(--primary); background: #eff6ff; }
+    .option-label:hover {
+      border-color: var(--primary-light);
+      color: var(--primary);
+      background: #eff6ff;
+      transform: translateY(-1px);
+      box-shadow: 0 10px 20px rgba(37,99,235,0.10);
+    }
     .option-label.selected {
       border-color: #2563eb;
-      background: #eff6ff;
+      background: linear-gradient(180deg, #eff6ff, #ffffff);
       color: #1d4ed8;
-      font-weight: 600;
+      font-weight: 800;
+      box-shadow: 0 12px 24px rgba(37,99,235,0.14);
     }
     .option-label input[type="radio"] { display: none; }
     .option-dot {
@@ -309,30 +360,41 @@
       background: #2563eb;
     }
     .option-label.selected .option-dot::after {
-      content: '';
-      width: 6px; height: 6px;
-      background: white;
-      border-radius: 50%;
+      content: '✓';
+      color: white;
+      font-size: 11px;
+      line-height: 1;
+      font-weight: 900;
     }
 
     /* ===== SUBMIT BUTTON ===== */
     #submitBtn {
       width: 100%;
-      margin-top: 24px;
-      padding: 16px;
-      font-size: 15px;
-      font-weight: 700;
-      border-radius: 12px;
+      margin-top: 10px;
+      padding: 17px;
+      font-size: 15.5px;
+      font-weight: 850;
+      border-radius: 18px;
       border: none;
       cursor: pointer;
-      color: white;
-      background: linear-gradient(135deg, #2563eb, #0ea5e9);
-      box-shadow: 0 6px 20px rgba(37,99,235,0.35);
+      color: #1d4ed8;
+      background: #eff6ff;
+      border: 1.5px solid #bfdbfe;
+      box-shadow: 0 8px 20px rgba(37,99,235,0.12);
       transition: all 0.2s;
       letter-spacing: 0.03em;
     }
+    #submitBtn.ready {
+      color: white;
+      border-color: transparent;
+      background: linear-gradient(135deg, #2563eb, #0ea5e9);
+      box-shadow: 0 14px 32px rgba(37,99,235,0.28);
+    }
     #submitBtn:hover {
       transform: translateY(-2px);
+      box-shadow: 0 10px 28px rgba(37,99,235,0.22);
+    }
+    #submitBtn.ready:hover {
       box-shadow: 0 10px 28px rgba(37,99,235,0.45);
     }
     #submitBtn:active { transform: translateY(0); }
@@ -340,6 +402,17 @@
       opacity: 0.6;
       cursor: not-allowed;
       transform: none;
+    }
+    .submit-hint {
+      margin-top: 16px;
+      margin-bottom: 8px;
+      text-align: center;
+      color: var(--text-sub);
+      font-size: 13px;
+      font-weight: 750;
+    }
+    .submit-hint.ready {
+      color: #1d4ed8;
     }
 
     /* ===== RESULT SECTION ===== */
@@ -491,7 +564,11 @@
     #restartBtn:hover { background: #eff6ff; }
 
     @media (max-width: 600px) {
+      .hero { padding: 20px 18px; }
       .hero h1 { font-size: 21px; }
+      .hero-inner { display: grid; }
+      .progress-inner { grid-template-columns: 1fr auto; }
+      .progress-title { grid-column: 1 / -1; }
       .options-grid { grid-template-columns: 1fr; }
       .hotel-grid { grid-template-columns: 1fr; }
       .section-body { padding: 16px 16px; }
@@ -512,7 +589,7 @@
           <span class="ja-text">福井の旅、あなたに合った<br>スタイルを見つけよう</span>
           <span class="zh-text" style="display:none;">发现你的福井旅行风格</span>
         </h1>
-        <p class="ja-text">いくつかの質問に答えるだけで、AI があなただけの旅行プランを提案します。</p>
+        <p class="ja-text">12問の回答から、旅行タイプ・心理傾向・おすすめスポットを診断します。</p>
         <p class="zh-text" style="display:none;">只需回答几个问题，AI 就会为你量身定制专属旅行方案。</p>
       </div>
       <button class="lang-btn" onclick="toggleLanguage()">
@@ -525,10 +602,11 @@
   <!-- PROGRESS -->
   <div class="progress-wrap">
     <div class="progress-inner">
-      <span class="progress-label" id="progressLabel">0 / 12</span>
+      <span class="progress-title">診断の進捗</span>
       <div class="progress-bar-bg">
         <div class="progress-bar-fill" id="progressFill"></div>
       </div>
+      <span class="progress-label" id="progressLabel">0 / 12</span>
     </div>
   </div>
 
@@ -543,11 +621,11 @@
           <div class="section-icon blue">👤</div>
           <div>
             <h2>
-              <span class="ja-text">あなたについて教えてください</span>
+              <span class="ja-text">STEP 1　基本情報</span>
               <span class="zh-text" style="display:none;">请告诉我们一些基本信息</span>
             </h2>
             <p>
-              <span class="ja-text">旅行スタイルをより正確に診断するために使用します</span>
+              <span class="ja-text">旅行の前提条件を選んでください</span>
               <span class="zh-text" style="display:none;">用于更准确地诊断你的旅行风格</span>
             </p>
           </div>
@@ -632,17 +710,18 @@
           <div class="section-icon blue">📋</div>
           <div>
             <h2>
-              <span class="ja-text">旅行スタイル診断</span>
+              <span class="ja-text">STEP 2　旅行スタイル診断</span>
               <span class="zh-text" style="display:none;">旅行风格问卷</span>
             </h2>
             <p>
-              <span class="ja-text">すべての質問にお答えください</span>
+              <span class="ja-text">12問すべてにお答えください</span>
               <span class="zh-text" style="display:none;">请回答所有问题</span>
             </p>
           </div>
         </div>
         <div class="section-body">
           <div id="questions"></div>
+          <div class="submit-hint" id="submitHint">あと12問で診断できます</div>
           <button id="submitBtn">
             <span class="ja-text">診断結果を見る →</span>
             <span class="zh-text" style="display:none;">查看诊断结果 →</span>
@@ -796,8 +875,18 @@
     function updateProgress() {
       const total = document.querySelectorAll('.question').length;
       const answered = document.querySelectorAll('.question input[type="radio"]:checked').length;
-      document.getElementById('progressFill').style.width = (answered / total * 100) + '%';
+      const remaining = Math.max(total - answered, 0);
+      document.getElementById('progressFill').style.width = (total ? answered / total * 100 : 0) + '%';
       document.getElementById('progressLabel').textContent = answered + ' / ' + total;
+      const hint = document.getElementById('submitHint');
+      const submitBtn = document.getElementById('submitBtn');
+      if (hint) {
+        hint.textContent = remaining === 0
+          ? 'すべて回答済みです。診断結果を表示できます。'
+          : `あと${remaining}問で診断できます`;
+        hint.classList.toggle('ready', remaining === 0);
+      }
+      if (submitBtn) submitBtn.classList.toggle('ready', remaining === 0);
     }
 
     function restartQuiz() {
