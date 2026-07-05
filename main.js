@@ -2651,6 +2651,54 @@ function collectABEvaluationWithAIPlanResult() {
   };
 }
 
+function normalizeIntegratedRecommendationForAI(spot) {
+  return {
+    name: spot?.name || "",
+    area: spot?.area || spot?.selectedSpot?.area || "",
+    description: spot?.description || spot?.selectedSpot?.description || "",
+    purpose_tags: spot?.purpose_tags || [],
+    trait_tags: spot?.trait_tags || [],
+    spot_type: spot?.spot_type || "",
+    recommendation_reason: spot?.recommendation_reason || "",
+    a_relationship: spot?.a_relationship || "",
+    b_need_match: spot?.b_need_match || ""
+  };
+}
+
+function buildLightweightAIPlanPayload() {
+  const savedPayload = collectABEvaluationResult();
+  const matchedACluster = savedPayload.matched_a_cluster || {};
+  const matchedBCluster = savedPayload.matched_b_cluster || {};
+  const userProfile = savedPayload.user_profile || {};
+
+  return {
+    psychological_profile: savedPayload.psychological_profile || null,
+    integrated_recommendations: (window.__INTEGRATED_RECOMMENDATIONS__ || [])
+      .slice(0, 5)
+      .map(normalizeIntegratedRecommendationForAI),
+    matched_a_cluster: {
+      id: matchedACluster.id ?? null,
+      name: matchedACluster.name || null,
+      related_places: matchedACluster.related_places || []
+    },
+    matched_b_cluster: {
+      id: matchedBCluster.id ?? null,
+      name: matchedBCluster.name || "",
+      summary: matchedBCluster.summary || "",
+      top_keywords: matchedBCluster.top_keywords || [],
+      purpose_tags: matchedBCluster.purpose_tags || [],
+      trait_scores: matchedBCluster.trait_scores || {},
+      source: matchedBCluster.source || null
+    },
+    user_conditions: {
+      companion: userProfile.companion || lastSummaryPayload?.companion || window.userCompanion || null,
+      season: userProfile.season || lastSummaryPayload?.season || window.userSeason || null,
+      visited_before: userProfile.visited_before ?? lastSummaryPayload?.visited_before ?? (window.userVisited === "yes"),
+      visited_places: userProfile.visited_places || lastSummaryPayload?.visited_places || window.userVisitedPlaces || null
+    }
+  };
+}
+
 function saveABEvaluationResult() {
   const payload = collectABEvaluationResult();
 
@@ -2688,22 +2736,7 @@ async function generateLocalAITravelPlan() {
   const saveWithAIPlanButton = document.getElementById("abSaveWithAIPlanBtn");
   if (!button || !resultBox) return;
 
-  const payload = {
-    ...collectABEvaluationResult(),
-    integrated_recommendations: window.__INTEGRATED_RECOMMENDATIONS__ || [],
-    integration_debug: lastSummaryPayload?.integration_debug || null,
-    internal_reference: {
-      plan1_recommendations: (window.__AB_TEST_PLAN1_SPOTS__ || []).slice(0, 3).map(normalizeABSpotForExport),
-      plan2_recommendations: (window.__AB_TEST_PLAN2_SPOTS__ || []).slice(0, 3).map(normalizeABSpotForExport)
-    },
-    research_context: {
-      cluster: lastSummaryPayload?.cluster || null,
-      matched_a_cluster: lastSummaryPayload?.matched_a_cluster || null,
-      matched_b_cluster: lastSummaryPayload?.matched_b_cluster || null,
-      integration_debug: lastSummaryPayload?.integration_debug || null,
-      psychological_profile: lastSummaryPayload?.psychological_profile || null
-    }
-  };
+  const payload = buildLightweightAIPlanPayload();
   button.disabled = true;
   if (saveWithAIPlanButton) saveWithAIPlanButton.disabled = true;
   lastLocalAIPlan = null;
