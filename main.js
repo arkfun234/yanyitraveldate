@@ -1481,7 +1481,12 @@ function installResearchStyles() {
       gap: 8px;
     }
 
-    .ai-plan-output pre,
+    .ab-local-ai-result.ai-plan-output,
+    .ai-plan-output {
+      max-height: none !important;
+      overflow: visible !important;
+    }
+
     .ai-plan-loading pre,
     .ai-plan-error pre {
       margin: 0;
@@ -3187,13 +3192,15 @@ async function generateLocalAITravelPlan() {
       generated_at: data.generated_at || null
     };
     if (saveWithAIPlanButton) saveWithAIPlanButton.disabled = false;
-    resultBox.className = "ab-local-ai-result ai-plan-output";
+    resultBox.classList.remove("ai-plan-empty", "ai-plan-loading", "ai-plan-error");
+    resultBox.classList.add("ab-local-ai-result");
+    resultBox.classList.add("ai-plan-output");
     resultBox.innerHTML = `
       <div class="ai-plan-card-title">
         AIが作成した旅行プラン
         <span class="ai-plan-reflected-badge">心理傾向・旅行条件を反映済み</span>
       </div>
-      <pre>${escapeHtml(data.plan_markdown || "旅行プラン本文が返されませんでした。")}</pre>
+      ${formatAiTravelPlanMarkdown(data.plan_markdown || "旅行プラン本文が返されませんでした。")}
     `;
   } catch (error) {
     const isConnectionError = error instanceof TypeError;
@@ -3588,6 +3595,88 @@ function escapeHtml(value) {
     '"': '&quot;',
     "'": '&#39;'
   }[ch]));
+}
+
+function formatAiTravelPlanMarkdown(markdownText) {
+  const lines = String(markdownText || "")
+    .replace(/\r\n/g, "\n")
+    .replace(/\\n/g, "\n")
+    .split("\n");
+  const html = [];
+  let listOpen = false;
+  let spotCardOpen = false;
+
+  const formatInline = (text) => escapeHtml(text).replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+  const closeList = () => {
+    if (!listOpen) return;
+    html.push("</ul>");
+    listOpen = false;
+  };
+  const closeSpotCard = () => {
+    closeList();
+    if (!spotCardOpen) return;
+    html.push("</div>");
+    spotCardOpen = false;
+  };
+
+  lines.forEach(rawLine => {
+    const line = rawLine
+      .replace(/^[\uFEFF\u200B\u3000\s]+|[\u200B\u3000\s]+$/g, "")
+      .replace(/^>\s*/, "");
+    if (!line) {
+      closeList();
+      return;
+    }
+
+    if (/^```/.test(line)) {
+      closeList();
+      return;
+    }
+
+    if (/^-{3,}$/.test(line)) {
+      closeSpotCard();
+      html.push('<div class="ai-plan-divider" aria-hidden="true"></div>');
+      return;
+    }
+
+    const spotHeading = line.match(/^#{3}\s*(.+)$/);
+    if (spotHeading) {
+      closeSpotCard();
+      html.push(`<div class="ai-plan-spot-card"><h4 class="ai-plan-spot-title">${formatInline(spotHeading[1])}</h4>`);
+      spotCardOpen = true;
+      return;
+    }
+
+    const sectionHeading = line.match(/^#{2}\s*(.+)$/);
+    if (sectionHeading) {
+      closeSpotCard();
+      html.push(`<h3 class="ai-plan-section-title">${formatInline(sectionHeading[1])}</h3>`);
+      return;
+    }
+
+    const mainHeading = line.match(/^#{1}\s*(.+)$/);
+    if (mainHeading) {
+      closeSpotCard();
+      html.push(`<h3 class="ai-plan-section-title">${formatInline(mainHeading[1])}</h3>`);
+      return;
+    }
+
+    const bullet = line.match(/^[-*]\s*(.+)$/);
+    if (bullet) {
+      if (!listOpen) {
+        html.push('<ul class="ai-plan-list">');
+        listOpen = true;
+      }
+      html.push(`<li>${formatInline(bullet[1])}</li>`);
+      return;
+    }
+
+    closeList();
+    html.push(`<p class="ai-plan-paragraph">${formatInline(line)}</p>`);
+  });
+
+  closeSpotCard();
+  return `<div class="ai-plan-formatted-body">${html.join("")}</div>`;
 }
 
 function normalizeSpotName(value) {
